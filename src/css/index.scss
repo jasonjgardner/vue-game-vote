@@ -1,0 +1,39 @@
+@import 'variables';
+
+.sr-only {
+	display: none;
+}
+
+.btn {
+	-webkit-appearance: none;
+	background-color: $color-background-alt;
+	border: 0;
+	border-radius: $size-border-radius;
+	box-sizing: border-box;
+	color: $color-light;
+	cursor: pointer;
+	font-weight: 600;
+	letter-spacing: .1em;
+	line-height: 1.5;
+	padding: .333em .5em;
+
+	&:hover,
+	&:focus,
+	&:active {
+		color: $color-lightest;
+	}
+}
+
+html {
+	font-size: 100%;
+}
+
+body {
+	background-color: $color-background;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	font: $font-size-base/#{$line-height-base} $font-family-sans-serif;
+	color: $color-light;
+}
+
+

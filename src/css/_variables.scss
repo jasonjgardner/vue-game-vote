@@ -1,0 +1,26 @@
+$color-background: #2d2d2d;
+$color-background-alt: #505050;
+$color-primary: #1bb9ff;
+$color-secondary: #686868;
+$color-accent: #02fccc;
+$color-active: #9c0;
+$color-selected: #4dc0dd;
+$color-brand: #e60012;
+$color-dark: #323232;
+$color-dark-alt: #414141;
+$color-neutral: #ddd;
+$color-light: #fefefe;
+$color-lightest: white;
+
+$gradient-selected: linear-gradient(135deg, #8ffdfc 0%, #32c5d9 33%, $color-selected 50%, #47aed7 66%, #1083c6 100%);
+
+$font-family-emoji: 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+$font-family-system: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+$font-family-sans-serif: 'Lato', 'Open Sans', $font-family-system;
+
+$font-size-base: 18px;
+$line-height-base: 1.5;
+
+$size-border-radius: 6px;
+
+@import url('https://fonts.googleapis.com/css?family=Lato:300,400,700,900');
