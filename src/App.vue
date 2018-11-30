@@ -1,14 +1,15 @@
 <template>
 	<div class="d-flex flex-column nowrap" id="app"
-		 v-bind:class="{ 'few-voters': voters < 3 && voters > 0, 'no-voters': voters < 0 }">
-		<header class="d-flex app__header">
+		v-bind:class="{'few-voters': voters < 3 && voters > 0, 'no-voters': voters < 0, 'chosen': !!chosen}">
+		<header class="d-flex app__header" v-show="!chosen">
 			<h1 class="app__title">Vote for a Game</h1>
 
 			<form class="d-flex" id="voters">
 				<label class="sr-only" for="votesRemaining">Votes Remaining:</label>
-				<div class="voters__votes">
+
+				<div class="voters__votes" v-bind:class="{'focus': votesChanged}">
 					<input id="votesRemaining" type="number" placeholder="#" max="99" min="0" readonly
-						   v-model.number="voters" v-if="voters > 0">
+						v-model.number="voters" v-if="voters > 0">
 					<button class="btn" type="button" v-if="votes.length" v-on:click="choose">
 						<check-icon></check-icon>
 						<span class="sr-only">Choose</span>
@@ -22,7 +23,7 @@
 
 				<div role="separator"></div>
 
-				<button class="btn btn--secondary btn--fab" type="button" v-on:click="voters++">
+				<button class="btn btn--secondary btn--fab" type="button" v-on:click="buyVote">
 					<coin-icon class="rotate--90"></coin-icon>
 					<span class="sr-only">Buy Vote</span>
 				</button>
@@ -30,44 +31,41 @@
 		</header>
 
 		<main id="games" v-if="!chosen">
-			<GameChoice v-for="game in games" v-bind:game="game" v-bind:key="game.id"></GameChoice>
+			<GameChoice v-for="game in this.$parent.games" v-bind:game="game" v-bind:key="game.id"></GameChoice>
 		</main>
 
 		<section class="d-flex flex-column" id="choice" v-if="chosen">
 			<h2 class="choice__title">{{ chosen.text }}</h2>
-			<img class="choice__cover" v-bind:src="require(`./assets/games/${chosen.id}.jpg`)" :alt="chosen.text">
+			<img class="choice__cover focus" v-bind:src="require(`./assets/games/${chosen.id}.jpg`)" :alt="chosen.text">
 
-			<h3>We Picked a Game!</h3>
+			<div class="choice__results">
+				<table>
+					<thead>
+					<tr>
+						<th>Choice</th>
+						<th>Votes</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr v-for="game in poll" v-bind:key="game.id">
+						<td v-bind:class="{'text--accent': game.chosen}">{{ game.text }}</td>
+						<td class="text--center" v-bind:class="{'text--accent': game.chosen}">
+							{{ votes.filter(vote => vote.id === game.id).length }}
+						</td>
+					</tr>
+					</tbody>
+					<caption>Voting Results</caption>
+				</table>
+			</div>
 
-			<p class="text--secondary">Hopefully it&rsquo;s the one you wanted.</p>
-
-			<h4>Results</h4>
-
-			<table>
-				<thead>
-				<tr>
-					<th>Choice</th>
-					<th>Votes</th>
-				</tr>
-				</thead>
-				<tbody>
-				<tr v-for="game in poll" v-bind:key="game.id">
-					<td v-bind:class="{'text--accent': game.chosen}">{{ game.text }}</td>
-					<td class="text--center" v-bind:class="{'text--accent': game.chosen}">
-						{{ votes.filter(vote => vote.id === game.id).length }}
-					</td>
-				</tr>
-				</tbody>
-			</table>
-
-			<div class="choice__actions">
-				<button class="btn btn--secondary" type="button" v-on:click="choose">
+			<footer class="choice__actions">
+				<button class="btn btn--secondary text--accent" type="button" v-on:click="choose">
 					Pick Again
 				</button>
 				<button class="btn btn--primary" type="button" v-on:click="reset">
 					Start Over
 				</button>
-			</div>
+			</footer>
 		</section>
 	</div>
 </template>
@@ -92,33 +90,8 @@
 			return {
 				votes: [],
 				voters: defaultVoters,
-				chosen: null,
-				games: [
-					{
-						id: 'arms',
-						text: 'Arms'
-					},
-					{
-						id: 'pokemon',
-						text: 'Let\'s Go Pikachu'
-					},
-					{
-						id: 'mario-kart',
-						text: 'Mario Kart 8'
-					},
-					{
-						id: 'mario-party',
-						text: 'Mario Party Board Game'
-					},
-					{
-						id: 'minecraft',
-						text: 'Minecraft'
-					},
-					{
-						id: '1-2-switch',
-						text: '1-2 Switch'
-					}
-				]
+				votesChanged: undefined,
+				chosen: null
 			};
 		},
 		methods: {
@@ -130,6 +103,9 @@
 				this.voters = defaultVoters;
 				this.chosen = null;
 				this.votes = [];
+			},
+			buyVote: function() {
+				(new Audio(require('./assets/coin.mp3'))).play().finally(() => this.voters = Math.max(1, this.voters + 1));
 			}
 		},
 		computed: {
@@ -155,6 +131,10 @@
 
 	#app {
 		margin: calc(3.25rem + #{$size-btn-fab}) auto 0;
+
+		&.chosen {
+			margin-top: 0;
+		}
 	}
 
 	#games {
@@ -270,21 +250,30 @@
 		margin: 0 auto;
 		max-height: $size-game-cover;
 		max-width: $size-game-cover;
-		outline: 2px solid $color-selected;
+	}
+
+	.choice__results {
+		margin: 1rem auto 0;
+		width: 90%;
 	}
 
 	.choice__actions {
-		background-color: $color-background-alt;
-		margin: 1.5rem auto 0;
+		box-sizing: border-box;
+		display: flex;
+		flex-flow: row nowrap;
+		justify-content: space-between;
+		margin: 1.5rem 0 1rem;
+		padding: 0 1rem;
 		width: 100%;
 
 		.btn {
 			display: block;
+			flex: 1;
 			padding: 1em 2.5em;
 		}
 
 		.btn + .btn {
-			margin-top: 1rem;
+			margin-left: 1rem;
 		}
 	}
 

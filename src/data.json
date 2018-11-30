@@ -1,0 +1,28 @@
+{
+  "games": [
+    {
+      "id": "arms",
+      "text": "Arms"
+    },
+    {
+      "id": "pokemon",
+      "text": "Let's Go Pikachu"
+    },
+    {
+      "id": "mario-kart",
+      "text": "Mario Kart 8"
+    },
+    {
+      "id": "mario-party",
+      "text": "Mario Party"
+    },
+    {
+      "id": "minecraft",
+      "text": "Minecraft"
+    },
+    {
+      "id": "1-2-switch",
+      "text": "1-2 Switch"
+    }
+  ]
+}

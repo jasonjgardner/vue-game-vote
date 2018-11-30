@@ -1,5 +1,5 @@
 <template>
-	<figure class="game" v-on:click="vote(game)">
+	<figure class="game" v-on:click="vote(game)" v-if="game.id">
 		<img class="game__cover" v-bind:src="require(`../assets/games/${game.id}.jpg`)" :alt="game.text" height="600">
 		<figcaption class="game__description">
 			<h3 class="game__title">{{ game.text }}</h3>
@@ -66,17 +66,6 @@
 
 		100% {
 			transform: translateX(0);
-		}
-	}
-
-	@keyframes focus {
-		0%,
-		100% {
-			box-shadow: 0 0 5px rgba(0, 0, 0, .05), 0 0 0 5px $color-focus;
-		}
-
-		50% {
-			box-shadow: 0 0 5px rgba(0, 0, 0, .05), 0 0 0 5px $color-focus-alt;
 		}
 	}
 

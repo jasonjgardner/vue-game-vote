@@ -7,6 +7,12 @@ import './registerServiceWorker';
 
 Vue.config.productionTip = false;
 
+import data from './data.json';
+
 new Vue({
-	render: h => h(App)
+	render: h => h(App),
+	data: {
+		games: [],
+		...data
+	}
 }).$mount('#app');

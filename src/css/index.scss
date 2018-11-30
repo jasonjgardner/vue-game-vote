@@ -1,6 +1,20 @@
 @import 'variables';
 @import url('https://fonts.googleapis.com/css?family=#{$font-family-title}:300,400,700');
 
+@keyframes focus {
+	0%,
+	100% {
+		box-shadow: 0 0 5px rgba(0, 0, 0, .05), 0 0 0 5px $color-focus;
+	}
+
+	50% {
+		box-shadow: 0 0 5px rgba(0, 0, 0, .05), 0 0 0 5px $color-focus-alt;
+	}
+}
+
+.focus {
+	animation: focus 1s infinite;
+}
 
 .sr-only {
 	display: none;
@@ -25,7 +39,8 @@
 	flex-direction: column;
 }
 
-.text--accent {
+.text--accent,
+.btn.text--accent {
 	color: $color-accent;
 }
 
@@ -37,6 +52,21 @@
 	color: #999;
 }
 
+.callout {
+	position: relative;
+
+	&::before {
+		background-color: $color-accent;
+		content: '';
+		display: block;
+		height: 100%;
+		left: 0;
+		position: absolute;
+		top: 0;
+		width: 3px;
+	}
+}
+
 .btn {
 	-webkit-appearance: none;
 	background-color: $color-background-alt;
@@ -45,7 +75,6 @@
 	box-sizing: border-box;
 	color: $color-light;
 	cursor: pointer;
-	letter-spacing: .1em;
 	line-height: 1.5;
 	padding: .333em .5em;
 	transition: background-color .333s ease-in-out;
@@ -55,16 +84,17 @@
 	&:focus,
 	&:active {
 		color: $color-lightest;
-		outline: 1px solid $color-selected-alt;
+		outline: none;
 	}
 
 	&--primary {
-		background-color: $color-btn-background;
+		background-color: $color-accent;
+		color: $color-dark;
 
 		&:hover,
-		&:focus {
-			background-color: $color-accent;
-			color: $color-dark;
+		&:focus,
+		&:active {
+			background-color: mix($color-btn-background, $color-accent, 25%);
 		}
 	}
 
@@ -112,12 +142,12 @@ body {
 	color: $color-light;
 	height: 100%;
 	margin: 0;
-	min-width: $media-screen-sm;
 	padding: 0;
 }
 
 table {
 	border-spacing: 0;
+	width: 100%;
 }
 
 tr:nth-child(even) {
@@ -127,11 +157,15 @@ tr:nth-child(even) {
 th {
 	color: #ccc;
 	font-size: .925rem;
+
+	&:first-child {
+		text-align: left;
+	}
 }
 
 td {
 	border: 0;
 	color: #999;
 	margin: 0;
-	padding: .25rem;
+	padding: .25em .5em;
 }
