@@ -16,11 +16,48 @@
 	letter-spacing: .1em;
 	line-height: 1.5;
 	padding: .333em .5em;
+	transition: background-color .333s ease-in-out;
+	user-select: none;
 
 	&:hover,
 	&:focus,
 	&:active {
 		color: $color-lightest;
+		outline: 1px solid $color-selected-alt;
+	}
+
+	&--primary {
+		background-color: $color-btn-background;
+
+		&:hover,
+		&:focus {
+			background-color: $color-accent;
+			color: $color-dark;
+		}
+	}
+
+	&--fab {
+		align-items: center;
+		border-radius: 50%;
+		box-shadow: -1px 1px 3px rgba(0, 0, 0, .5), 0 0 5px rgba(0, 0, 0, .33);
+		color: $color-light;
+		display: flex;
+		height: $size-btn-fab;
+		justify-content: center;
+		text-align: center;
+		width: $size-btn-fab;
+
+		svg {
+			stroke: currentColor;
+		}
+
+		&:hover,
+		&:focus,
+		&:active {
+			background-color: $color-selected;
+			color: $color-dark;
+			outline: none;
+		}
 	}
 }
 
@@ -32,8 +69,13 @@ body {
 	background-color: $color-background;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	font: $font-size-base/#{$line-height-base} $font-family-sans-serif;
+	font: #{$font-size-base}/#{$line-height-base} $font-family-sans-serif;
 	color: $color-light;
+	min-width: $media-screen-sm;
 }
 
-
+.rotate {
+	&--90 {
+		transform: rotate(90deg);
+	}
+}

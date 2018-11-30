@@ -4,9 +4,9 @@
 		<figcaption class="game__description">
 			<h3 class="game__title">{{ game.text }}</h3>
 
-			<p class="game__votes" v-if="tally > 0" title="Votes received">
+			<p class="game__votes" v-if="tally > 0" v-bind:title="tally + ' votes'">
 				<span v-for="idx in tally" :key="idx">&#9679;</span>
-				<span class="sr-only">{{ tally }}</span>
+				<span class="sr-only"></span>
 			</p>
 		</figcaption>
 	</figure>
@@ -19,8 +19,7 @@
 			game: {
 				id: String,
 				name: String
-			},
-			votes: Number
+			}
 		},
 		methods: {
 			vote: function (game) {
@@ -32,10 +31,10 @@
 			}
 		},
 		computed: {
-			tally: function() {
+			tally: function () {
 				return this.$parent.votes.filter(vote => {
 					return vote.id === this.game.id;
-				}).length || 'x';
+				}).length;
 			}
 		}
 	};
@@ -48,21 +47,18 @@
 		cursor: pointer;
 		display: flex;
 		flex-flow: column nowrap;
+		margin: 0 1rem 0 0;
+		max-width: $size-game-cover;
+		padding: 0;
 
-		&:hover,
-		&:focus,
-		&:focus-within {
-			.game__title {
-				color: $color-primary;
-			}
+		&:last-child {
+			margin-right: 0;
 		}
 
-		&__cover {
-			max-height: 30vh;
-		}
-
-		&:active .game__cover {
-			outline: 5px solid $color-selected;
+		&__title {
+			display: inline-block;
+			font-size: 1rem;
+			font-weight: 300;
 		}
 
 		&__description {
@@ -70,19 +66,38 @@
 			display: flex;
 			flex-flow: row nowrap;
 			justify-content: space-between;
+			padding: 0 .5rem;
+		}
+
+		&:hover,
+		&:focus,
+		&:focus-within {
+			-webkit-tap-highlight-color: rgba(darken($color-selected, 10%), .1);
+
+			.game__title {
+				color: $color-primary;
+			}
+
+			.game__description {
+				background-color: $color-background-alt;
+			}
+		}
+
+		&__cover {
+			box-shadow: 0 0 5px rgba(0, 0, 0, .75), 0 2px 10px rgba(0, 0, 0, .5);
+			height: $size-game-cover;
+			width: $size-game-cover;
+		}
+
+		&:active .game__cover {
+			outline: 5px solid $color-selected;
 		}
 
 		&__votes {
-			border-radius: 50%;
 			color: $color-accent;
-			font-size: .925rem;
-			font-weight: 600;
-			height: 1.125em;
-			line-height: 1.125;
 			text-align: right;
 			text-shadow: 0 0 2px rgba(0, 0, 0, .5);
-			padding: .25em;
-			width: 1.125em;
+			text-wrap: none;
 		}
 	}
 </style>
