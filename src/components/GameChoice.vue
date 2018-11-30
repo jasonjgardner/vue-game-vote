@@ -69,6 +69,17 @@
 		}
 	}
 
+	@keyframes focus {
+		0%,
+		100% {
+			box-shadow: 0 0 5px rgba(0, 0, 0, .05), 0 0 0 5px $color-focus;
+		}
+
+		50% {
+			box-shadow: 0 0 5px rgba(0, 0, 0, .05), 0 0 0 5px $color-focus-alt;
+		}
+	}
+
 	.game {
 		cursor: pointer;
 		display: flex;
@@ -93,12 +104,13 @@
 			flex-flow: row nowrap;
 			justify-content: space-between;
 			padding: 0 .5rem;
+			transition: background-color .25s ease-out;
 		}
 
 		&:hover,
 		&:focus,
 		&:focus-within {
-			-webkit-tap-highlight-color: rgba(darken($color-selected, 10%), .1);
+			-webkit-tap-highlight-color: transparent;
 
 			.game__title {
 				color: $color-primary;
@@ -117,7 +129,7 @@
 		}
 
 		&:active .game__cover {
-			outline: 5px solid $color-selected;
+			animation: focus 1s infinite;
 		}
 
 		&__votes {

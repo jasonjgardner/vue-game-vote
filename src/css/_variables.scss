@@ -8,6 +8,8 @@ $color-secondary: #686868;
 $color-accent: #02fccc;
 $color-active: #9c0;
 $color-selected: #4dc0dd;
+$color-focus: #3fe9d3;
+$color-focus-alt: #04b9c3;
 $color-selected-alt: rgba(mix($color-selected, $color-dark), .9);
 $color-assertive: #ff762e;
 $color-brand: #e60012;
@@ -19,9 +21,10 @@ $gradient-selected: linear-gradient(135deg, #8ffdfc 0%, #32c5d9 33%, $color-sele
 $gradient-background: linear-gradient(to bottom, $color-background 0%, $color-background-alt, 100%);
 $gradient-background-alt: linear-gradient(to top, $color-background 0%, $color-background-alt, 100%);
 
+$font-family-title: 'Oxygen';
 $font-family-emoji: 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 $font-family-system: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-$font-family-sans-serif: 'Lato', 'Open Sans', $font-family-system;
+$font-family-sans-serif: $font-family-title, 'Lato', 'Open Sans', $font-family-system;
 
 $font-size-base: 18px;
 $line-height-base: 1.5;

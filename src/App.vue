@@ -1,5 +1,6 @@
 <template>
-	<div class="d-flex flex-column nowrap" id="app" v-bind:class="{ 'few-voters': voters < 3 && voters > 0, 'no-voters': voters < 0 }">
+	<div class="d-flex flex-column nowrap" id="app"
+		 v-bind:class="{ 'few-voters': voters < 3 && voters > 0, 'no-voters': voters < 0 }">
 		<header class="d-flex app__header">
 			<h1 class="app__title">Vote for a Game</h1>
 
@@ -7,7 +8,7 @@
 				<label class="sr-only" for="votesRemaining">Votes Remaining:</label>
 				<div class="voters__votes">
 					<input id="votesRemaining" type="number" placeholder="#" max="99" min="0" readonly
-						v-model.number="voters" v-if="voters > 0">
+						   v-model.number="voters" v-if="voters > 0">
 					<button class="btn" type="button" v-if="votes.length" v-on:click="choose">
 						<check-icon></check-icon>
 						<span class="sr-only">Choose</span>
@@ -40,6 +41,25 @@
 
 			<p class="text--secondary">Hopefully it&rsquo;s the one you wanted.</p>
 
+			<h4>Results</h4>
+
+			<table>
+				<thead>
+				<tr>
+					<th>Choice</th>
+					<th>Votes</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr v-for="game in poll" v-bind:key="game.id">
+					<td v-bind:class="{'text--accent': game.chosen}">{{ game.text }}</td>
+					<td class="text--center" v-bind:class="{'text--accent': game.chosen}">
+						{{ votes.filter(vote => vote.id === game.id).length }}
+					</td>
+				</tr>
+				</tbody>
+			</table>
+
 			<div class="choice__actions">
 				<button class="btn btn--secondary" type="button" v-on:click="choose">
 					Pick Again
@@ -58,7 +78,7 @@
 	import Check from 'vue-feather-icon/components/check';
 	import GameChoice from './components/GameChoice';
 
-	const defaultVoters = 5;
+	const defaultVoters = 4;
 
 	export default {
 		name: 'app',
@@ -110,6 +130,21 @@
 				this.voters = defaultVoters;
 				this.chosen = null;
 				this.votes = [];
+			}
+		},
+		computed: {
+			poll: function() {
+				let results = {};
+
+				for (const vote of this.votes) {
+					results[vote.id] = {
+						...vote,
+						total: this.votes.filter(v => v.id === vote.id).length,
+						chosen: this.chosen !== null && this.chosen.id === vote.id
+					}
+				}
+
+				return results;
 			}
 		}
 	};
