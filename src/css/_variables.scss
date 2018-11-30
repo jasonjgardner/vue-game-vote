@@ -9,12 +9,15 @@ $color-accent: #02fccc;
 $color-active: #9c0;
 $color-selected: #4dc0dd;
 $color-selected-alt: rgba(mix($color-selected, $color-dark), .9);
+$color-assertive: #ff762e;
 $color-brand: #e60012;
 $color-background: #2d2d2d;
 $color-background-alt: #505050;
 $color-btn-background: #1f2227;
 
 $gradient-selected: linear-gradient(135deg, #8ffdfc 0%, #32c5d9 33%, $color-selected 50%, #47aed7 66%, #1083c6 100%);
+$gradient-background: linear-gradient(to bottom, $color-background 0%, $color-background-alt, 100%);
+$gradient-background-alt: linear-gradient(to top, $color-background 0%, $color-background-alt, 100%);
 
 $font-family-emoji: 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 $font-family-system: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -27,7 +30,10 @@ $size-btn-fab: 2.25rem;
 $size-border-radius: 4px;
 $size-game-cover: 256px;
 
+$padding-container: 30px;
+
 $media-screen-sm: 480px;
 $media-screen-md: 720px;
 
-@import url('https://fonts.googleapis.com/css?family=Lato:300,400,700,900');
+$zindex-toolbar: 100;
+$zindex-modal: 200;

@@ -43,11 +43,37 @@
 <style lang="scss" scoped>
 	@import '../css/variables.scss';
 
+	@keyframes wiggle {
+		20% {
+			transform: translateX(5px);
+		}
+
+		40% {
+			transform: translateX(-5px);
+		}
+
+		60% {
+			transform: translateX(3px);
+		}
+
+		80% {
+			transform: translateX(-2px);
+		}
+
+		90% {
+			transform: translateX(1px);
+		}
+
+		100% {
+			transform: translateX(0);
+		}
+	}
+
 	.game {
 		cursor: pointer;
 		display: flex;
 		flex-flow: column nowrap;
-		margin: 0 1rem 0 0;
+		margin: 0 1rem 1rem 0;
 		max-width: $size-game-cover;
 		padding: 0;
 
@@ -86,6 +112,7 @@
 		&__cover {
 			box-shadow: 0 0 5px rgba(0, 0, 0, .75), 0 2px 10px rgba(0, 0, 0, .5);
 			height: $size-game-cover;
+			transition: filter .25s ease-out;
 			width: $size-game-cover;
 		}
 
@@ -98,6 +125,20 @@
 			text-align: right;
 			text-shadow: 0 0 2px rgba(0, 0, 0, .5);
 			text-wrap: none;
+		}
+	}
+
+	.no-voters .game {
+		cursor: not-allowed;
+	}
+
+	.no-voters .game:active {
+		animation: wiggle .5s ease;
+		animation-iteration-count: 5;
+
+		.game__cover {
+			filter: saturate(.33);
+			outline: 4px solid $color-dark;
 		}
 	}
 </style>
