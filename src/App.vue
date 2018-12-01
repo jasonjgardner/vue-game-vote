@@ -30,43 +30,12 @@
 			</form>
 		</header>
 
-		<main id="games" v-if="!chosen">
+		<section class="d-flex flex-column" id="choice" v-if="chosen">
+			<GameChosen v-bind:chosen="chosen" v-bind:games="this.$parent.games"></GameChosen>
+		</section>
+		<main id="games" v-else>
 			<GameChoice v-for="game in this.$parent.games" v-bind:game="game" v-bind:key="game.id"></GameChoice>
 		</main>
-
-		<section class="d-flex flex-column" id="choice" v-if="chosen">
-			<h2 class="choice__title">{{ chosen.text }}</h2>
-			<img class="choice__cover focus" v-bind:src="require(`./assets/games/${chosen.id}.jpg`)" :alt="chosen.text">
-
-			<div class="choice__results">
-				<table>
-					<thead>
-					<tr>
-						<th>Choice</th>
-						<th>Votes</th>
-					</tr>
-					</thead>
-					<tbody>
-					<tr v-for="game in poll" v-bind:key="game.id">
-						<td v-bind:class="{'text--accent': game.chosen}">{{ game.text }}</td>
-						<td class="text--center" v-bind:class="{'text--accent': game.chosen}">
-							{{ votes.filter(vote => vote.id === game.id).length }}
-						</td>
-					</tr>
-					</tbody>
-					<caption>Voting Results</caption>
-				</table>
-			</div>
-
-			<footer class="choice__actions">
-				<button class="btn btn--secondary text--accent" type="button" v-on:click="choose">
-					Pick Again
-				</button>
-				<button class="btn btn--primary" type="button" v-on:click="reset">
-					Start Over
-				</button>
-			</footer>
-		</section>
 	</div>
 </template>
 
@@ -75,6 +44,7 @@
 	import MinusCircle from 'vue-feather-icon/components/minus-circle';
 	import Check from 'vue-feather-icon/components/check';
 	import GameChoice from './components/GameChoice';
+	import GameChosen from './components/GameChosen';
 
 	const defaultVoters = 4;
 
@@ -82,6 +52,7 @@
 		name: 'app',
 		components: {
 			GameChoice,
+			GameChosen,
 			ResetIcon: RotateCcw,
 			CoinIcon: MinusCircle,
 			CheckIcon: Check
@@ -108,21 +79,7 @@
 				(new Audio(require('./assets/coin.mp3'))).play().finally(() => this.voters = Math.max(1, this.voters + 1));
 			}
 		},
-		computed: {
-			poll: function() {
-				let results = {};
 
-				for (const vote of this.votes) {
-					results[vote.id] = {
-						...vote,
-						total: this.votes.filter(v => v.id === vote.id).length,
-						chosen: this.chosen !== null && this.chosen.id === vote.id
-					}
-				}
-
-				return results;
-			}
-		}
 	};
 </script>
 
@@ -135,6 +92,45 @@
 		&.chosen {
 			margin-top: 0;
 		}
+	}
+
+	.app__header {
+		align-items: center;
+		background-color: rgba($color-background, .97);
+		border-bottom: 1px solid rgba($color-lightest, .66);
+		box-shadow: 0 2px .3125rem rgba(0, 0, 0, .66), 0 .3125rem 1.5rem rgba(0, 0, 0, .33);
+		box-sizing: border-box;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		left: 0;
+		margin: 0;
+		padding: 1.5rem $padding-container;
+		position: fixed;
+		transition: border-bottom-color .5s ease-out;
+		top: 0;
+		width: 100%;
+		z-index: $zindex-toolbar;
+
+		&:hover,
+		&:focus-within {
+			border-bottom-color: $color-lightest;
+		}
+	}
+
+	@media screen and (min-width: #{($media-screen-sm + 1)}) {
+		.app__header {
+			align-items: center;
+			flex-direction: row;
+			justify-content: space-between;
+		}
+	}
+
+	.app__title {
+		font-size: 1.25rem;
+		font-weight: normal;
+		text-align: left;
+		text-shadow: 1px 1px 1px rgba(0, 0, 0, .5);
+		margin: 0;
 	}
 
 	#games {
@@ -208,80 +204,6 @@
 
 		> .btn {
 			margin-left: 1rem;
-		}
-	}
-
-	.app__header {
-		align-items: center;
-		background-color: rgba($color-background, .97);
-		border-bottom: 1px solid rgba($color-lightest, .66);
-		box-shadow: 0 2px .3125rem rgba(0, 0, 0, .66), 0 .3125rem 1.5rem rgba(0, 0, 0, .33);
-		box-sizing: border-box;
-		flex-wrap: wrap;
-		justify-content: space-between;
-		left: 0;
-		margin: 0;
-		padding: 1.5rem $padding-container;
-		position: fixed;
-		transition: border-bottom-color .5s ease-out;
-		top: 0;
-		width: 100%;
-		z-index: $zindex-toolbar;
-
-		&:hover,
-		&:focus-within {
-			border-bottom-color: $color-lightest;
-		}
-	}
-
-	.app__title {
-		font-size: 1.25rem;
-		font-weight: normal;
-		text-align: left;
-		text-shadow: 1px 1px 1px rgba(0, 0, 0, .5);
-		margin: 0;
-	}
-
-	.choice__title {
-		text-align: center;
-	}
-
-	.choice__cover {
-		margin: 0 auto;
-		max-height: $size-game-cover;
-		max-width: $size-game-cover;
-	}
-
-	.choice__results {
-		margin: 1rem auto 0;
-		width: 90%;
-	}
-
-	.choice__actions {
-		box-sizing: border-box;
-		display: flex;
-		flex-flow: row nowrap;
-		justify-content: space-between;
-		margin: 1.5rem 0 1rem;
-		padding: 0 1rem;
-		width: 100%;
-
-		.btn {
-			display: block;
-			flex: 1;
-			padding: 1em 2.5em;
-		}
-
-		.btn + .btn {
-			margin-left: 1rem;
-		}
-	}
-
-	@media screen and (min-width: #{($media-screen-sm + 1)}) {
-		.app__header {
-			align-items: center;
-			flex-direction: row;
-			justify-content: space-between;
 		}
 	}
 </style>

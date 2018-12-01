@@ -13,13 +13,12 @@
 </template>
 
 <script>
+	import Game from '../types/Game';
+
 	export default {
 		name: 'GameChoice',
 		props: {
-			game: {
-				id: String,
-				name: String
-			}
+			...Game
 		},
 		methods: {
 			vote: function (game) {
@@ -123,9 +122,9 @@
 
 		&__votes {
 			color: $color-accent;
+			line-height: 1;
 			text-align: right;
 			text-shadow: 0 0 2px rgba(0, 0, 0, .5);
-			text-wrap: none;
 		}
 	}
 

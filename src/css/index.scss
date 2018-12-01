@@ -40,7 +40,8 @@
 }
 
 .text--accent,
-.btn.text--accent {
+.btn.text--accent,
+tr.text--accent td {
 	color: $color-accent;
 }
 
@@ -145,27 +146,8 @@ body {
 	padding: 0;
 }
 
-table {
-	border-spacing: 0;
-	width: 100%;
-}
-
-tr:nth-child(even) {
-	background-color: #3a3a3a;
-}
-
-th {
-	color: #ccc;
-	font-size: .925rem;
-
-	&:first-child {
-		text-align: left;
-	}
-}
-
-td {
-	border: 0;
-	color: #999;
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+	-webkit-appearance: none;
 	margin: 0;
-	padding: .25em .5em;
 }

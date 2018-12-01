@@ -18,12 +18,12 @@ module.exports = {
 		}
 	},
 	pwa: {
-		name: 'Game Vote',
+		name: 'Video Game Vote',
 		themeColor: '#2d2d2d',
 		msTileColor: '#2d2d2d'
 	},
-	baseUrl: DEV ? pkg.config.deploymentPath : '/',
-	outputDir: path.resolve(__dirname, '/public'),
+	baseUrl: pkg.config.deploymentPath,
+	outputDir: path.join(__dirname, '/dist'),
 	productionSourceMap: false,
 	configureWebpack: {
 		plugins: [
