@@ -1,7 +1,15 @@
 <template>
 	<div class="choice__results">
-		<h2 class="choice__title">{{ chosen.text }}</h2>
-		<img class="choice__cover focus" v-bind:src="require(`../assets/games/${chosen.id}.jpg`)" :alt="chosen.text">
+		<p class="text--secondary mb-0">Let&rsquo;s play&hellip;</p>
+
+		<div class="choice__header">
+			<check-circle></check-circle>
+			<h2 class="choice__title">{{ chosen.text }}</h2>
+		</div>
+
+		<div class="choice__cover">
+			<img class="focus" v-bind:src="require(`../assets/games/${chosen.id}.jpg`)" :alt="chosen.text">
+		</div>
 
 		<table>
 			<thead>
@@ -22,7 +30,7 @@
 		</table>
 
 		<footer class="choice__actions">
-			<button class="btn btn--secondary text--accent" type="button" v-on:click="this.$parent.choose">
+			<button class="btn btn--secondary text--accent" type="button" v-if="canPickAgain" v-on:click="pickAgain">
 				Pick Again
 			</button>
 			<button class="btn btn--primary" type="button" v-on:click="this.$parent.reset">
@@ -33,17 +41,36 @@
 </template>
 
 <script>
+	import CheckCircle from 'vue-feather-icon/components/check-circle';
 	import Game from '../types/Game';
 
 	export default {
 		name: 'GameChosen',
+		components: {
+			CheckCircle
+		},
 		props: {
 			chosen: {
 				...Game
 			}
 		},
+		methods: {
+			pickAgain: function () {
+				this.$parent.votes = this.$parent.votes.filter(vote => vote.id !== this.chosen.id);
+
+				if (!this.$parent.votes.length) {
+					this.$parent.reset();
+					return;
+				}
+
+				this.$parent.choose();
+			}
+		},
 		computed: {
-			poll: function() {
+			canPickAgain: function () {
+				return [...new Set(this.$parent.votes)].length > 1;
+			},
+			poll: function () {
 				let results = {};
 
 				for (const vote of this.$parent.votes) {
@@ -51,7 +78,7 @@
 						...vote,
 						total: this.$parent.votes.filter(v => v.id === vote.id).length,
 						chosen: this.chosen.id === vote.id
-					}
+					};
 				}
 
 				return results;
@@ -63,17 +90,33 @@
 <style lang="scss" scoped>
 	@import '../css/variables.scss';
 
+	.choice__header {
+		align-items: center;
+		display: flex;
+		margin-bottom: 1rem;
+
+		svg {
+			stroke: $color-lightest;
+		}
+	}
+
 	.choice__title {
+		display: inline-block;
 		font-size: 2rem;
-		font-weight: bold;
-		letter-spacing: .1em;
-		text-align: center;
-		text-transform: uppercase;
+		font-weight: normal;
+		line-height: 1.5;
+		margin: 0 0 0 1rem;
 	}
 
 	.choice__cover {
 		margin: 0 auto 1rem;
 		width: 100%;
+
+		img {
+			margin: 0 auto;
+			object-fit: cover;
+			width: 100%;
+		}
 	}
 
 	.choice__results {
@@ -82,15 +125,22 @@
 	}
 
 	.choice__actions {
+		background-color: rgba($color-background, .95);
+		border-top: 1px solid $color-lightest;
+		bottom: 0;
+		box-shadow: 0 -2px .3125rem rgba(0, 0, 0, .5), 0 -.3125rem 1.5rem rgba(0, 0, 0, .25);
 		box-sizing: border-box;
 		display: flex;
 		flex-flow: row nowrap;
 		justify-content: space-between;
-		margin: 1.5rem 0 1rem;
-		padding: 0 1rem;
+		left: 0;
+		margin: auto 0 0;
+		padding: 1.5rem 1rem;
+		position: fixed;
 		width: 100%;
 
 		.btn {
+			box-shadow: -1px 1px 3px rgba(0, 0, 0, .5), 0 0 5px rgba(0, 0, 0, .33);
 			display: block;
 			flex: 1;
 			padding: 1em;
@@ -104,6 +154,7 @@
 	table {
 		border-collapse: collapse;
 		border-spacing: 0;
+		margin-bottom: 8rem;
 		width: 100%;
 	}
 

@@ -2,27 +2,33 @@
   "games": [
     {
       "id": "arms",
-      "text": "Arms"
+      "text": "Arms",
+      "img": "assets/games/arms.jpg"
     },
     {
       "id": "pokemon",
-      "text": "Let's Go Pikachu"
+      "text": "Let's Go Pikachu",
+      "img": "assets/games/pokemon.jpg"
     },
     {
       "id": "mario-kart",
-      "text": "Mario Kart 8"
+      "text": "Mario Kart 8",
+      "img":"assets/games/mario-kart.jpg"
     },
     {
       "id": "mario-party",
-      "text": "Mario Party"
+      "text": "Mario Party",
+      "img": "assets/games/mario-party.jpg"
     },
     {
       "id": "minecraft",
-      "text": "Minecraft"
+      "text": "Minecraft",
+      "img": "assets/games/minecraft.jpg"
     },
     {
       "id": "1-2-switch",
-      "text": "1-2 Switch"
+      "text": "1-2 Switch",
+      "img": "assets/games/1-2-switch.jpg"
     }
   ]
 }

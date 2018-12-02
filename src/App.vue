@@ -30,7 +30,7 @@
 			</form>
 		</header>
 
-		<section class="d-flex flex-column" id="choice" v-if="chosen">
+		<section class="d-flex flex-column flex-1" id="choice" v-if="chosen">
 			<GameChosen v-bind:chosen="chosen" v-bind:games="this.$parent.games"></GameChosen>
 		</section>
 		<main id="games" v-else>
@@ -67,8 +67,8 @@
 		},
 		methods: {
 			choose: function () {
-				const votes = this.votes.length ? this.votes : this.choices;
-				this.chosen = votes[Math.floor(Math.random() * votes.length)];
+				this.chosen = this.votes[Math.floor(Math.random() * this.votes.length)];
+				window.scrollTo(0, 0);
 			},
 			reset: function () {
 				this.voters = defaultVoters;
@@ -87,7 +87,11 @@
 	@import './css/variables.scss';
 
 	#app {
+		display: flex;
+		flex: 1;
+		flex-flow: column nowrap;
 		margin: calc(3.25rem + #{$size-btn-fab}) auto 0;
+		width: 100%;
 
 		&.chosen {
 			margin-top: 0;

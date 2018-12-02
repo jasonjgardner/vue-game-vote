@@ -7,15 +7,20 @@ export default {
 		text: {
 			type: String,
 			required: true
+		},
+		img: {
+			type: String,
+			required: true
 		}
 	}
-}
+};
 
 export function validator(obj) {
 	return typeof obj === 'object'
 		&& obj.hasOwnProperty('id')
 		&& obj.hasOwnProperty('text')
-		&& typeof obj.id === typeof obj.text === 'string';
+		&& obj.hasOwnProperty('img')
+		&& typeof obj.id === typeof obj.text === typeof obj.img === 'string';
 }
 
 export function arrayValidator(arr) {

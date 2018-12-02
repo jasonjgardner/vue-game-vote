@@ -1,6 +1,6 @@
 <template>
 	<figure class="game" v-on:click="vote(game)" v-if="game.id">
-		<img class="game__cover" v-bind:src="require(`../assets/games/${game.id}.jpg`)" :alt="game.text" height="600">
+		<img class="game__cover" v-bind:src="require(`../${game.img}`)" :alt="game.text">
 		<figcaption class="game__description">
 			<h3 class="game__title">{{ game.text }}</h3>
 

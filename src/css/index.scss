@@ -39,6 +39,10 @@
 	flex-direction: column;
 }
 
+.flex-1 {
+	flex: 1;
+}
+
 .text--accent,
 .btn.text--accent,
 tr.text--accent td {
@@ -51,6 +55,10 @@ tr.text--accent td {
 
 .text--secondary {
 	color: #999;
+}
+
+.mb-0 {
+	margin-bottom: 0;
 }
 
 .callout {
@@ -137,10 +145,12 @@ html {
 
 body {
 	background-color: $color-background;
+	display: flex;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	font: #{$font-size-base}/#{$line-height-base} $font-family-sans-serif;
 	color: $color-light;
+	flex-flow: column nowrap;
 	height: 100%;
 	margin: 0;
 	padding: 0;
