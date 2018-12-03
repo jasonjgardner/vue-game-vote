@@ -12,7 +12,11 @@
 	}
 }
 
-.focus {
+.focus,
+.h-focus:hover,
+.h-focus:focus,
+.h-focus:focus-within,
+.h-focus:active {
 	animation: focus 1s infinite;
 }
 
@@ -61,20 +65,20 @@ tr.text--accent td {
 	margin-bottom: 0;
 }
 
-.callout {
-	position: relative;
-
-	&::before {
-		background-color: $color-accent;
-		content: '';
-		display: block;
-		height: 100%;
-		left: 0;
-		position: absolute;
-		top: 0;
-		width: 3px;
-	}
-}
+//.callout {
+//	position: relative;
+//
+//	&::before {
+//		background-color: $color-accent;
+//		content: '';
+//		display: block;
+//		height: 100%;
+//		left: 0;
+//		position: absolute;
+//		top: 0;
+//		width: 3px;
+//	}
+//}
 
 .btn {
 	-webkit-appearance: none;
@@ -104,6 +108,7 @@ tr.text--accent td {
 		&:focus,
 		&:active {
 			background-color: mix($color-btn-background, $color-accent, 25%);
+			color: $color-dark-alt;
 		}
 	}
 

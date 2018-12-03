@@ -1,12 +1,12 @@
 <template>
-	<figure class="game" v-on:click="vote(game)" v-if="game.id">
+	<figure class="game" v-bind:title="`✔ Vote for ${game.text}`" v-on:click="vote(game)" v-if="game.id">
 		<img class="game__cover" v-bind:src="require(`../${game.img}`)" :alt="game.text">
 		<figcaption class="game__description">
 			<h3 class="game__title">{{ game.text }}</h3>
 
-			<p class="game__votes" v-if="tally > 0" v-bind:title="tally + ' votes'">
-				<span v-for="idx in tally" :key="idx">&#9679;</span>
-				<span class="sr-only"></span>
+			<p class="game__votes" v-if="tally > 0" v-bind:title="`Vote count for ${game.text}`">
+				<span v-for="idx in tally" :key="idx" aria-hidden="true">&#9679;</span>
+				<span class="sr-only">{{ `${tally} votes` }}</span>
 			</p>
 		</figcaption>
 	</figure>
@@ -39,7 +39,7 @@
 	};
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 	@import '../css/variables.scss';
 
 	@keyframes wiggle {
@@ -72,13 +72,9 @@
 		cursor: pointer;
 		display: flex;
 		flex-flow: column nowrap;
-		margin: 0 1rem 1rem 0;
+		margin: 0 0 $size-base;
 		max-width: $size-game-cover;
 		padding: 0;
-
-		&:last-child {
-			margin-right: 0;
-		}
 
 		&__title {
 			display: inline-block;
@@ -88,11 +84,21 @@
 
 		&__description {
 			align-items: center;
+			border-radius: $size-border-radius;
 			display: flex;
+			height: ($size-base * 4) - 5;
 			flex-flow: row nowrap;
 			justify-content: space-between;
-			padding: 0 .5rem;
+			padding: 0 .666rem;
 			transition: background-color .25s ease-out;
+		}
+
+		&__cover {
+			box-shadow: 0 0 5px rgba(0, 0, 0, .75), 0 2px 10px rgba(0, 0, 0, .5);
+			height: $size-game-cover;
+			transition: filter .25s ease-out;
+			width: $size-game-cover;
+			z-index: $zindex-cover;
 		}
 
 		&:hover,
@@ -107,17 +113,10 @@
 			.game__description {
 				background-color: $color-background-alt;
 			}
-		}
 
-		&__cover {
-			box-shadow: 0 0 5px rgba(0, 0, 0, .75), 0 2px 10px rgba(0, 0, 0, .5);
-			height: $size-game-cover;
-			transition: filter .25s ease-out;
-			width: $size-game-cover;
-		}
-
-		&:active .game__cover {
-			animation: focus 1s infinite;
+			.game__cover {
+				animation: focus 1s infinite;
+			}
 		}
 
 		&__votes {

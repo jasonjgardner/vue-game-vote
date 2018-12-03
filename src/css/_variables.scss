@@ -29,14 +29,18 @@ $font-family-sans-serif: $font-family-title, 'Lato', 'Open Sans', $font-family-s
 $font-size-base: 18px;
 $line-height-base: 1.5;
 
+$size-base: 15px;
 $size-btn-fab: 2.25rem;
 $size-border-radius: 4px;
 $size-game-cover: 256px;
+$size-game-cover-max: 512px;
 
-$padding-container: 30px;
+$padding-container: $size-base;
 
+$media-screen-xs: 320px;
 $media-screen-sm: 480px;
 $media-screen-md: 720px;
 
 $zindex-toolbar: 100;
 $zindex-modal: 200;
+$zindex-cover: 2;

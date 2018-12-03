@@ -11,6 +11,11 @@
       "img": "assets/games/pokemon.jpg"
     },
     {
+      "id": "pokemon-quest",
+      "text": "Pokémon Quest",
+      "img": "assets/games/pokemon-quest.jpg"
+    },
+    {
       "id": "mario-kart",
       "text": "Mario Kart 8",
       "img":"assets/games/mario-kart.jpg"
@@ -21,6 +26,16 @@
       "img": "assets/games/mario-party.jpg"
     },
     {
+      "id": "mario-tennis",
+      "text": "Mario Tennis",
+      "img": "assets/games/mario-tennis.jpg"
+    },
+    {
+      "id": "mario-odyssey",
+      "text": "Super Mario Odyssey",
+      "img": "assets/games/super-mario-odyssey.jpg"
+    },
+    {
       "id": "minecraft",
       "text": "Minecraft",
       "img": "assets/games/minecraft.jpg"
@@ -29,6 +44,16 @@
       "id": "1-2-switch",
       "text": "1-2 Switch",
       "img": "assets/games/1-2-switch.jpg"
+    },
+    {
+      "id": "astro-bears",
+      "text": "Astro Bears",
+      "img": "assets/games/astro-bears.jpg"
+    },
+    {
+      "id": "rocket-league",
+      "text": "Rocket League",
+      "img": "assets/games/rocket-league.jpg"
     }
   ]
 }

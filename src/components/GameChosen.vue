@@ -1,6 +1,8 @@
 <template>
 	<div class="choice__results">
-		<p class="text--secondary mb-0">Let&rsquo;s play&hellip;</p>
+		<p class="text--secondary mb-0">
+			<random-text v-bind:choices="['Let&rsquo;s play&hellip;', 'How about&hellip;']"></random-text>
+		</p>
 
 		<div class="choice__header">
 			<check-circle></check-circle>
@@ -8,7 +10,7 @@
 		</div>
 
 		<div class="choice__cover">
-			<img class="focus" v-bind:src="require(`../assets/games/${chosen.id}.jpg`)" :alt="chosen.text">
+			<img class="focus" v-bind:src="require(`../${chosen.img}`)" :alt="chosen.text">
 		</div>
 
 		<table>
@@ -30,10 +32,10 @@
 		</table>
 
 		<footer class="choice__actions">
-			<button class="btn btn--secondary text--accent" type="button" v-if="canPickAgain" v-on:click="pickAgain">
+			<button class="btn btn--secondary text--accent" type="button" name="repick" v-if="canPickAgain" v-on:click="pickAgain">
 				Pick Again
 			</button>
-			<button class="btn btn--primary" type="button" v-on:click="this.$parent.reset">
+			<button class="btn btn--primary" type="button" name="restart" v-on:click="this.$parent.reset">
 				Start Over
 			</button>
 		</footer>
@@ -42,12 +44,14 @@
 
 <script>
 	import CheckCircle from 'vue-feather-icon/components/check-circle';
+	import RandomText from './RandomText';
 	import Game from '../types/Game';
 
 	export default {
 		name: 'GameChosen',
 		components: {
-			CheckCircle
+			CheckCircle,
+			RandomText
 		},
 		props: {
 			chosen: {
@@ -90,6 +94,25 @@
 <style lang="scss" scoped>
 	@import '../css/variables.scss';
 
+	@keyframes glow {
+		0%,
+		100% {
+			filter: saturate(0) brightness(100%);
+		}
+
+		33% {
+			filter: brightness(110%);
+		}
+
+		50% {
+			filter: saturate(1.5) brightness(105%);
+		}
+
+		66% {
+			filter: brightness(90%);
+		}
+	}
+
 	.choice__header {
 		align-items: center;
 		display: flex;
@@ -109,12 +132,17 @@
 	}
 
 	.choice__cover {
+		box-shadow: 1px 3px 20px rgba(0, 0, 0, .75);
 		margin: 0 auto 1rem;
-		width: 100%;
+		max-height: $size-game-cover-max;
+		max-width: $size-game-cover-max;
+		height: 90vw;
+		width: 90vw;
 
 		img {
+			height: 100%;
 			margin: 0 auto;
-			object-fit: cover;
+			object-fit: fill;
 			width: 100%;
 		}
 	}
@@ -143,7 +171,12 @@
 			box-shadow: -1px 1px 3px rgba(0, 0, 0, .5), 0 0 5px rgba(0, 0, 0, .33);
 			display: block;
 			flex: 1;
+			max-width: $size-game-cover-max;
 			padding: 1em;
+
+			&:only-child {
+				justify-self: center;
+			}
 		}
 
 		.btn + .btn {

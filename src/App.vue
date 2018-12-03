@@ -1,37 +1,37 @@
 <template>
-	<div class="d-flex flex-column nowrap" id="app"
-		v-bind:class="{'few-voters': voters < 3 && voters > 0, 'no-voters': voters < 0, 'chosen': !!chosen}">
-		<header class="d-flex app__header" v-show="!chosen">
-			<h1 class="app__title">Vote for a Game</h1>
-
-			<form class="d-flex" id="voters">
-				<label class="sr-only" for="votesRemaining">Votes Remaining:</label>
-
-				<div class="voters__votes" v-bind:class="{'focus': votesChanged}">
-					<input id="votesRemaining" type="number" placeholder="#" max="99" min="0" readonly
-						v-model.number="voters" v-if="voters > 0">
-					<button class="btn" type="submit" v-if="votes.length" v-on:click.prevent="choose">
-						<check-icon></check-icon>
-						<span class="sr-only">Choose</span>
-					</button>
-				</div>
-
-				<button class="btn btn--secondary btn--fab" type="reset" v-show="votes.length" v-on:click.prevent="reset">
-					<reset-icon></reset-icon>
-					<span class="sr-only">Reset</span>
-				</button>
-
-				<button class="btn btn--secondary btn--fab" type="button" v-on:click="buyVote">
-					<coin-icon class="rotate--90"></coin-icon>
-					<span class="sr-only">Buy Vote</span>
-				</button>
-			</form>
-		</header>
-
+	<div id="app" v-bind:class="{'few-voters': voters < 3 && voters > 0, 'no-voters': voters < 0, 'chosen': !!chosen}">
 		<section class="d-flex flex-column flex-1" id="choice" v-if="chosen">
 			<GameChosen v-bind:chosen="chosen" v-bind:games="this.$parent.games"></GameChosen>
 		</section>
 		<main id="games" v-else>
+			<header class="app__header">
+				<img :src="require('./assets/software-selection.gif')" alt="Software Selection icon" title="Vote for a game to play" height="48" width="48" aria-hidden="true">
+				<h1 class="app__title">Vote for a Game</h1>
+
+				<form class="d-flex" id="voters">
+					<label class="sr-only" for="votesRemaining">Votes Remaining:</label>
+
+					<div class="voters__votes" v-bind:class="{'focus': votesChanged}">
+						<input id="votesRemaining" type="number" placeholder="#" max="99" min="0" readonly
+							v-model.number="voters" v-if="voters > 0" v-bind:title="`${voters} vote${voters === 1 ? '' : 's'} remaining`">
+						<button class="btn" type="submit" name="choose" title="Choose the game" v-if="votes.length" v-on:click.prevent="choose">
+							<check-icon></check-icon>
+							<span class="sr-only">Choose</span>
+						</button>
+					</div>
+
+					<button class="btn btn--secondary btn--fab" type="reset" name="reset" title="Reset voting" v-show="votes.length" v-on:click.prevent="reset">
+						<reset-icon></reset-icon>
+						<span class="sr-only">Reset</span>
+					</button>
+
+					<button class="btn btn--secondary btn--fab" type="button" name="buy" title="Pay a coin to buy a vote" v-on:click="buyVote">
+						<coin-icon class="rotate--90"></coin-icon>
+						<span class="sr-only">Buy Vote</span>
+					</button>
+				</form>
+			</header>
+
 			<GameChoice v-for="game in this.$parent.games" v-bind:game="game" v-bind:key="game.id"></GameChoice>
 		</main>
 	</div>
@@ -42,7 +42,6 @@
 	import MinusCircle from 'vue-feather-icon/components/minus-circle';
 	import Check from 'vue-feather-icon/components/check';
 	import GameChoice from './components/GameChoice';
-	import GameChosen from './components/GameChosen';
 
 	const defaultVoters = 4;
 
@@ -50,12 +49,12 @@
 		name: 'app',
 		components: {
 			GameChoice,
-			GameChosen,
+			GameChosen: () => import(/* webpackChunkName: "gameChosen" */'./components/GameChosen'),
 			ResetIcon: RotateCcw,
 			CoinIcon: MinusCircle,
 			CheckIcon: Check
 		},
-		data: function () {
+		data: () => {
 			return {
 				votes: [],
 				voters: defaultVoters,
@@ -74,7 +73,9 @@
 				this.votes = [];
 			},
 			buyVote: function() {
-				(new Audio(require('./assets/coin.mp3'))).play().finally(() => this.voters = Math.max(1, this.voters + 1));
+				(new Audio(require('./assets/coin.mp3'))).play().finally(
+					() => this.voters = Math.max(1, this.voters + 1)
+				);
 			}
 		},
 
@@ -96,12 +97,21 @@
 		}
 	}
 
+	.app__title {
+		font-size: 1rem;
+		font-weight: normal;
+		text-align: left;
+		text-shadow: 1px 1px 1px rgba(0, 0, 0, .5);
+		margin: 0;
+	}
+
 	.app__header {
 		align-items: center;
 		background-color: rgba($color-background, .97);
 		border-bottom: 1px solid rgba($color-lightest, .66);
 		box-shadow: 0 2px .3125rem rgba(0, 0, 0, .66), 0 .3125rem 1.5rem rgba(0, 0, 0, .33);
 		box-sizing: border-box;
+		display: flex;
 		flex-wrap: wrap;
 		justify-content: space-between;
 		left: 0;
@@ -117,6 +127,10 @@
 		&:focus-within {
 			border-bottom-color: $color-lightest;
 		}
+
+		> img + .app__title {
+			display: none;
+		}
 	}
 
 	@media screen and (min-width: #{($media-screen-sm + 1)}) {
@@ -124,21 +138,33 @@
 			align-items: center;
 			flex-direction: row;
 			justify-content: space-between;
-		}
-	}
 
-	.app__title {
-		font-size: 1.25rem;
-		font-weight: normal;
-		text-align: left;
-		text-shadow: 1px 1px 1px rgba(0, 0, 0, .5);
-		margin: 0;
+			> img + .app__title {
+				display: inline-block;
+			}
+		}
 	}
 
 	#games {
 		display: flex;
 		flex-flow: row wrap;
-		justify-content: center;
+		justify-content: space-evenly;
+	}
+
+	@media screen and (min-width: #{$media-screen-md}) {
+		#games {
+			justify-content: flex-start;
+			padding-left: $padding-container;
+			padding-right: $padding-container;
+		}
+
+		.game {
+			margin-right: $size-base * 2;
+
+			&:last-of-type {
+				margin-right: 0;
+			}
+		}
 	}
 
 	.voters__votes {
@@ -168,6 +194,10 @@
 
 			&:only-child {
 				text-align: center;
+			}
+
+			&[readonly] {
+				cursor: default;
 			}
 		}
 
