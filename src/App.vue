@@ -10,18 +10,16 @@
 				<div class="voters__votes" v-bind:class="{'focus': votesChanged}">
 					<input id="votesRemaining" type="number" placeholder="#" max="99" min="0" readonly
 						v-model.number="voters" v-if="voters > 0">
-					<button class="btn" type="button" v-if="votes.length" v-on:click="choose">
+					<button class="btn" type="submit" v-if="votes.length" v-on:click.prevent="choose">
 						<check-icon></check-icon>
 						<span class="sr-only">Choose</span>
 					</button>
 				</div>
 
-				<button class="btn btn--secondary btn--fab" type="button" v-show="votes.length" v-on:click="reset">
+				<button class="btn btn--secondary btn--fab" type="reset" v-show="votes.length" v-on:click.prevent="reset">
 					<reset-icon></reset-icon>
 					<span class="sr-only">Reset</span>
 				</button>
-
-				<div role="separator"></div>
 
 				<button class="btn btn--secondary btn--fab" type="button" v-on:click="buyVote">
 					<coin-icon class="rotate--90"></coin-icon>
