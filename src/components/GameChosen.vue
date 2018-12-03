@@ -175,7 +175,7 @@
 			padding: 1em;
 
 			&:only-child {
-				justify-self: center;
+				margin-left: auto;
 			}
 		}
 

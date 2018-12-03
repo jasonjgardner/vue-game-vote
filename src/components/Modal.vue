@@ -56,16 +56,16 @@
 			margin: 0 auto;
 			padding: $size-base;
 			transition: all .3s ease;
-			width: min(300px, $size-base * 20);
+			max-width: $size-base * 30;
+			min-width: $media-screen-xs - ($size-base * 2);
 		}
 
 		&__body {
-			background-color: $color-background;
 			padding: $size-base;
 		}
 
 		&__header {
-			border-bottom: 1px solid $color-lightest;
+			border-bottom: 1px solid $color-secondary;
 			padding-bottom: $size-base;
 		}
 
@@ -80,7 +80,7 @@
 
 		&__footer {
 			align-items: center;
-			border-top: 1px solid $color-lightest;
+			border-top: 1px solid $color-secondary;
 			display: flex;
 			flex-flow: row nowrap;
 			justify-content: flex-end;

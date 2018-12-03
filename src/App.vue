@@ -7,7 +7,7 @@
 		<main id="games" v-else>
 			<header class="app__header">
 				<img :src="require('./assets/software-selection.gif')" alt="Software Selection icon"
-					title="Vote for a game to play" height="48" width="48" aria-hidden="true">
+					title="Vote for a game to play" height="48" width="48" aria-hidden="true" v-on:click="showModal = true">
 				<h1 class="app__title">Vote for a Game</h1>
 
 				<form class="d-flex" id="voters">
@@ -41,12 +41,13 @@
 			<GameChoice v-for="game in this.$parent.games" v-bind:game="game" v-bind:key="game.id"></GameChoice>
 		</main>
 
-		<button name="show-info" type="button" v-on:click="showModal = true">Show Modal</button>
-
-		<modal class="modal" v-if="showModal" v-on:close="showModal = false">
+		<modal class="modal" v-if="showModal">
 			<h3 slot="header">Instructions</h3>
+			<div slot="body">
+
+			</div>
 			<div slot="footer">
-				<button class="btn btn--primary" type="button" v-on:click="$emit('close')">OK</button>
+				<button class="btn btn--primary" type="button" v-on:click="showModal = false">OK</button>
 			</div>
 		</modal>
 	</div>
@@ -113,12 +114,8 @@
 		display: flex;
 		flex: 1;
 		flex-flow: column nowrap;
-		margin: 0 auto;
+		transition-delay: .25s;
 		width: 100%;
-
-		&.chosen {
-			margin-top: 0;
-		}
 	}
 
 	.app__title {
@@ -173,6 +170,7 @@
 		display: flex;
 		flex-flow: row wrap;
 		justify-content: space-evenly;
+		margin-top: $size-base * 8;
 	}
 
 	@media screen and (min-width: #{$media-screen-md}) {

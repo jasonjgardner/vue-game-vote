@@ -75,6 +75,7 @@
 		margin: 0 0 $size-base;
 		max-width: $size-game-cover;
 		padding: 0;
+		position: relative;
 
 		&__title {
 			display: inline-block;
@@ -91,6 +92,28 @@
 			justify-content: space-between;
 			padding: 0 .666rem;
 			transition: background-color .25s ease-out;
+
+			&::before {
+				background-color: rgba(0, 0, 0, .75);
+				border: 2px solid $color-lightest;
+				border-radius: calc(#{$size-base} + .125em);
+				bottom: $size-base * 4;
+				color: $color-lightest;
+				content: 'Vote';
+				font-size: 1.125rem;
+				font-weight: 300;
+				line-height: $size-base * 2;
+				height: $size-base * 2;
+				left: $size-base * 2.5;
+				opacity: 0;
+				padding: .125em 0;
+				position: absolute;
+				text-align: center;
+				transition: opacity .333s ease-out;
+				transition-delay: 0s;
+				width: $size-game-cover - ($size-base * 5);
+				z-index: $zindex-cover + 1;
+			}
 		}
 
 		&__cover {
@@ -112,6 +135,12 @@
 
 			.game__description {
 				background-color: $color-background-alt;
+
+				&::before {
+					opacity: 1;
+					transition: opacity .333s ease-in-out;
+					transition-delay: .5s;
+				}
 			}
 
 			.game__cover {
