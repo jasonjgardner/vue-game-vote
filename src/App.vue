@@ -1,31 +1,37 @@
 <template>
-	<div id="app" v-bind:class="{'few-voters': voters < 3 && voters > 0, 'no-voters': voters < 0, 'chosen': !!chosen}">
+	<!--/* eslint-disable indent */-->
+	<div id="app" v-bind:class="{'few-voters': voters < 3 && voters > 0, 'no-voters': voters < 0, 'modal-visible': showModal }">
 		<section class="d-flex flex-column flex-1" id="choice" v-if="chosen">
 			<GameChosen v-bind:chosen="chosen" v-bind:games="this.$parent.games"></GameChosen>
 		</section>
 		<main id="games" v-else>
 			<header class="app__header">
-				<img :src="require('./assets/software-selection.gif')" alt="Software Selection icon" title="Vote for a game to play" height="48" width="48" aria-hidden="true">
+				<img :src="require('./assets/software-selection.gif')" alt="Software Selection icon"
+					title="Vote for a game to play" height="48" width="48" aria-hidden="true">
 				<h1 class="app__title">Vote for a Game</h1>
 
 				<form class="d-flex" id="voters">
-					<label class="sr-only" for="votesRemaining">Votes Remaining:</label>
+					<label class="sr-only" for="votes-remaining">Votes Remaining:</label>
 
 					<div class="voters__votes" v-bind:class="{'focus': votesChanged}">
-						<input id="votesRemaining" type="number" placeholder="#" max="99" min="0" readonly
-							v-model.number="voters" v-if="voters > 0" v-bind:title="`${voters} vote${voters === 1 ? '' : 's'} remaining`">
-						<button class="btn" type="submit" name="choose" title="Choose the game" v-if="votes.length" v-on:click.prevent="choose">
+						<input id="votes-remaining" type="number" placeholder="#" max="99" min="0" readonly
+							v-model.number="voters" v-if="voters > 0"
+							v-bind:title="`${voters} vote${voters === 1 ? '' : 's'} remaining`">
+						<button class="btn" type="submit" name="choose" title="Choose the game" v-if="votes.length"
+								v-on:click.prevent="choose">
 							<check-icon></check-icon>
 							<span class="sr-only">Choose</span>
 						</button>
 					</div>
 
-					<button class="btn btn--secondary btn--fab" type="reset" name="reset" title="Reset voting" v-show="votes.length" v-on:click.prevent="reset">
+					<button class="btn btn--secondary btn--fab" type="reset" name="reset" title="Reset voting"
+							v-show="votes.length" v-on:click.prevent="reset">
 						<reset-icon></reset-icon>
 						<span class="sr-only">Reset</span>
 					</button>
 
-					<button class="btn btn--secondary btn--fab" type="button" name="buy" title="Pay a coin to buy a vote" v-on:click="buyVote">
+					<button class="btn btn--secondary btn--fab" type="button" name="buy"
+							title="Pay a coin to buy a vote" v-on:click="buyVote">
 						<coin-icon class="rotate--90"></coin-icon>
 						<span class="sr-only">Buy Vote</span>
 					</button>
@@ -34,6 +40,15 @@
 
 			<GameChoice v-for="game in this.$parent.games" v-bind:game="game" v-bind:key="game.id"></GameChoice>
 		</main>
+
+		<button name="show-info" type="button" v-on:click="showModal = true">Show Modal</button>
+
+		<modal class="modal" v-if="showModal" v-on:close="showModal = false">
+			<h3 slot="header">Instructions</h3>
+			<div slot="footer">
+				<button class="btn btn--primary" type="button" v-on:click="$emit('close')">OK</button>
+			</div>
+		</modal>
 	</div>
 </template>
 
@@ -41,6 +56,7 @@
 	import RotateCcw from 'vue-feather-icon/components/rotate-ccw';
 	import MinusCircle from 'vue-feather-icon/components/minus-circle';
 	import Check from 'vue-feather-icon/components/check';
+	import Modal from './components/Modal';
 	import GameChoice from './components/GameChoice';
 
 	const defaultVoters = 4;
@@ -48,6 +64,7 @@
 	export default {
 		name: 'app',
 		components: {
+			Modal,
 			GameChoice,
 			GameChosen: () => import(/* webpackChunkName: "gameChosen" */'./components/GameChosen'),
 			ResetIcon: RotateCcw,
@@ -59,7 +76,8 @@
 				votes: [],
 				voters: defaultVoters,
 				votesChanged: undefined,
-				chosen: null
+				chosen: null,
+				showModal: false
 			};
 		},
 		methods: {
@@ -72,12 +90,14 @@
 				this.chosen = null;
 				this.votes = [];
 			},
-			buyVote: function() {
-				(new Audio(require('./assets/coin.mp3'))).play().finally(
+			buyVote: function () {
+				(
+					new Audio(require('./assets/coin.mp3'))
+				).play().finally(
 					() => this.voters = Math.max(1, this.voters + 1)
 				);
 			}
-		},
+		}
 
 	};
 </script>
@@ -85,11 +105,15 @@
 <style lang="scss" scoped>
 	@import './css/variables.scss';
 
+	.modal-visible > *:not(.modal) {
+		filter: blur(10px) saturate(.9);
+	}
+
 	#app {
 		display: flex;
 		flex: 1;
 		flex-flow: column nowrap;
-		margin: calc(3.25rem + #{$size-btn-fab}) auto 0;
+		margin: 0 auto;
 		width: 100%;
 
 		&.chosen {

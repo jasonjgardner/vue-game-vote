@@ -16,6 +16,7 @@ $color-brand: #e60012;
 $color-background: #2d2d2d;
 $color-background-alt: #505050;
 $color-btn-background: #1f2227;
+$color-modal-background: rgba($color-btn-background, .9);
 
 $gradient-selected: linear-gradient(135deg, #8ffdfc 0%, #32c5d9 33%, $color-selected 50%, #47aed7 66%, #1083c6 100%);
 $gradient-background: linear-gradient(to bottom, $color-background 0%, $color-background-alt, 100%);
