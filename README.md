@@ -1,3 +1,5 @@
+![Game Votes icon](https://jasongardner.co/game-votes/readme.png "Game Votes")
+
 # Game Votes
 
 My girlfriend's kids *always* fight over which video game we're going to play.
@@ -39,6 +41,7 @@ I used Vue.js in an unconventional, dimwitted way?
 (Since this is a personal project, I'm not overly concerned about browser
 compatibility, accessibility issues, SEO, etc.) 
 
+Please leave your feedback [in the repository's Issues](https://github.com/jasonjgardner/vue-game-vote/issues/1).
 
 ## License
 __MIT__

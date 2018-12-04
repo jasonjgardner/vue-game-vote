@@ -1,22 +1,24 @@
 <template>
-	<!--/* eslint-disable indent */-->
-	<div id="app" v-bind:class="{'few-voters': voters < 3 && voters > 0, 'no-voters': voters < 0, 'modal-visible': showModal }">
+	<div id="app" v-bind:class="{'no-voters': voters < 1, 'cant-vote': voters < 0, 'modal-visible': showModal }">
 		<section class="d-flex flex-column flex-1" id="choice" v-if="chosen">
 			<GameChosen v-bind:chosen="chosen" v-bind:games="this.$parent.games"></GameChosen>
 		</section>
 		<main id="games" v-else>
 			<header class="app__header">
-				<img :src="require('./assets/software-selection.gif')" alt="Software Selection icon"
-					title="Vote for a game to play" height="48" width="48" aria-hidden="true" v-on:click="showModal = true">
+				<img id="icon" :src="require('./assets/icon.svg')" alt="Software Selection icon"
+					title="Vote for a game to play" height="48" width="48" aria-hidden="true"
+					v-on:click="showModal = 'instructions'">
 				<h1 class="app__title">Vote for a Game</h1>
 
 				<form class="d-flex" id="voters">
 					<label class="sr-only" for="votes-remaining">Votes Remaining:</label>
 
-					<div class="voters__votes" v-bind:class="{'focus': votesChanged}">
-						<input id="votes-remaining" type="number" placeholder="#" max="99" min="0" readonly
-							v-model.number="voters" v-if="voters > 0"
-							v-bind:title="`${voters} vote${voters === 1 ? '' : 's'} remaining`">
+					<div class="voters__votes" v-bind:class="{'invalid': voters < 0 || voters > 99}">
+						<input id="votes-remaining" type="number" placeholder="#" max="99" min="0"
+							v-model.number="voters" v-if="!votes.length || voters > 0"
+							v-bind:readonly="votes.length > 0"
+							v-bind:title="`${voters} vote${voters === 1 ? '' : 's'} remaining`"
+							v-on:blur="voters = Math.max(1, voters)">
 						<button class="btn" type="submit" name="choose" title="Choose the game" v-if="votes.length"
 								v-on:click.prevent="choose">
 							<check-icon></check-icon>
@@ -31,7 +33,7 @@
 					</button>
 
 					<button class="btn btn--secondary btn--fab" type="button" name="buy"
-							title="Pay a coin to buy a vote" v-on:click="buyVote">
+							title="Pay a coin to buy a vote" v-on:click.prevent="buyVote">
 						<coin-icon class="rotate--90"></coin-icon>
 						<span class="sr-only">Buy Vote</span>
 					</button>
@@ -41,10 +43,10 @@
 			<GameChoice v-for="game in this.$parent.games" v-bind:game="game" v-bind:key="game.id"></GameChoice>
 		</main>
 
-		<modal class="modal" v-if="showModal">
+		<modal class="modal" v-if="showModal === 'instructions'">
 			<h3 slot="header">Instructions</h3>
 			<div slot="body">
-
+				<component :is="modalComponent"></component>
 			</div>
 			<div slot="footer">
 				<button class="btn btn--primary" type="button" v-on:click="showModal = false">OK</button>
@@ -60,8 +62,6 @@
 	import Modal from './components/Modal';
 	import GameChoice from './components/GameChoice';
 
-	const defaultVoters = 4;
-
 	export default {
 		name: 'app',
 		components: {
@@ -72,11 +72,10 @@
 			CoinIcon: MinusCircle,
 			CheckIcon: Check
 		},
-		data: () => {
+		data: function () {
 			return {
+				voters: this.$parent.initialVoters,
 				votes: [],
-				voters: defaultVoters,
-				votesChanged: undefined,
 				chosen: null,
 				showModal: false
 			};
@@ -87,7 +86,7 @@
 				window.scrollTo(0, 0);
 			},
 			reset: function () {
-				this.voters = defaultVoters;
+				this.voters = this.$parent.initialVoters;
 				this.chosen = null;
 				this.votes = [];
 			},
@@ -97,6 +96,14 @@
 				).play().finally(
 					() => this.voters = Math.max(1, this.voters + 1)
 				);
+			},
+			modalComponent: function(resolve, reject) {
+				if (this.showModal && this.showModal.length > 0) {
+					return import(`./components/Modal/${this.showModal.charAt(0).toUpperCase() + this.showModal.slice(1)}`)
+						.then(resolve, reject);
+				}
+
+				reject();
 			}
 		}
 
@@ -149,8 +156,10 @@
 			border-bottom-color: $color-lightest;
 		}
 
-		> img + .app__title {
-			display: none;
+		.app__title {
+			font-size: 1rem;
+			margin-left: $size-base;
+			margin-right: auto;
 		}
 	}
 
@@ -158,10 +167,10 @@
 		.app__header {
 			align-items: center;
 			flex-direction: row;
-			justify-content: space-between;
+			justify-content: flex-start;
 
-			> img + .app__title {
-				display: inline-block;
+			.app__title {
+				margin: 0 auto 0 $size-base;
 			}
 		}
 	}
@@ -200,6 +209,10 @@
 		min-width: $size-btn-fab;
 		text-align: center;
 		transition: background-color .333s ease-in-out;
+
+		&.invalid {
+			background-color: $color-assertive;
+		}
 
 		input {
 			background-color: transparent;

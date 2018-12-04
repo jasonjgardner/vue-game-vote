@@ -3,57 +3,68 @@
     {
       "id": "arms",
       "text": "Arms",
-      "img": "assets/games/arms.jpg"
+      "img": "assets/games/arms.jpg",
+      "players":4
     },
     {
       "id": "pokemon",
       "text": "Let's Go Pikachu",
-      "img": "assets/games/pokemon.jpg"
+      "img": "assets/games/pokemon.jpg",
+      "players": 2
     },
     {
       "id": "pokemon-quest",
       "text": "Pokémon Quest",
-      "img": "assets/games/pokemon-quest.jpg"
+      "img": "assets/games/pokemon-quest.jpg",
+      "players": 4
     },
     {
       "id": "mario-kart",
       "text": "Mario Kart 8",
-      "img":"assets/games/mario-kart.jpg"
+      "img":"assets/games/mario-kart.jpg",
+      "players": 4
     },
     {
       "id": "mario-party",
       "text": "Mario Party",
-      "img": "assets/games/mario-party.jpg"
+      "img": "assets/games/mario-party.jpg",
+      "players": 4
     },
     {
       "id": "mario-tennis",
       "text": "Mario Tennis",
-      "img": "assets/games/mario-tennis.jpg"
+      "img": "assets/games/mario-tennis.jpg",
+      "players": 4
     },
     {
       "id": "mario-odyssey",
       "text": "Super Mario Odyssey",
-      "img": "assets/games/super-mario-odyssey.jpg"
+      "img": "assets/games/super-mario-odyssey.jpg",
+      "players":  2
     },
     {
       "id": "minecraft",
       "text": "Minecraft",
-      "img": "assets/games/minecraft.jpg"
+      "img": "assets/games/minecraft.jpg",
+      "players":  2
     },
     {
       "id": "1-2-switch",
       "text": "1-2 Switch",
-      "img": "assets/games/1-2-switch.jpg"
+      "img": "assets/games/1-2-switch.jpg",
+      "players":  2
     },
     {
       "id": "astro-bears",
       "text": "Astro Bears",
-      "img": "assets/games/astro-bears.jpg"
+      "img": "assets/games/astro-bears.jpg",
+      "players": 4
     },
     {
       "id": "rocket-league",
       "text": "Rocket League",
-      "img": "assets/games/rocket-league.jpg"
+      "img": "assets/games/rocket-league.jpg",
+      "players": 4
     }
   ]
 }

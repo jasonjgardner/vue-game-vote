@@ -4,7 +4,10 @@
 		<figcaption class="game__description">
 			<h3 class="game__title">{{ game.text }}</h3>
 
-			<p class="game__votes" v-if="tally > 0" v-bind:title="`Vote count for ${game.text}`">
+			<p class="game__tally" v-if="tally > 5">
+				{{ tally }}
+			</p>
+			<p class="game__votes" v-else-if="tally > 0" v-bind:title="`Vote count for ${game.text}`">
 				<span v-for="idx in tally" :key="idx" aria-hidden="true">&#9679;</span>
 				<span class="sr-only">{{ `${tally} votes` }}</span>
 			</p>
@@ -26,7 +29,7 @@
 					this.$parent.votes.push(game);
 				}
 
-				--this.$parent.voters;
+				this.$parent.voters = Math.max(0, this.$parent.voters - 1);
 			}
 		},
 		computed: {
@@ -91,13 +94,15 @@
 			flex-flow: row nowrap;
 			justify-content: space-between;
 			padding: 0 .666rem;
-			transition: background-color .25s ease-out;
+			position: relative;
+			top: 0;
+			transition: background-color .25s ease-out, box-shadow .25s ease-in-out, top .25s;
 
 			&::before {
 				background-color: rgba(0, 0, 0, .75);
 				border: 2px solid $color-lightest;
 				border-radius: calc(#{$size-base} + .125em);
-				bottom: $size-base * 4;
+				bottom: $size-base * 5;
 				color: $color-lightest;
 				content: 'Vote';
 				font-size: 1.125rem;
@@ -124,6 +129,28 @@
 			z-index: $zindex-cover;
 		}
 
+		&__tally {
+			background-color: $color-accent;
+			border-radius: 50%;
+			box-shadow: 0 1px 3px rgba(0, 0, 0, .66);
+			color: $color-dark;
+			font-size: .825rem;
+			font-weight: bold;
+			height: 1rem;
+			line-height: 1;
+			padding: .25em;
+			text-align: center;
+			transition: box-shadow 1s ease-out;
+			width: 1rem;
+		}
+
+		&__votes {
+			color: $color-accent;
+			line-height: 1;
+			text-align: right;
+			text-shadow: 0 1px 2px rgba(0, 0, 0, .6);
+		}
+
 		&:hover,
 		&:focus,
 		&:focus-within {
@@ -135,29 +162,46 @@
 
 			.game__description {
 				background-color: $color-background-alt;
+				box-shadow: 0 1px 5px rgba(0, 0, 0, .66), 0 2px 10px rgba(0, 0, 0, .33);
+				top: 10px;
 
 				&::before {
 					opacity: 1;
 					transition: opacity .333s ease-in-out;
-					transition-delay: .5s;
+					transition-delay: 1.5s;
 				}
+
+				&::after {
+					content: '';
+					border-width: ceil($size-base * .666);
+					border-style: solid;
+					border-color: transparent transparent $color-background-alt;
+					bottom: calc(#{($size-base * 2) + 5} + 1.125em);
+					height: 0;
+					left: calc(50% - #{$size-base * .5});
+					position: absolute;
+					width: 0;
+					z-index: $zindex-cover + 1;
+				}
+			}
+
+			.game__tally {
+				box-shadow: 0 2px 8px rgba(0, 0, 0, .5);
 			}
 
 			.game__cover {
 				animation: focus 1s infinite;
 			}
 		}
-
-		&__votes {
-			color: $color-accent;
-			line-height: 1;
-			text-align: right;
-			text-shadow: 0 0 2px rgba(0, 0, 0, .5);
-		}
 	}
 
 	.no-voters .game {
 		cursor: not-allowed;
+
+		&__description::before {
+			content: '';
+			display: none;
+		}
 	}
 
 	.no-voters .game:active {

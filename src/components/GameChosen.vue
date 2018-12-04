@@ -1,45 +1,48 @@
 <template>
-	<div class="choice__results">
-		<p class="text--secondary mb-0">
-			<random-text v-bind:choices="['Let&rsquo;s play&hellip;', 'How about&hellip;']"></random-text>
-		</p>
+	<transition name="chosen">
+		<div class="choice__results">
+			<p class="text--secondary mb-0">
+				<random-text v-bind:choices="['Let&rsquo;s play&hellip;', 'How about&hellip;']"></random-text>
+			</p>
 
-		<div class="choice__header">
-			<check-circle></check-circle>
-			<h2 class="choice__title">{{ chosen.text }}</h2>
+			<div class="choice__header">
+				<check-circle></check-circle>
+				<h2 class="choice__title">{{ chosen.text }}</h2>
+			</div>
+
+			<div class="choice__cover">
+				<img class="focus" v-bind:src="require(`../${chosen.img}`)" :alt="chosen.text">
+			</div>
+
+			<table>
+				<thead>
+				<tr>
+					<th>Choice</th>
+					<th>Votes</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr v-for="game in poll" v-bind:key="game.id" v-bind:class="{'text--accent': game.chosen}">
+					<td>{{ game.text }}</td>
+					<td class="text--center">
+						{{ game.total }}
+					</td>
+				</tr>
+				</tbody>
+				<caption>Voting Results</caption>
+			</table>
+
+			<footer class="choice__actions">
+				<button class="btn btn--secondary text--accent" type="button" name="repick" v-if="canPickAgain"
+						v-on:click="pickAgain">
+					Pick Again
+				</button>
+				<button class="btn btn--primary" type="button" name="restart" v-on:click="this.$parent.reset">
+					Start Over
+				</button>
+			</footer>
 		</div>
-
-		<div class="choice__cover">
-			<img class="focus" v-bind:src="require(`../${chosen.img}`)" :alt="chosen.text">
-		</div>
-
-		<table>
-			<thead>
-			<tr>
-				<th>Choice</th>
-				<th>Votes</th>
-			</tr>
-			</thead>
-			<tbody>
-			<tr v-for="game in poll" v-bind:key="game.id" v-bind:class="{'text--accent': game.chosen}">
-				<td>{{ game.text }}</td>
-				<td class="text--center">
-					{{ game.total }}
-				</td>
-			</tr>
-			</tbody>
-			<caption>Voting Results</caption>
-		</table>
-
-		<footer class="choice__actions">
-			<button class="btn btn--secondary text--accent" type="button" name="repick" v-if="canPickAgain" v-on:click="pickAgain">
-				Pick Again
-			</button>
-			<button class="btn btn--primary" type="button" name="restart" v-on:click="this.$parent.reset">
-				Start Over
-			</button>
-		</footer>
-	</div>
+	</transition>
 </template>
 
 <script>
@@ -94,25 +97,6 @@
 <style lang="scss" scoped>
 	@import '../css/variables.scss';
 
-	@keyframes glow {
-		0%,
-		100% {
-			filter: saturate(0) brightness(100%);
-		}
-
-		33% {
-			filter: brightness(110%);
-		}
-
-		50% {
-			filter: saturate(1.5) brightness(105%);
-		}
-
-		66% {
-			filter: brightness(90%);
-		}
-	}
-
 	.choice__header {
 		align-items: center;
 		display: flex;
@@ -156,7 +140,7 @@
 		background-color: rgba($color-background, .95);
 		border-top: 1px solid $color-lightest;
 		bottom: 0;
-		box-shadow: 0 -2px .3125rem rgba(0, 0, 0, .5), 0 -.3125rem 1.5rem rgba(0, 0, 0, .25);
+		box-shadow: 0 -.5rem .4rem -.3rem rgba(0, 0, 0, .45);
 		box-sizing: border-box;
 		display: flex;
 		flex-flow: row nowrap;
@@ -184,6 +168,14 @@
 		}
 	}
 
+	.chosen-enter {
+		opacity: 0;
+	}
+
+	.chosen-leave-active {
+		opacity: 0;
+	}
+
 	table {
 		border-collapse: collapse;
 		border-spacing: 0;
@@ -195,8 +187,15 @@
 		border-bottom: 1px solid $color-light;
 	}
 
-	tr:nth-child(even) {
-		background-color: #3a3a3a;
+	tr {
+		&:hover,
+		&:focus-within {
+			background-color: $color-background-alt;
+		}
+
+		&:nth-child(even) {
+			background-color: #3a3a3a;
+		}
 	}
 
 	th {

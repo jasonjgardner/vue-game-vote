@@ -24,7 +24,9 @@
 
 <script>
 	export default {
-		name: 'Modal'
+		name: 'Modal',
+		mounted: () => document.body.style.overflow = 'hidden',
+		destroyed: () => document.body.style.overflow = 'auto'
 	};
 </script>
 
@@ -45,23 +47,28 @@
 		}
 
 		&__wrapper {
-			display: table-cell;
-			vertical-align: middle;
+			align-items: center;
+			display: flex;
+			flex-flow: column nowrap;
+			justify-content: center;
 		}
 
 		&__container {
 			background-color: $color-background-alt;
 			border-radius: $size-border-radius;
 			box-shadow: 0 3px 1rem rgba(0, 0, 0, .5);
-			margin: 0 auto;
+			margin: 0 $size-base;
 			padding: $size-base;
 			transition: all .3s ease;
+			max-height: 98vh;
 			max-width: $size-base * 30;
 			min-width: $media-screen-xs - ($size-base * 2);
 		}
 
 		&__body {
 			padding: $size-base;
+			max-height: 50vh;
+			overflow: auto;
 		}
 
 		&__header {
@@ -69,9 +76,7 @@
 			padding-bottom: $size-base;
 		}
 
-		&__header h1,
-		&__header h2,
-		&__header h3 {
+		&__header :--hn {
 			color: $color-lightest;
 			font-weight: 300;
 			line-height: 1.25;
@@ -91,6 +96,13 @@
 				padding-left: $size-base * 2;
 				padding-right: $size-base * 2;
 			}
+		}
+	}
+
+	@media screen and (min-width: $media-screen-sm) {
+		.modal__container {
+			margin-left: auto;
+			margin-right: auto;
 		}
 	}
 

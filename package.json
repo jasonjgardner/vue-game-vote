@@ -2,16 +2,30 @@
   "name": "vue-game-vote",
   "description": "Simple Vue project to settle disputes over which video game to play next.",
   "version": "0.2.0",
+  "keywords": [
+    "vue",
+    "vuejs",
+    "vote",
+    "random"
+  ],
+  "homepage": "https://jasongardner.co/game-vote/",
+  "author": {
+    "name": "Jason Gardner",
+    "email": "holler@jasongardner.co",
+    "url": "https://jasongardner.co"
+  },
+  "license": "MIT",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "serve": "vue-cli-service serve --copy",
+    "build": "vue-cli-service build --modern",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "feather-icons": "^4.9.0",
     "normalize.css": "^8.0.1",
     "register-service-worker": "^1.5.2",
+    "v-tooltip": "^2.0.0-rc.33",
     "vue": "^2.5.17",
     "vue-feather-icon": "^1.2.0"
   },
@@ -20,17 +34,24 @@
     "@vue/cli-plugin-eslint": "^3.2.0",
     "@vue/cli-plugin-pwa": "^3.2.0",
     "@vue/cli-service": "^3.2.0",
+    "autoprefixer": "^9.4.2",
     "babel-eslint": "^10.0.1",
+    "cssnano": "^4.1.7",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0-0",
     "file-loader": "^2.0.0",
+    "html-loader": "^0.5.5",
+    "markdown-loader": "^4.0.0",
     "node-sass": "^4.10.0",
+    "postcss-preset-env": "^6.4.0",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
     "stylelint": "^9.8.0",
     "vue-template-compiler": "^2.5.17"
   },
   "config": {
+    "title": "Video Game Vote",
+    "themeColor": "#2d2d2d",
     "deploymentPath": "/game-votes/"
   }
 }
