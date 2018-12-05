@@ -17,15 +17,14 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve --copy",
-    "build": "vue-cli-service build --modern",
+    "serve": "vue-cli-service serve --modern --copy",
+    "build": "vue-cli-service build --modern --mode production",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "feather-icons": "^4.9.0",
     "normalize.css": "^8.0.1",
     "register-service-worker": "^1.5.2",
-    "v-tooltip": "^2.0.0-rc.33",
     "vue": "^2.5.17",
     "vue-feather-icon": "^1.2.0"
   },

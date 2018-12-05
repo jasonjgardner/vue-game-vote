@@ -8,7 +8,7 @@ module.exports = {
 	runtimeCompiler: true,
 	css: {
 		sourceMap: DEV,
-		extract: false,
+		extract: true,
 		loaderOptions: {
 			sass: {
 				includePaths: [
@@ -16,7 +16,6 @@ module.exports = {
 				]
 			},
 			postcss: {
-				ident: 'postcss',
 				plugins: () => [
 					require('autoprefixer')(),
 					require('postcss-preset-env')({
@@ -44,11 +43,11 @@ module.exports = {
 	chainWebpack: config => {
 		config.module.rule('md')
 			.test(/\.md$/)
-			.use('html-loader')
-			.loader('html-loader')
-			.end()
 			.use('markdown-loader')
-			.loader('markdown-loader');
+			.loader('markdown-loader')
+			.end()
+			.use('html-loader')
+			.loader('html-loader');
 
 		config.plugin('html').tap(args => {
 			args[0].title = pkg.config.title;

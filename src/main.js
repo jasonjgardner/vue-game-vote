@@ -1,12 +1,10 @@
 import './css/index.scss';
-
+import './registerServiceWorker';
 import Vue from 'vue';
-import App from './App.vue';
-import VTooltip from 'v-tooltip'
 
 Vue.config.productionTip = false;
 
-Vue.directive('tooltip', VTooltip);
+import App from './App.vue';
 
 import('./data.json').then(data => {
 	new Vue({
@@ -18,8 +16,3 @@ import('./data.json').then(data => {
 		}
 	}).$mount('#app');
 });
-
-
-
-
-

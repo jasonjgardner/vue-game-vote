@@ -140,7 +140,7 @@
 		box-shadow: 0 2px .3125rem rgba(0, 0, 0, .66), 0 .3125rem 1.5rem rgba(0, 0, 0, .33);
 		box-sizing: border-box;
 		display: flex;
-		flex-wrap: wrap;
+		flex-wrap: nowrap;
 		justify-content: space-between;
 		left: 0;
 		margin: 0;
@@ -157,9 +157,14 @@
 		}
 
 		.app__title {
+			display: inline-block;
 			font-size: 1rem;
 			margin-left: $size-base;
 			margin-right: auto;
+			max-width: 150px;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
 		}
 	}
 
@@ -184,12 +189,15 @@
 
 	@media screen and (min-width: #{$media-screen-md}) {
 		#games {
-			justify-content: flex-start;
+			justify-content: space-between;
 			padding-left: $padding-container;
 			padding-right: $padding-container;
+			margin-left: auto;
+			margin-right: auto;
+			max-width: calc(#{($size-game-cover * 2) +  $padding-container} + 3rem);
 		}
 
-		.game {
+		>>> .game {
 			margin-right: $size-base * 2;
 
 			&:last-of-type {

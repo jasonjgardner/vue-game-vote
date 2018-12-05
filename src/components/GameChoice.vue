@@ -1,13 +1,13 @@
 <template>
-	<figure class="game" v-bind:title="`✔ Vote for ${game.text}`" v-on:click="vote(game)" v-if="game.id">
-		<img class="game__cover" v-bind:src="require(`../${game.img}`)" :alt="game.text">
+	<figure class="game" itemscope itemtype="http://schema.org/VideoGame" v-bind:title="`✔ Vote for ${game.name}`" v-on:click="vote(game)" v-if="game.id">
+		<img class="game__cover" itemprop="image" v-bind:src="require(`../${game.img}`)" :alt="game.name">
 		<figcaption class="game__description">
-			<h3 class="game__title">{{ game.text }}</h3>
+			<h3 class="game__title" itemprop="name">{{ game.name }}</h3>
 
 			<p class="game__tally" v-if="tally > 5">
 				{{ tally }}
 			</p>
-			<p class="game__votes" v-else-if="tally > 0" v-bind:title="`Vote count for ${game.text}`">
+			<p class="game__votes" v-else-if="tally > 0" v-bind:title="`Vote count for ${game.name}`">
 				<span v-for="idx in tally" :key="idx" aria-hidden="true">&#9679;</span>
 				<span class="sr-only">{{ `${tally} votes` }}</span>
 			</p>

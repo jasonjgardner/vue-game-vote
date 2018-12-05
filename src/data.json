@@ -2,69 +2,133 @@
   "games": [
     {
       "id": "arms",
-      "text": "Arms",
+      "name": "Arms",
       "img": "assets/games/arms.jpg",
-      "players":4
+      "numberOfPlayers": 4,
+      "playMode": "MultiPlayer",
+      "familyFriendly": true,
+      "contentRating": "E10+",
+      "gamePlatform": "Nintendo Switch"
     },
     {
       "id": "pokemon",
-      "text": "Let's Go Pikachu",
+      "name": "Let's Go Pikachu",
       "img": "assets/games/pokemon.jpg",
-      "players": 2
+      "numberOfPlayers": 2,
+      "playMode": "CoOp",
+      "familyFriendly": true,
+      "contentRating": "E",
+      "publisher": "Nintendo",
+      "developer": "GAME FREAK Inc.",
+      "gamePlatform": "Nintendo Switch"
     },
     {
       "id": "pokemon-quest",
-      "text": "Pokémon Quest",
+      "name": "Pokémon Quest",
       "img": "assets/games/pokemon-quest.jpg",
-      "players": 4
+      "numberOfPlayers": 4,
+      "playMode": "CoOp",
+      "familyFriendly": true,
+      "contentRating": "E",
+      "publisher":"Nintendo",
+      "developer":"Nintendo",
+      "gamePlatform": "Nintendo Switch"
     },
     {
       "id": "mario-kart",
-      "text": "Mario Kart 8",
+      "name": "Mario Kart 8",
       "img":"assets/games/mario-kart.jpg",
-      "players": 4
+      "numberOfPlayers": 4,
+      "playMode": "MultiPlayer",
+      "familyFriendly": true,
+      "contentRating": "E",
+      "publisher": "Nintendo",
+      "developer": "Nintendo",
+      "gamePlatform": "Nintendo Switch"
     },
     {
       "id": "mario-party",
-      "text": "Mario Party",
+      "name": "Mario Party",
       "img": "assets/games/mario-party.jpg",
-      "players": 4
+      "numberOfPlayers": 4,
+      "playMode": "MultiPlayer",
+      "familyFriendly": true,
+      "ersb": "E",
+      "publisher": "Nintendo",
+      "developer": "Nintendo",
+      "gamePlatform": "Nintendo Switch"
     },
     {
       "id": "mario-tennis",
-      "text": "Mario Tennis",
+      "name": "Mario Tennis",
       "img": "assets/games/mario-tennis.jpg",
-      "players": 4
+      "numberOfPlayers": 4,
+      "playMode": "MultiPlayer",
+      "familyFriendly": true,
+      "ersb": "E",
+      "publisher": "Nintendo",
+      "developer": "Nintendo",
+      "gamePlatform": "Nintendo Switch"
     },
     {
       "id": "mario-odyssey",
-      "text": "Super Mario Odyssey",
+      "name": "Super Mario Odyssey",
       "img": "assets/games/super-mario-odyssey.jpg",
-      "players":  2
+      "numberOfPlayers":  2,
+      "playMode": "CoOp",
+      "familyFriendly": true,
+      "ersb": "E",
+      "publisher": "Nintendo",
+      "developer": "Nintendo",
+      "gamePlatform": "Nintendo Switch"
     },
     {
       "id": "minecraft",
-      "text": "Minecraft",
+      "name": "Minecraft",
       "img": "assets/games/minecraft.jpg",
-      "players":  2
+      "numberOfPlayers":  2,
+      "playMode": "CoOp",
+      "familyFriendly": true,
+      "ersb": "E",
+      "publisher": "Microsoft",
+      "developer": "Mojang AB",
+      "gamePlatform": "Nintendo Switch"
     },
     {
       "id": "1-2-switch",
-      "text": "1-2 Switch",
+      "name": "1-2 Switch",
       "img": "assets/games/1-2-switch.jpg",
-      "players":  2
+      "numberOfPlayers":  2,
+      "playMode": "MultiPlayer",
+      "familyFriendly": true,
+      "ersb": "E",
+      "publisher": "Nintendo",
+      "developer": "Nintendo",
+      "gamePlatform": "Nintendo Switch"
     },
     {
       "id": "astro-bears",
-      "text": "Astro Bears",
+      "name": "Astro Bears",
       "img": "assets/games/astro-bears.jpg",
-      "players": 4
+      "numberOfPlayers": 4,
+      "playMode": "MultiPlayer",
+      "familyFriendly": true,
+      "ersb": "E",
+      "publisher": "QubicGames",
+      "developer": "QubicGames",
+      "gamePlatform": "Nintendo Switch"
     },
     {
       "id": "rocket-league",
-      "text": "Rocket League",
+      "name": "Rocket League",
       "img": "assets/games/rocket-league.jpg",
-      "players": 4
+      "numberOfPlayers": 4,
+      "playMode": "MultiPlayer",
+      "familyFriendly": true,
+      "ersb": "E",
+      "publisher": "Psyonix",
+      "developer": "Psyonix",
+      "gamePlatform": "Nintendo Switch"
     }
   ]
 }

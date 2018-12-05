@@ -7,7 +7,7 @@
 
 			<div class="choice__header">
 				<check-circle></check-circle>
-				<h2 class="choice__title">{{ chosen.text }}</h2>
+				<h2 class="choice__title">{{ chosen.name }}</h2>
 			</div>
 
 			<div class="choice__cover">
@@ -23,7 +23,7 @@
 				</thead>
 				<tbody>
 				<tr v-for="game in poll" v-bind:key="game.id" v-bind:class="{'text--accent': game.chosen}">
-					<td>{{ game.text }}</td>
+					<td>{{ game.name }}</td>
 					<td class="text--center">
 						{{ game.total }}
 					</td>
@@ -164,12 +164,12 @@
 		}
 
 		.btn + .btn {
-			margin-left: 1rem;
+			margin-left: $size-base;
 		}
 	}
 
 	.chosen-enter {
-		opacity: 0;
+		opacity: 1;
 	}
 
 	.chosen-leave-active {
