@@ -8,7 +8,7 @@ module.exports = {
 	runtimeCompiler: true,
 	css: {
 		sourceMap: DEV,
-		extract: true,
+		extract: !DEV,
 		loaderOptions: {
 			sass: {
 				includePaths: [

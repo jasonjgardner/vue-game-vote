@@ -13,6 +13,19 @@
 	}
 }
 
+.fade-enter-active {
+	transition: opacity .3s ease-in;
+}
+
+.fade-leave-active {
+	transition: opacity .5s ease-out;
+}
+
+.fade-enter,
+.fade-leave-to {
+	opacity: 0;
+}
+
 .focus,
 .h-focus:hover,
 .h-focus:focus,
@@ -48,6 +61,10 @@
 	flex: 1;
 }
 
+.align--center {
+	align-items: center;
+}
+
 .text--accent,
 .btn.text--accent,
 tr.text--accent td {
@@ -59,7 +76,11 @@ tr.text--accent td {
 }
 
 .text--secondary {
-	color: #999;
+	color: $color-secondary;
+}
+
+.text--muted {
+	color: $color-muted;
 }
 
 $sides: (
@@ -72,7 +93,7 @@ $sides: (
 @each $side in map-keys($sides) {
 	@for $itr from 0 through 5 {
 		.m#{$side}-#{$itr} {
-			margin-#{map-get($sides, $side)}: ($itr * $size-base);
+			margin-#{map-get($sides, $side)}: ($itr * $size-gap);
 		}
 	}
 
@@ -80,21 +101,6 @@ $sides: (
 		margin-#{map-get($sides, $side)}: auto;
 	}
 }
-
-//.callout {
-//	position: relative;
-//
-//	&::before {
-//		background-color: $color-accent;
-//		content: '';
-//		display: block;
-//		height: 100%;
-//		left: 0;
-//		position: absolute;
-//		top: 0;
-//		width: 3px;
-//	}
-//}
 
 .btn {
 	-webkit-appearance: none;
@@ -159,6 +165,16 @@ $sides: (
 	}
 }
 
+.backdrop-visible {
+	overflow: hidden;
+
+	.modal-visible > *:not(.modal) {
+		filter: blur(10px) saturate(.9);
+		pointer-events: none;
+		user-select: none;
+	}
+}
+
 html {
 	font-size: 100%;
 	height: 100%;
@@ -203,4 +219,22 @@ a {
 h5 {
 	margin-bottom: $size-base;
 	margin-top: $size-base;
+}
+
+blockquote {
+	color: $color-neutral;
+	margin-left: $size-gap;
+	padding-left: $size-base;
+	position: relative;
+
+	&::before {
+		background-color: $color-accent;
+		content: '';
+		display: block;
+		height: 100%;
+		left: 0;
+		position: absolute;
+		top: 0;
+		width: 3px;
+	}
 }

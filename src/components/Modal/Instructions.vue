@@ -11,17 +11,49 @@
 		<p>The number of remaining votes can also be adjusted by pressing the <b>Coin</b> button. Pay <b>one</b>&nbsp;
 			<a href="#mario-coin">Mario coin</a> per additional vote.</p>
 
-		<h5 id="mario-coin">Mario Coins</h5>
+		<aside id="mario-coin">
+			<header>
+				<coin-icon class="rotate--90 white-stroke mr-1 mb-0"></coin-icon>
+				<h4>Mario Coins</h4>
+			</header>
 
-		<blockquote>
-			<p>Mario Coins are toy coins embossed with Mario's face. They're given as a reward for good behavior and
-				taken away for bad behavior, poor sportsmanship, bitching, moaning, etc.</p>
-		</blockquote>
+			<blockquote>
+				<p>Mario Coins are toy coins embossed with Mario's face. They're given as a reward for good behavior and
+					taken away for bad behavior, poor sportsmanship, bitching, moaning, etc.</p>
+			</blockquote>
+		</aside>
 	</div>
 </template>
 
 <script>
+	import MinusCircle from 'vue-feather-icon/components/minus-circle';
+
 	export default {
-		name: 'Instructions'
+		name: 'Instructions',
+		components: {
+			CoinIcon: MinusCircle
+		}
 	};
 </script>
+
+<style lang="scss" scoped>
+	@import '../../css/variables';
+
+	aside header {
+		align-items: center;
+		display: flex;
+
+		#{$--hn} {
+			margin-bottom: $size-gap;
+			margin-top: $size-gap;
+		}
+	}
+
+	blockquote {
+		font-size: .825rem;
+	}
+
+	.white-stroke {
+		stroke: white;
+	}
+</style>

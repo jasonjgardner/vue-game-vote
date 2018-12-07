@@ -1,5 +1,5 @@
 <template>
-	<transition name="chosen">
+	<transition appear name="fade">
 		<div class="choice__results">
 			<p class="text--secondary mb-0">
 				<random-text v-bind:choices="['Let&rsquo;s play&hellip;', 'How about&hellip;']"></random-text>
@@ -11,7 +11,7 @@
 			</div>
 
 			<div class="choice__cover">
-				<img class="focus" v-bind:src="require(`../${chosen.img}`)" :alt="chosen.text">
+				<img class="focus" v-bind:src="require(`../${chosen.img}`)" :alt="chosen.name">
 			</div>
 
 			<table>
@@ -24,9 +24,7 @@
 				<tbody>
 				<tr v-for="game in poll" v-bind:key="game.id" v-bind:class="{'text--accent': game.chosen}">
 					<td>{{ game.name }}</td>
-					<td class="text--center">
-						{{ game.total }}
-					</td>
+					<td class="text--center">{{ game.total }}</td>
 				</tr>
 				</tbody>
 				<caption>Voting Results</caption>
@@ -48,21 +46,31 @@
 <script>
 	import CheckCircle from 'vue-feather-icon/components/check-circle';
 	import RandomText from './RandomText';
-	import Game from '../types/Game';
 
 	export default {
-		name: 'GameChosen',
+		name: 'Selection',
 		components: {
 			CheckCircle,
 			RandomText
 		},
 		props: {
 			chosen: {
-				...Game
+				id: {
+					type: String,
+					required: true
+				},
+				name: {
+					type: String,
+					required: true
+				},
+				img: {
+					type: String,
+					required: true
+				}
 			}
 		},
 		methods: {
-			pickAgain: function () {
+			pickAgain() {
 				this.$parent.votes = this.$parent.votes.filter(vote => vote.id !== this.chosen.id);
 
 				if (!this.$parent.votes.length) {
@@ -74,10 +82,10 @@
 			}
 		},
 		computed: {
-			canPickAgain: function () {
+			canPickAgain() {
 				return [...new Set(this.$parent.votes)].length > 1;
 			},
-			poll: function () {
+			poll() {
 				let results = {};
 
 				for (const vote of this.$parent.votes) {

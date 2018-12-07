@@ -56,12 +56,6 @@
     "selector-max-compound-selectors": 5,
     "selector-max-empty-lines": 0,
     "selector-max-specificity": "1,5,4",
-    "selector-no-qualifying-type": [
-      true,
-      {
-        "ignore": ["class"]
-      }
-    ],
     "selector-no-vendor-prefix": true,
     "selector-type-case": "lower",
     "selector-type-no-unknown": true,

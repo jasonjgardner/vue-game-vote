@@ -12,7 +12,7 @@
 			}
 		},
 		methods: {
-			random: function () {
+			random() {
 				return this.choices[Math.floor(Math.random() * this.choices.length)]
 			}
 		}

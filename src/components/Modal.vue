@@ -1,14 +1,14 @@
 <template>
 	<transition name="modal">
-		<div class="modal__mask">
+		<div class="modal">
 			<div class="modal__wrapper" role="dialog" aria-modal="true">
 				<aside class="modal__container">
-					<header class="modal__header">
-						<slot name="header">&hellip;</slot>
+					<header class="modal__header" v-if="!!$slots.header">
+						<slot name="header"></slot>
 					</header>
 
 					<div class="modal__body">
-						<slot name="body">&hellip;</slot>
+						<slot name="body"></slot>
 					</div>
 
 					<footer class="modal__footer">
@@ -23,10 +23,11 @@
 </template>
 
 <script>
+	import ModalMixin from './Modal/Mixin';
+
 	export default {
 		name: 'Modal',
-		mounted: () => document.body.style.overflow = 'hidden',
-		destroyed: () => document.body.style.overflow = 'auto'
+		mixins: [ModalMixin]
 	};
 </script>
 
@@ -34,24 +35,18 @@
 	@import '../css/variables.scss';
 
 	.modal {
-		&__mask {
-			background-color: $color-modal-background;
-			display: table;
-			height: 100%;
-			left: 0;
-			position: fixed;
-			top: 0;
-			transition: opacity .333s ease;
-			width: 100%;
-			z-index: $zindex-modal;
-		}
-
-		&__wrapper {
-			align-items: center;
-			display: flex;
-			flex-flow: column nowrap;
-			justify-content: center;
-		}
+		align-items: center;
+		background-color: $color-modal-background;
+		display: flex;
+		flex-flow: column nowrap;
+		height: 100%;
+		justify-content: center;
+		left: 0;
+		position: fixed;
+		top: 0;
+		transition: opacity .333s ease;
+		width: 100%;
+		z-index: $zindex-modal;
 
 		&__container {
 			background-color: $color-background-alt;
@@ -61,26 +56,31 @@
 			padding: $size-base;
 			transition: all .3s ease;
 			max-height: 98vh;
-			max-width: $size-base * 30;
+			max-width: 90%;
 			min-width: $media-screen-xs - ($size-base * 2);
 		}
 
 		&__body {
-			padding: $size-base;
-			max-height: 50vh;
+			font-size: .925rem;
+			max-height: 66vh;
 			overflow: auto;
+			padding: $size-gap;
 		}
 
 		&__header {
 			border-bottom: 1px solid $color-secondary;
 			padding-bottom: $size-base;
-		}
 
-		&__header :--hn {
-			color: $color-lightest;
-			font-weight: 300;
-			line-height: 1.25;
-			margin: 0;
+			&:empty {
+				display: none;
+			}
+
+			#{$--hn} {
+				color: $color-lightest;
+				font-weight: 300;
+				line-height: 1.25;
+				margin: 0;
+			}
 		}
 
 		&__footer {

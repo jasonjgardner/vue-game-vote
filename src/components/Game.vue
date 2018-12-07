@@ -1,42 +1,73 @@
 <template>
-	<figure class="game" itemscope itemtype="http://schema.org/VideoGame" v-bind:title="`✔ Vote for ${game.name}`" v-on:click="vote(game)" v-if="game.id">
-		<img class="game__cover" itemprop="image" v-bind:src="require(`../${game.img}`)" :alt="game.name">
-		<figcaption class="game__description">
-			<h3 class="game__title" itemprop="name">{{ game.name }}</h3>
+	<transition name="reveal">
+		<div class="game">
+			<figure itemscope itemtype="http://schema.org/VideoGame" v-bind:title="title" v-on:click="vote(game)" v-if="game.id">
+				<img class="game__cover" itemprop="image" v-bind:src="require(`../${game.img}`)" v-bind:alt="game.name">
+				<figcaption class="game__description">
+					<h3 class="game__title" itemprop="name">{{ game.name }}</h3>
 
-			<p class="game__tally" v-if="tally > 5">
-				{{ tally }}
-			</p>
-			<p class="game__votes" v-else-if="tally > 0" v-bind:title="`Vote count for ${game.name}`">
-				<span v-for="idx in tally" :key="idx" aria-hidden="true">&#9679;</span>
-				<span class="sr-only">{{ `${tally} votes` }}</span>
-			</p>
-		</figcaption>
-	</figure>
+					<p class="game__tally" v-if="tally > 5">
+						{{ tally }}
+					</p>
+					<p class="game__votes" v-else-if="tally > 0" v-bind:title="`Vote count for ${game.name}`">
+						<span v-for="idx in tally" :key="idx" aria-hidden="true">&#9679;</span>
+						<span class="sr-only">{{ `${tally} votes` }}</span>
+					</p>
+				</figcaption>
+			</figure>
+		</div>
+	</transition>
 </template>
 
 <script>
-	import Game from '../types/Game';
-
 	export default {
-		name: 'GameChoice',
+		name: 'Game',
 		props: {
-			...Game
+			game: {
+				id: {
+					type: String,
+					required: true
+				},
+				name: {
+					type: String,
+					required: true
+				},
+				img: {
+					type: String,
+					required: true
+				}
+			}
 		},
 		methods: {
-			vote: function (game) {
-				if (this.$parent.voters > 0) {
+			vote(game) {
+				let ok = this.$parent.voters > 0;
+
+				if (ok) {
 					this.$parent.votes.push(game);
 				}
 
-				this.$parent.voters = Math.max(0, this.$parent.voters - 1);
+				--this.$parent.voters;
+
+				if (this.$parent.voters < 0) {
+					this.$parent.voters = 0;
+					ok = false;
+				}
+
+				this.$emit('vote', ok);
 			}
 		},
 		computed: {
-			tally: function () {
-				return this.$parent.votes.filter(vote => {
-					return vote.id === this.game.id;
-				}).length;
+			title() {
+				if (this.$parent.voters > 0) {
+					return `✔ Vote for ${this.game.name}`;
+				}
+
+				const votes = this.$parent.votes.filter(vote => vote.id === this.game.id).length;
+
+				return `${this.game.name} (${votes} vote${votes !== 1 ? 's' : ''})`;
+			},
+			tally() {
+				return this.$parent.votes.filter(vote => vote.id === this.game.id).length;
 			}
 		}
 	};
@@ -71,14 +102,43 @@
 		}
 	}
 
+	.reveal-enter,
+	.reveal-leave {
+		opacity: 0;
+		transform: translateY(50%);
+	}
+
+	.reveal-enter-active {
+		transition: transform .333s ease, opacity .25s;
+	}
+
+	.reveal-leave-active {
+		transform: translateY(0);
+	}
+
+	.no-voters .game figure {
+		cursor: not-allowed;
+
+		.game__description::before {
+			content: '';
+			display: none;
+		}
+	}
+
 	.game {
-		cursor: pointer;
 		display: flex;
-		flex-flow: column nowrap;
-		margin: 0 0 $size-base;
-		max-width: $size-game-cover;
-		padding: 0;
-		position: relative;
+		flex: 1;
+		justify-content: center;
+
+		figure {
+			cursor: pointer;
+			display: flex;
+			flex-flow: column nowrap;
+			margin: 0 0 $size-base;
+			max-width: $size-game-cover;
+			padding: 0;
+			position: relative;
+		}
 
 		&__title {
 			display: inline-block;
@@ -195,21 +255,12 @@
 		}
 	}
 
-	.no-voters .game {
-		cursor: not-allowed;
-
-		&__description::before {
-			content: '';
-			display: none;
-		}
-	}
-
 	.no-voters .game:active {
 		animation: wiggle .5s ease;
 		animation-iteration-count: 5;
 
 		.game__cover {
-			filter: saturate(.33);
+			filter: saturate(.3);
 			outline: 4px solid $color-dark;
 		}
 	}

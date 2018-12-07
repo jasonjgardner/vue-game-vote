@@ -1,7 +1,7 @@
 <template>
-	<div id="app" v-bind:class="{'no-voters': voters < 1, 'cant-vote': voters < 0, 'modal-visible': showModal }">
+	<div id="app" v-bind:class="{'no-voters': voters < 1, 'cant-vote': voters < 0, 'modal-visible': showModal || dialogMessage }">
 		<section class="d-flex flex-column flex-1" id="choice" v-if="chosen">
-			<GameChosen v-bind:chosen="chosen" v-bind:games="this.$parent.games"></GameChosen>
+			<selected v-bind:chosen="chosen" v-bind:games="this.$parent.games"></selected>
 		</section>
 		<main id="games" v-else>
 			<header class="app__header">
@@ -40,17 +40,26 @@
 				</form>
 			</header>
 
-			<GameChoice v-for="game in this.$parent.games" v-bind:game="game" v-bind:key="game.id"></GameChoice>
+			<game v-for="game in filteredGames" v-bind:game="game" v-bind:key="game.id" v-on:vote="onVote"></game>
 		</main>
 
-		<modal class="modal" v-if="showModal === 'instructions'">
+		<alert role="alert" v-if="dialogMessage.length > 0" v-on:dismissed="dialogMessage = false">
+			<h4 slot="header">Stop!</h4>
+			<p slot="message">{{ dialogMessage }}</p>
+			<template slot="footer">
+				<button class="btn" type="reset" v-on:click.prevent="reset">Reset</button>
+				<button class="btn" type="submit" v-on:click.prevent="choose">Elect</button>
+			</template>
+		</alert>
+
+		<modal v-if="showModal === 'instructions'">
 			<h3 slot="header">Instructions</h3>
-			<div slot="body">
+			<template slot="body">
 				<component :is="modalComponent"></component>
-			</div>
-			<div slot="footer">
+			</template>
+			<template slot="footer">
 				<button class="btn btn--primary" type="button" v-on:click="showModal = false">OK</button>
-			</div>
+			</template>
 		</modal>
 	</div>
 </template>
@@ -60,68 +69,120 @@
 	import MinusCircle from 'vue-feather-icon/components/minus-circle';
 	import Check from 'vue-feather-icon/components/check';
 	import Modal from './components/Modal';
-	import GameChoice from './components/GameChoice';
+	import Dialog from './components/Dialog';
+	import Tooltip from './components/Tooltip';
+	import Game from './components/Game';
 
 	export default {
 		name: 'app',
+		props: {
+			games: {
+				type: Array,
+				required: true
+			},
+			initialVoters: {
+				type: Number,
+				required: true,
+				validator: val => val > 0
+			}
+		},
 		components: {
 			Modal,
-			GameChoice,
-			GameChosen: () => import(/* webpackChunkName: "gameChosen" */'./components/GameChosen'),
+			Tooltip,
+			Alert: Dialog,
+			Game,
+			Selected: () => import(/* webpackChunkName: "selection" */'./components/Selection'),
 			ResetIcon: RotateCcw,
 			CoinIcon: MinusCircle,
 			CheckIcon: Check
 		},
 		data: function () {
 			return {
-				voters: this.$parent.initialVoters,
+				errors: 0,
+				/**
+				 * @type Game[] Array of games selected
+				 */
 				votes: [],
+				/**
+				 * @type Game Selected game
+				 */
 				chosen: null,
-				showModal: false
+				/**
+				 * @type boolean|string Modal ID to show or falsy value to hide
+				 */
+				showModal: false,
+				/**
+				 * @type boolean|string Dialog message to show or falsy value to dismiss
+				 */
+				dialogMessage: false
 			};
 		},
+		computed: {
+			filteredGames() {
+				/**	@var {{numberOfPlayers:number}} game - Game data **/
+				return this.games.filter(game => game.numberOfPlayers >= this.initialVoters);
+			}
+		},
 		methods: {
-			choose: function () {
+			/**
+			 * Selects a candidate at random
+			 */
+			choose() {
+				this.dialogMessage = false;
+				this.showModal = false;
 				this.chosen = this.votes[Math.floor(Math.random() * this.votes.length)];
 				window.scrollTo(0, 0);
 			},
-			reset: function () {
-				this.voters = this.$parent.initialVoters;
+			/**
+			 * Resets votes, vote counts, and selected game
+			 */
+			reset() {
+				this.dialogMessage = false;
+				this.showModal = false;
+				this.errors = 0;
+				this.voters = this.initialVoters;
 				this.chosen = null;
 				this.votes = [];
 			},
-			buyVote: function () {
-				(
-					new Audio(require('./assets/coin.mp3'))
-				).play().finally(
+			/**
+			 * Adds voters
+			 */
+			buyVote() {
+				(new Audio(require('./assets/coin.mp3'))).play().finally(
 					() => this.voters = Math.max(1, this.voters + 1)
 				);
 			},
-			modalComponent: function(resolve, reject) {
+			modalComponent(resolve, reject) {
 				if (this.showModal && this.showModal.length > 0) {
 					return import(`./components/Modal/${this.showModal.charAt(0).toUpperCase() + this.showModal.slice(1)}`)
 						.then(resolve, reject);
 				}
 
 				reject();
-			}
-		}
+			},
+			onVote(accepted) {
+				if (!accepted) {
+					this.errors++;
+				}
 
+				if (this.errors > 2) {
+					this.dialogMessage = 'You\'re out of votes!'
+				}
+			}
+		},
+		created() {
+			this.voters = this.initialVoters;
+		}
 	};
 </script>
 
 <style lang="scss" scoped>
 	@import './css/variables.scss';
 
-	.modal-visible > *:not(.modal) {
-		filter: blur(10px) saturate(.9);
-	}
-
 	#app {
 		display: flex;
 		flex: 1;
 		flex-flow: column nowrap;
-		transition-delay: .25s;
 		width: 100%;
 	}
 
@@ -144,7 +205,7 @@
 		justify-content: space-between;
 		left: 0;
 		margin: 0;
-		padding: 1.5rem $padding-container;
+		padding: $size-base $padding-container;
 		position: fixed;
 		transition: border-bottom-color .5s ease-out;
 		top: 0;
@@ -168,7 +229,7 @@
 		}
 	}
 
-	@media screen and (min-width: #{($media-screen-sm + 1)}) {
+	@media screen and (min-width: #{($media-screen-sm)}) {
 		.app__header {
 			align-items: center;
 			flex-direction: row;
@@ -183,27 +244,11 @@
 	#games {
 		display: flex;
 		flex-flow: row wrap;
-		justify-content: space-evenly;
-		margin-top: $size-base * 8;
+		margin-top: ($size-base * 2) + 49;  /// Header padding + icon height + border bottom
 	}
 
-	@media screen and (min-width: #{$media-screen-md}) {
-		#games {
-			justify-content: space-between;
-			padding-left: $padding-container;
-			padding-right: $padding-container;
-			margin-left: auto;
-			margin-right: auto;
-			max-width: calc(#{($size-game-cover * 2) +  $padding-container} + 3rem);
-		}
-
-		>>> .game {
-			margin-right: $size-base * 2;
-
-			&:last-of-type {
-				margin-right: 0;
-			}
-		}
+	.modal-visible #games {
+		margin-top: 0;
 	}
 
 	.voters__votes {
@@ -273,6 +318,7 @@
 
 	#voters {
 		align-items: center;
+		flex-wrap: nowrap;
 		font-size: 1rem;
 		justify-content: flex-end;
 		text-align: right;
