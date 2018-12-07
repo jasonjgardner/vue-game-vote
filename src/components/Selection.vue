@@ -2,16 +2,30 @@
 	<transition appear name="fade">
 		<div class="choice__results">
 			<p class="text--secondary mb-0">
-				<random-text v-bind:choices="['Let&rsquo;s play&hellip;', 'How about&hellip;']"></random-text>
+				<random-text v-bind:choices="randomTitles"></random-text>
 			</p>
 
-			<div class="choice__header">
-				<check-circle></check-circle>
-				<h2 class="choice__title">{{ chosen.name }}</h2>
-			</div>
+			<div class="choice__details" itemscope itemtype="http://schema.org/VideoGame">
+				<div class="choice__header">
+					<check-circle></check-circle>
+					<h2 class="choice__title" itemprop="name">{{ chosen.name }}</h2>
+				</div>
 
-			<div class="choice__cover">
-				<img class="focus" v-bind:src="require(`../${chosen.img}`)" :alt="chosen.name">
+				<div class="choice__cover">
+					<img class="focus" itemprop="image" v-bind:src="require(`../${chosen.img}`)" :alt="chosen.name">
+				</div>
+
+				<!--<dl>-->
+					<!--<dt>Developer</dt>-->
+					<!--<dd itemprop="developer">{{ chosen.developer }}</dd>-->
+					<!--<dt>Publisher</dt>-->
+					<!--<dd itemprop="publisher">{{ chosen.publisher }}</dd>-->
+					<!--<dt>Players</dt>-->
+					<!--<dd>-->
+						<!--<span itemprop="numberOfPlayers">{{ chosen.numberOfPlayers }}</span>&nbsp;-->
+						<!--<span class="text&#45;&#45;secondary" itemprop="playMode">({{ chosen.playMode }})</span>-->
+					<!--</dd>-->
+				<!--</dl>-->
 			</div>
 
 			<table>
@@ -31,11 +45,11 @@
 			</table>
 
 			<footer class="choice__actions">
-				<button class="btn btn--secondary text--accent" type="button" name="repick" v-if="canPickAgain"
+				<button class="btn btn--secondary text--accent" type="button" name="repick" ref="repick" v-if="canPickAgain"
 						v-on:click="pickAgain">
 					Pick Again
 				</button>
-				<button class="btn btn--primary" type="button" name="restart" v-on:click="this.$parent.reset">
+				<button class="btn btn--primary" type="button" name="restart" ref="restart" v-on:click="this.$parent.reset">
 					Start Over
 				</button>
 			</footer>
@@ -66,14 +80,40 @@
 				img: {
 					type: String,
 					required: true
+				},
+				developer: String,
+				publisher: String,
+				gamePlatform: String,
+				familyFriendly: Boolean,
+				esrb: {
+					type: String,
+					required: false,
+					validator: rating => ['RP', 'EC', 'E', 'E10+', 'T', 'M', 'AO'].indexOf(rating) > -1
+				},
+				playMode: {
+					type: String,
+					required: false,
+					validator: gamePlayMode => ['CoOp', 'MultiPlayer', 'SinglePlayer'].indexOf(gamePlayMode) > -1
+				},
+				numberOfPlayers: {
+					type: Number,
+					default: 1
 				}
 			}
 		},
+		data: () => {
+			return {
+				picks: 0
+			};
+		},
 		methods: {
 			pickAgain() {
+				this.picks++;
 				this.$parent.votes = this.$parent.votes.filter(vote => vote.id !== this.chosen.id);
 
-				if (!this.$parent.votes.length) {
+				const voteCount = this.$parent.votes.length;
+
+				if (!voteCount) {
 					this.$parent.reset();
 					return;
 				}
@@ -97,6 +137,13 @@
 				}
 
 				return results;
+			},
+			randomTitles() {
+				if (this.picks <= 0 && [...new Set(this.$parent.votes)].length === 1) {
+					return ['It\'s unanimous!', 'We\'ve agreed on'];
+				}
+
+				return ['Let&rsquo;s play&hellip;', 'How about&hellip;'];
 			}
 		}
 	};
@@ -104,6 +151,21 @@
 
 <style lang="scss" scoped>
 	@import '../css/variables.scss';
+
+	.choice__details {
+		display: flex;
+		flex-flow: column nowrap;
+
+		dt,
+		dd {
+			float: left;
+			width: 50%;
+		}
+
+		dt {
+			clear: left;
+		}
+	}
 
 	.choice__header {
 		align-items: center;
@@ -195,7 +257,7 @@
 		border-bottom: 1px solid $color-light;
 	}
 
-	tr {
+	tbody tr {
 		&:hover,
 		&:focus-within {
 			background-color: $color-background-alt;

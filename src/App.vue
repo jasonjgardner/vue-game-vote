@@ -114,7 +114,11 @@
 				/**
 				 * @type boolean|string Dialog message to show or falsy value to dismiss
 				 */
-				dialogMessage: false
+				dialogMessage: false,
+				/**
+				 * @type number - Number of remaining votes
+				 */
+				voters: undefined
 			};
 		},
 		computed: {

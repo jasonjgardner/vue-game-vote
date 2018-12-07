@@ -1,13 +1,27 @@
 {
   "games": [
     {
-      "id": "arms",
-      "name": "Arms",
-      "img": "assets/games/arms.jpg",
+      "id": "mario-party",
+      "name": "Mario Party",
+      "img": "assets/games/mario-party.jpg",
       "numberOfPlayers": 4,
       "playMode": "MultiPlayer",
       "familyFriendly": true,
-      "contentRating": "E10+",
+      "ersb": "E",
+      "publisher": "Nintendo",
+      "developer": "Nintendo",
+      "gamePlatform": "Nintendo Switch"
+    },
+    {
+      "id": "super-smash-bros",
+      "name": "Super Smash Bros.",
+      "img": "assets/games/super-smash-bros.jpg",
+      "numberOfPlayers": 8,
+      "playMode": "MultiPlayer",
+      "familyFriendly": true,
+      "esrb": "E10+",
+      "publisher": "Nintendo",
+      "developer": "Nintendo / Sora Ltd. / BANDAI NAMCO Studios Inc.",
       "gamePlatform": "Nintendo Switch"
     },
     {
@@ -42,18 +56,6 @@
       "playMode": "MultiPlayer",
       "familyFriendly": true,
       "contentRating": "E",
-      "publisher": "Nintendo",
-      "developer": "Nintendo",
-      "gamePlatform": "Nintendo Switch"
-    },
-    {
-      "id": "mario-party",
-      "name": "Mario Party",
-      "img": "assets/games/mario-party.jpg",
-      "numberOfPlayers": 4,
-      "playMode": "MultiPlayer",
-      "familyFriendly": true,
-      "ersb": "E",
       "publisher": "Nintendo",
       "developer": "Nintendo",
       "gamePlatform": "Nintendo Switch"
@@ -116,6 +118,16 @@
       "ersb": "E",
       "publisher": "QubicGames",
       "developer": "QubicGames",
+      "gamePlatform": "Nintendo Switch"
+    },
+    {
+      "id": "arms",
+      "name": "Arms",
+      "img": "assets/games/arms.jpg",
+      "numberOfPlayers": 4,
+      "playMode": "MultiPlayer",
+      "familyFriendly": true,
+      "contentRating": "E10+",
       "gamePlatform": "Nintendo Switch"
     },
     {
