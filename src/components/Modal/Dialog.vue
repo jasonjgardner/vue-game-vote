@@ -21,7 +21,7 @@
 </template>
 
 <script>
-	import ModalMixin from './Modal/Mixin';
+	import ModalMixin from './Mixin';
 
 	export default {
 		name: 'Dialog',
@@ -30,7 +30,7 @@
 </script>
 
 <style lang="scss">
-	@import '../css/variables';
+	@import '../../css/variables';
 
 	.dialog {
 		background-color: rgba(mix($color-btn-background, $color-background-alt, 90%), .95);
@@ -96,7 +96,7 @@
 
 	@media screen and (min-width: $media-screen-md) {
 		.dialog {
-			max-width: 55vw;
+			max-width: 50vw;
 		}
 
 		.dialog__header,

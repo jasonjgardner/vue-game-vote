@@ -10,7 +10,7 @@ import('./data.json').then(data => {
 	new Vue({
 		render: h => h(App, {
 			props: {
-				initialVoters: 4,
+				initialVoters: 2,
 				games: data.games
 			}
 		})

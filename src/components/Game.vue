@@ -127,7 +127,7 @@
 
 	.game {
 		display: flex;
-		flex: 1;
+		flex: 1 1 var(--size-game-cover, #{$size-game-cover});
 		justify-content: center;
 
 		figure {
@@ -135,7 +135,7 @@
 			display: flex;
 			flex-flow: column nowrap;
 			margin: 0 0 $size-base;
-			max-width: $size-game-cover;
+			max-width: var(--size-game-cover, #{$size-game-cover});
 			padding: 0;
 			position: relative;
 		}
@@ -183,9 +183,9 @@
 
 		&__cover {
 			box-shadow: 0 0 5px rgba(0, 0, 0, .75), 0 2px 10px rgba(0, 0, 0, .5);
-			height: $size-game-cover;
+			height: var(--size-game-cover, #{$size-game-cover});
 			transition: filter .25s ease-out;
-			width: $size-game-cover;
+			width: var(--size-game-cover, #{$size-game-cover});
 			z-index: $zindex-cover;
 		}
 
