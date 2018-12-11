@@ -1,18 +1,23 @@
 <template>
-	<transition appear name="fade">
+	<Transition appear name="fade">
 		<div class="choice__results">
 			<p class="text--secondary mb-0">
-				<random-text v-bind:choices="randomTitles"></random-text>
+				<RandomText :choices="randomTitles" />
 			</p>
 
 			<div class="choice__details" itemscope itemtype="http://schema.org/VideoGame">
 				<div class="choice__header">
-					<check-circle></check-circle>
-					<h2 class="choice__title" itemprop="name">{{ chosen.name }}</h2>
+					<CheckCircle />
+					<h2 class="choice__title" itemprop="name">
+						{{ chosen.name }}
+					</h2>
 				</div>
 
 				<div class="choice__cover">
-					<img class="focus" itemprop="image" v-bind:src="require(`../${chosen.img}`)" :alt="chosen.name">
+					<img class="focus" itemprop="image"
+						 :src="require(`../${chosen.img}`)"
+						 :alt="chosen.name"
+					>
 				</div>
 
 				<!--<dl>-->
@@ -36,31 +41,53 @@
 				</tr>
 				</thead>
 				<tbody>
-				<tr v-for="game in poll" v-bind:key="game.id" v-bind:class="{'text--accent': game.chosen}">
+				<tr v-for="game in poll" :key="game.id" :class="{'text--accent': game.chosen}">
 					<td>{{ game.name }}</td>
-					<td class="text--center">{{ game.total }}</td>
+					<td class="text--center">
+						{{ game.total }}
+					</td>
 				</tr>
 				</tbody>
 				<caption>Voting Results</caption>
 			</table>
 
 			<footer class="choice__actions">
-				<button class="btn btn--secondary text--accent" type="button" name="repick" ref="repick" v-if="canPickAgain"
-						v-on:click="pickAgain">
+				<button v-if="canPickAgain"
+						ref="repick"
+						class="btn btn--secondary text--accent"
+						type="button"
+						name="repick"
+						@click="pickAgain"
+				>
 					Pick Again
 				</button>
-				<button class="btn btn--primary" type="button" name="restart" ref="restart" v-on:click="this.$parent.reset">
+				<button ref="restart" class="btn btn--primary"
+						type="reset"
+						name="restart"
+						@click.prevent="this.$parent.reset"
+				>
 					Start Over
 				</button>
 			</footer>
 		</div>
-	</transition>
+	</Transition>
 </template>
 
 <script>
+	// @vue/component
 	import CheckCircle from 'vue-feather-icon/components/check-circle';
-	import RandomText from './RandomText';
 
+	// @vue/component
+	import RandomText from './RandomString';
+
+	/**
+	 * Game selection component
+	 * @vue-prop {{id:string,name:string,img:string,name:string,developer:string,publisher:string,gamePlatform:string,familyFriendly:boolean,numberOfPlayers:number}} chosen - Selected game's data
+	 * @vue-data {Number} picks - Number of times the selection has been repicked. Used to apply conditional title
+	 * @vue-computed {Boolean} canPickAgain - True if another game can be selected, or false if the voting process needs to be restarted
+	 * @vue-computed {{[string]:mixed}} poll - The number of votes tallied for the selected game, along with game data
+	 * @vue-computed {String} randomTitles - Returns a humorous random title
+	 */
 	export default {
 		name: 'Selection',
 		components: {
@@ -69,6 +96,10 @@
 		},
 		props: {
 			chosen: {
+				type: Object,
+				default: () => {
+					return {}
+				},
 				id: {
 					type: String,
 					required: true
@@ -106,21 +137,6 @@
 				picks: 0
 			};
 		},
-		methods: {
-			pickAgain() {
-				this.picks++;
-				this.$parent.votes = this.$parent.votes.filter(vote => vote.id !== this.chosen.id);
-
-				const voteCount = this.$parent.votes.length;
-
-				if (!voteCount) {
-					this.$parent.reset();
-					return;
-				}
-
-				this.$parent.choose();
-			}
-		},
 		computed: {
 			canPickAgain() {
 				return [...new Set(this.$parent.votes)].length > 1;
@@ -144,6 +160,24 @@
 				}
 
 				return ['Let&rsquo;s play&hellip;', 'How about&hellip;'];
+			}
+		},
+		methods: {
+			/**
+			 * Repicks a game. Increases picks count and removes currently elected game from votes list
+			 */
+			pickAgain() {
+				this.picks++;
+				this.$parent.votes = this.$parent.votes.filter(vote => vote.id !== this.chosen.id);
+
+				const voteCount = this.$parent.votes.length;
+
+				if (!voteCount) {
+					this.$parent.reset();
+					return;
+				}
+
+				this.$parent.choose();
 			}
 		}
 	};

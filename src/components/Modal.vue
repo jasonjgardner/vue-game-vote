@@ -1,30 +1,37 @@
 <template>
-	<transition name="modal">
+	<Transition name="modal">
 		<div class="modal">
 			<div class="modal__wrapper" role="dialog" aria-modal="true">
 				<aside class="modal__container">
-					<header class="modal__header" v-if="!!$slots.header">
-						<slot name="header"></slot>
+					<header v-if="!!$slots.header" class="modal__header">
+						<slot name="header" />
 					</header>
 
 					<div class="modal__body">
-						<slot name="body"></slot>
+						<slot name="body" />
 					</div>
 
 					<footer class="modal__footer">
 						<slot name="footer">
-							<button class="btn" type="button" v-on:click="$emit('close')">Cancel</button>
+							<button class="btn" type="button" @click="$emit('close')">
+								Cancel
+							</button>
 						</slot>
 					</footer>
 				</aside>
 			</div>
 		</div>
-	</transition>
+	</Transition>
 </template>
 
 <script>
+	// @vue/mixin
 	import ModalMixin from './Modal/Mixin';
 
+	/**
+	 * Modal component
+	 * @emits Modal#close
+	 */
 	export default {
 		name: 'Modal',
 		mixins: [ModalMixin]

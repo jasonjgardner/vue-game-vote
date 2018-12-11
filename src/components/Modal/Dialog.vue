@@ -1,5 +1,5 @@
 <template>
-	<transition appear name="alert">
+	<Transition appear name="alert">
 		<div class="modal">
 			<div class="dialog">
 				<div class="dialog__header">
@@ -12,17 +12,24 @@
 
 				<div class="dialog__footer">
 					<slot name="footer">
-						<button class="btn" type="button" v-on:click="$emit('dismissed')">OK</button>
+						<button class="btn" type="button" @click="$emit('dismissed')">
+							OK
+						</button>
 					</slot>
 				</div>
 			</div>
 		</div>
-	</transition>
+	</Transition>
 </template>
 
 <script>
+	// @vue/mixin
 	import ModalMixin from './Mixin';
 
+	/**
+	 * Dialog box component
+	 * @emits Dialog#dismiss
+	 */
 	export default {
 		name: 'Dialog',
 		mixins: [ModalMixin]

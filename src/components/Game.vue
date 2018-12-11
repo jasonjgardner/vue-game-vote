@@ -1,29 +1,53 @@
 <template>
-	<transition name="reveal">
+	<Transition name="reveal">
 		<div class="game">
-			<figure itemscope itemtype="http://schema.org/VideoGame" v-bind:title="title" v-on:click="vote(game)" v-if="game.id">
-				<img class="game__cover" itemprop="image" v-bind:src="require(`../${game.img}`)" v-bind:alt="game.name">
+			<figure v-if="game.id"
+					:title="title"
+					itemscope itemtype="http://schema.org/VideoGame"
+					@click="vote(game)"
+			>
+				<img class="game__cover" itemprop="image"
+					 :src="require(`../${game.img}`)"
+					 :alt="game.name"
+				>
 				<figcaption class="game__description">
-					<h3 class="game__title" itemprop="name">{{ game.name }}</h3>
+					<h3 class="game__title" itemprop="name">
+						{{ game.name }}
+					</h3>
 
-					<p class="game__tally" v-if="tally > 5">
+					<p v-if="tally > 5" class="game__tally" title="Votes cast">
 						{{ tally }}
 					</p>
-					<p class="game__votes" v-else-if="tally > 0" v-bind:title="`Vote count for ${game.name}`">
-						<span v-for="idx in tally" :key="idx" aria-hidden="true">&#9679;</span>
-						<span class="sr-only">{{ `${tally} votes` }}</span>
+					<p v-else-if="tally > 0" class="game__votes" :title="`Vote count for ${game.name}`">
+						<span v-for="idx in tally" :key="idx" aria-hidden="true">
+							&#9679;
+						</span>
+						<span class="sr-only">
+							{{ `${tally} votes` }}
+						</span>
 					</p>
 				</figcaption>
 			</figure>
 		</div>
-	</transition>
+	</Transition>
 </template>
 
 <script>
+	/**
+	 * Game choice component
+	 * @emits Game#vote
+	 * @vue-prop {{id:string,name:string,img:string}} game - Game data
+	 * @vue-computed {String} title - Conditional game title. Shows vote count when no voters remain, otherwise shows "Vote for..." message
+	 * @vue-computed {Number} tally - Number of votes received
+	 */
 	export default {
 		name: 'Game',
 		props: {
 			game: {
+				type: Object,
+				default: () => {
+					return {};
+				},
 				id: {
 					type: String,
 					required: true
@@ -38,7 +62,26 @@
 				}
 			}
 		},
+		computed: {
+			title() {
+				if (this.$parent.voters > 0) {
+					return `✔ Vote for ${this.game.name}`;
+				}
+
+				const votes = this.$parent.votes.filter(vote => vote.id === this.game.id).length;
+
+				return `${this.game.name} (${votes} vote${votes !== 1 ? 's' : ''})`;
+			},
+			tally() {
+				return this.$parent.votes.filter(vote => vote.id === this.game.id).length;
+			}
+		},
 		methods: {
+			/**
+			 * Casts a vote for this game
+			 * @param {Object} game - Game data
+			 * @event Game#vote
+			 */
 			vote(game) {
 				let ok = this.$parent.voters > 0;
 
@@ -55,20 +98,6 @@
 
 				this.$emit('vote', ok);
 			}
-		},
-		computed: {
-			title() {
-				if (this.$parent.voters > 0) {
-					return `✔ Vote for ${this.game.name}`;
-				}
-
-				const votes = this.$parent.votes.filter(vote => vote.id === this.game.id).length;
-
-				return `${this.game.name} (${votes} vote${votes !== 1 ? 's' : ''})`;
-			},
-			tally() {
-				return this.$parent.votes.filter(vote => vote.id === this.game.id).length;
-			}
 		}
 	};
 </script>
@@ -76,6 +105,13 @@
 <style lang="scss">
 	@import '../css/variables.scss';
 
+	/*---
+	title: Wiggle
+	resume: Game
+	section: Animations
+	---
+	Shakes game cover on click when there are no votes remaining.
+	 */
 	@keyframes wiggle {
 		20% {
 			transform: translateX(5px);
@@ -102,6 +138,13 @@
 		}
 	}
 
+	/*---
+	title: Reveal Transition
+	resume: Game
+	section: Transitions
+	---
+	Transitions position and opacity
+	 */
 	.reveal-enter,
 	.reveal-leave {
 		opacity: 0;
@@ -116,15 +159,13 @@
 		transform: translateY(0);
 	}
 
-	.no-voters .game figure {
-		cursor: not-allowed;
-
-		.game__description::before {
-			content: '';
-			display: none;
-		}
-	}
-
+	/*---
+	title: Game container
+	resume: Game
+	section: Layout
+	---
+	Game cover and title wrapper
+	 */
 	.game {
 		display: flex;
 		flex: 1 1 var(--size-game-cover, #{$size-game-cover});
@@ -140,12 +181,15 @@
 			position: relative;
 		}
 
+		/// Game title
 		&__title {
 			display: inline-block;
 			font-size: 1rem;
 			font-weight: 300;
 		}
 
+		/// Game description
+		/// Shows tooltips on hover
 		&__description {
 			align-items: center;
 			border-radius: $size-border-radius;
@@ -158,6 +202,7 @@
 			top: 0;
 			transition: background-color .25s ease-out, box-shadow .25s ease-in-out, top .25s;
 
+			/// Game cover tooltip
 			&::before {
 				background-color: rgba(0, 0, 0, .75);
 				border: 2px solid $color-lightest;
@@ -181,6 +226,7 @@
 			}
 		}
 
+		/// Game box art
 		&__cover {
 			box-shadow: 0 0 5px rgba(0, 0, 0, .75), 0 2px 10px rgba(0, 0, 0, .5);
 			height: var(--size-game-cover, #{$size-game-cover});
@@ -189,6 +235,7 @@
 			z-index: $zindex-cover;
 		}
 
+		/// Game vote count bubble
 		&__tally {
 			background-color: $color-accent;
 			border-radius: 50%;
@@ -204,6 +251,7 @@
 			width: 1rem;
 		}
 
+		/// Game vote count dots
 		&__votes {
 			color: $color-accent;
 			line-height: 1;
@@ -211,15 +259,18 @@
 			text-shadow: 0 1px 2px rgba(0, 0, 0, .6);
 		}
 
+		/// Hocus events
 		&:hover,
 		&:focus,
 		&:focus-within {
 			-webkit-tap-highlight-color: transparent;
 
+			/// Highlight title on hover
 			.game__title {
 				color: $color-primary;
 			}
 
+			/// Create tooltip bubble from description
 			.game__description {
 				background-color: $color-background-alt;
 				box-shadow: 0 1px 5px rgba(0, 0, 0, .66), 0 2px 10px rgba(0, 0, 0, .33);
@@ -250,8 +301,18 @@
 			}
 
 			.game__cover {
+				// stylelint-disable no-unknown-animations
 				animation: focus 1s infinite;
 			}
+		}
+	}
+
+	.no-voters .game figure {
+		cursor: not-allowed;
+
+		.game__description::before {
+			content: '';
+			display: none;
 		}
 	}
 

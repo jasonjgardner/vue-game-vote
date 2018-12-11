@@ -1,25 +1,29 @@
 <template>
-	<div id="app" v-bind:class="{'no-voters': voters < 1, 'cant-vote': voters < 0, 'modal-visible': showModal || dialogMessage }">
-		<section class="d-flex flex-column flex-1" id="choice" v-if="chosen">
-			<selected v-bind:chosen="chosen" v-bind:games="this.$parent.games"></selected>
+	<div id="app"
+		 :class="{'no-voters': voters < 1, 'cant-vote': voters < 0, 'modal-visible': showModal || dialogMessage }"
+	>
+		<section v-if="chosen" id="choice" class="d-flex flex-column flex-1">
+			<Selected :chosen="chosen" :games="this.$parent.games" />
 		</section>
 		<main v-else>
 			<header class="app__header">
-				<div class="app__icon" role="presentation" v-on:click="showModal = 'instructions'">
+				<div class="app__icon" role="presentation"
+					 @click="showModal = 'instructions'"
+				>
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 46 46">
 						<path d="M20,4V20H4V4H20m2-3H2A1,1,0,0,0,1,2V22a1,1,0,0,0,1,1H22a1,1,0,0,0,1-1V2a1,1,0,0,0-1-1Z"
-							transform="translate(-1 -1)"></path>
+							  transform="translate(-1 -1)"/>
 						<path
 							d="M44,4V20H28V4H44m2-3H26a1,1,0,0,0-1,1V22a1,1,0,0,0,1,1H46a1,1,0,0,0,1-1V2a1,1,0,0,0-1-1Z"
-							transform="translate(-1 -1)"></path>
+							transform="translate(-1 -1)"/>
 						<path
 							d="M44,28V44H28V28H44m2-3H26a1,1,0,0,0-1,1V46a1,1,0,0,0,1,1H46a1,1,0,0,0,1-1V26a1,1,0,0,0-1-1Z"
-							transform="translate(-1 -1)"></path>
+							transform="translate(-1 -1)"/>
 						<path
 							d="M20,28V44H4V28H20m2-3H2a1,1,0,0,0-1,1V46a1,1,0,0,0,1,1H22a1,1,0,0,0,1-1V26a1,1,0,0,0-1-1Z"
-							transform="translate(-1 -1)"></path>
-						<line x1="40" y1="30" x2="30" y2="40"></line>
-						<line x1="30" y1="30" x2="40" y2="40"></line>
+							transform="translate(-1 -1)"/>
+						<line x1="40" y1="30" x2="30" y2="40"/>
+						<line x1="30" y1="30" x2="40" y2="40"/>
 					</svg>
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 46 46">
 						<path
@@ -29,78 +33,157 @@
 						<path
 							d="M32 19.83L27.14 24H25v5h-4v-8h4.47L28 18.85v-2.7L25.5 14h-4.66L18 16.23V19h-4v-4.83q1.13-1.08 2.37-2.1c.82-.68 1.65-1.37 2.47-2.07h8.32L32 14.17zM25 36h-4v-4h4z"></path>
 					</svg>
-
 				</div>
 
-				<h1 class="app__title">Vote for a Game</h1>
+				<h1 class="app__title">
+					Vote for a Game
+				</h1>
 
-				<form class="d-flex" id="voters">
-					<label class="sr-only" for="votes-remaining">Votes Remaining:</label>
+				<form id="voters" class="d-flex">
+					<label class="sr-only" for="votes-remaining">
+						Votes Remaining:
+					</label>
 
-					<div class="voters__votes" v-bind:class="{'invalid': voters < 0 || voters > 99}">
-						<input id="votes-remaining" type="number" placeholder="#" max="99" min="0"
-							v-model.number="voters" v-if="!votes.length || voters > 0"
-							v-bind:readonly="votes.length > 0"
-							v-bind:title="`${voters} vote${voters === 1 ? '' : 's'} remaining`"
-							v-on:blur="voters = Math.max(1, voters)">
-						<button class="btn" type="submit" name="choose" title="Choose the game" v-if="votes.length"
-								v-on:click.prevent="choose">
-							<check-icon></check-icon>
-							<span class="sr-only">Choose</span>
+					<div class="voters__votes" :class="{'invalid': voters < 0 || voters > 99}">
+						<input v-if="!votes.length || voters > 0"
+							   id="votes-remaining"
+							   v-model.number="voters"
+							   :readonly="votes.length > 0"
+							   :title="`${voters} vote${voters === 1 ? '' : 's'} remaining`"
+							   :blur="voters = Math.max(1, voters)"
+							   type="number"
+							   placeholder="#"
+							   max="99" min="0"
+						>
+
+						<button v-if="votes.length"
+								class="btn"
+								type="submit"
+								name="choose"
+								title="Choose the game"
+								@click.prevent="choose"
+						>
+							<CheckIcon />
+							<span class="sr-only">
+								Choose
+							</span>
 						</button>
 					</div>
 
-					<button class="btn btn--secondary btn--fab" type="reset" name="reset" title="Reset voting"
-							v-show="votes.length" v-on:click.prevent="reset">
-						<reset-icon></reset-icon>
-						<span class="sr-only">Reset</span>
+					<button v-show="votes.length"
+							class="btn btn--secondary btn--fab"
+							type="reset"
+							name="reset"
+							title="Reset voting"
+							@click.prevent="reset"
+					>
+						<ResetIcon />
+						<span class="sr-only">
+							Reset
+						</span>
 					</button>
 
-					<button class="btn btn--secondary btn--fab" type="button" name="buy"
-							title="Pay a coin to buy a vote" v-on:click.prevent="buyVote">
-						<coin-icon class="rotate--90"></coin-icon>
-						<span class="sr-only">Buy Vote</span>
+					<button class="btn btn--secondary btn--fab"
+							type="button"
+							name="buy"
+							title="Pay a coin to buy a vote" @click.prevent="buyVote"
+					>
+						<CoinIcon class="rotate--90" />
+						<span class="sr-only">
+							Buy Vote
+						</span>
 					</button>
 				</form>
 			</header>
 
 			<div id="games">
-				<game v-for="game in filteredGames" v-bind:game="game" v-bind:key="game.id" v-on:vote="onVote"></game>
+				<Game v-for="game in filteredGames"
+					  :key="game.id"
+					  :game="game"
+					  @vote="onVote"
+				/>
 			</div>
 		</main>
 
-		<alert role="alert" v-if="dialogMessage.length > 0" v-on:dismissed="dialogMessage = false">
-			<h4 slot="header">Stop!</h4>
-			<p slot="message">{{ dialogMessage }}</p>
+		<Alert v-if="dialogMessage.length > 0" role="alert" @dismissed="dialogMessage = false">
+			<h4 slot="header">
+				Stop!
+			</h4>
+			<p slot="message">
+				{{ dialogMessage }}
+			</p>
 			<template slot="footer">
-				<button class="btn" type="reset" v-on:click.prevent="reset">Reset</button>
-				<button class="btn" type="submit" v-on:click.prevent="choose">Elect</button>
+				<button class="btn" type="reset" @click.prevent="reset">
+					Reset
+				</button>
+				<button class="btn" type="submit" @click.prevent="choose">
+					Elect
+				</button>
 			</template>
-		</alert>
+		</Alert>
 
-		<modal v-if="showModal === 'instructions'">
-			<h3 slot="header">Instructions</h3>
+		<Modal v-if="showModal === 'instructions'">
+			<h3 slot="header">
+				Instructions
+			</h3>
 			<template slot="body">
-				<component :is="modalComponent"></component>
+				<Component :is="modalComponent" />
 			</template>
 			<template slot="footer">
-				<button class="btn btn--primary" type="button" v-on:click="showModal = false">OK</button>
+				<button class="btn btn--primary" type="button" @click="showModal = false">
+					OK
+				</button>
 			</template>
-		</modal>
+		</Modal>
 	</div>
 </template>
 
 <script>
+	// @vue/component
 	import RotateCcw from 'vue-feather-icon/components/rotate-ccw';
+
+	// @vue/component
 	import MinusCircle from 'vue-feather-icon/components/minus-circle';
+
+	// @vue/component
 	import Check from 'vue-feather-icon/components/check';
+
+	// @vue/component
 	import Modal from './components/Modal';
+
+	// @vue/component
 	import Dialog from './components/Modal/Dialog';
+
+	// @vue/component
 	import Tooltip from './components/Tooltip';
+
+	// @vue/component
 	import Game from './components/Game';
 
+	/**
+	 * Game votes app
+	 * @vue-prop {Object[]} games - Array of game data objects
+	 * @vue-prop {Number} initialVoters - Number of votes initially allotted
+	 * @vue-data {Number} errors - Number of votes cast after allotted votes have been used
+	 * @vue-data {Object[]} votes - Array of game data objects for which votes have been cast
+	 * @vue-data {Object} chosen - Selected game's data
+	 * @vue-data {Boolean|String} showModal - Shows a specific modal when set to a string ID. Set to `false` to hide modal
+	 * @vue-data {Boolean|String} dialogMessage - Displays a dialog if a string value is set. Hides the dialog if `false`
+	 * @vue-data {Number} voters - Number of votes remaining
+	 * @vue-computed {Object[]} filteredGames - Array of game data filtered by certain parameters
+	 */
 	export default {
-		name: 'app',
+		name: 'App',
+		components: {
+			Modal,
+			Tooltip,
+			Alert: Dialog,
+			Game,
+			Selected: () => import(/* webpackChunkName: "selection" */'./components/Selection'),
+			ResetIcon: RotateCcw,
+			CoinIcon: MinusCircle,
+			CheckIcon: Check
+		},
 		props: {
 			games: {
 				type: Array,
@@ -112,48 +195,26 @@
 				validator: val => val > 0
 			}
 		},
-		components: {
-			Modal,
-			Tooltip,
-			Alert: Dialog,
-			Game,
-			Selected: () => import(/* webpackChunkName: "selection" */'./components/Selection'),
-			ResetIcon: RotateCcw,
-			CoinIcon: MinusCircle,
-			CheckIcon: Check
-		},
 		data: function () {
 			return {
 				errors: 0,
-				/**
-				 * @type Game[] Array of games selected
-				 */
 				votes: [],
-				/**
-				 * @type Game Selected game
-				 */
 				chosen: null,
-				/**
-				 * @type boolean|string Modal ID to show or falsy value to hide
-				 */
 				showModal: false,
-				/**
-				 * @type boolean|string Dialog message to show or falsy value to dismiss
-				 */
 				dialogMessage: false,
-				/**
-				 * @type number - Number of remaining votes
-				 */
-				voters: undefined,
-
-				gridColumns: 5
+				voters: undefined
 			};
 		},
 		computed: {
 			filteredGames() {
-				/**    @var {{numberOfPlayers:number}} game - Game data **/
+				/** @var {{numberOfPlayers:number}} game - Game data **/
 				return this.games.filter(game => game.numberOfPlayers >= this.initialVoters);
 			}
+		},
+		created() {
+			this.voters = this.initialVoters;
+
+			document.body.style.setProperty('--size-game-cover', '320px');
 		},
 		methods: {
 			/**
@@ -204,11 +265,6 @@
 					this.dialogMessage = 'You\'re out of votes!';
 				}
 			}
-		},
-		created() {
-			this.voters = this.initialVoters;
-
-			document.body.style.setProperty('--size-game-cover', '320px');
 		}
 	};
 </script>
@@ -221,6 +277,13 @@
 		flex: 1;
 		flex-flow: column nowrap;
 		width: 100%;
+
+		> main {
+			display: flex;
+			flex-flow: column wrap;
+			min-height: 100%;
+			justify-content: center;
+		}
 	}
 
 	.app__icon {
@@ -303,7 +366,21 @@
 		}
 	}
 
+	#games {
+		display: flex;
+		flex-flow: row wrap;
+		margin-top: ($size-base * 2) + 49; /// Header padding + icon height + border bottom
+
+		.game {
+			margin-right: 0;
+		}
+	}
+
 	@media screen and (min-width: #{($media-screen-sm)}) {
+		#games .game {
+			margin-right: $size-base;
+		}
+
 		.app__header {
 			align-items: center;
 			flex-direction: row;
@@ -315,10 +392,11 @@
 		}
 	}
 
-	#games {
-		display: flex;
-		flex-flow: row wrap;
-		margin-top: ($size-base * 2) + 49; /// Header padding + icon height + border bottom
+	@media screen and (min-width: #{$media-screen-md}) {
+		#games {
+			--size-game-cover: #{min(480px, $size-game-cover-max)};
+			flex-wrap: nowrap;
+		}
 	}
 
 	.modal-visible #games {
