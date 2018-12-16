@@ -2,7 +2,7 @@
 	<Transition appear name="fade">
 		<div class="choice__results">
 			<p class="text--secondary mb-0">
-				<RandomText :choices="randomTitles" />
+				<RandomText :choices="randomTitles" :html="true" />
 			</p>
 
 			<div class="choice__details" itemscope itemtype="http://schema.org/VideoGame">
@@ -64,7 +64,7 @@
 				<button ref="restart" class="btn btn--primary"
 						type="reset"
 						name="restart"
-						@click.prevent="this.$parent.reset"
+						@click.prevent="$emit('reset')"
 				>
 					Start Over
 				</button>
@@ -81,8 +81,23 @@
 	import RandomText from './RandomString';
 
 	/**
+	 * Game data
+	 * @typedef {Object<string,any>} GameData
+	 * @property {String} id - Unique game ID
+	 * @property {String} name - Game name
+	 * @property {String} img - Image source path
+	 * @property {String} [developer] - Game developer
+	 * @property {String} [publisher] - Game publisher
+	 * @property {String} [gamePlatform] - Game platform/system
+	 * @property {Boolean} [familyFriendly] - Game is family-friendly
+	 * @property {'RP'|'EC'|'E'|'E10+'|'T'|'M'|'AO'} [esrb] - ESRB game rating
+	 * @property {'CoOp'|'MultiPlayer'|'SinglePlayer'} [playMode] - Identifies game as single or multiplayer
+	 * @property {Number} [numberOfPlayers=1] - Number of players
+	 */
+
+	/**
 	 * Game selection component
-	 * @vue-prop {{id:string,name:string,img:string,name:string,developer:string,publisher:string,gamePlatform:string,familyFriendly:boolean,numberOfPlayers:number}} chosen - Selected game's data
+	 * @vue-prop {GameData} chosen - Selected game's data
 	 * @vue-data {Number} picks - Number of times the selection has been repicked. Used to apply conditional title
 	 * @vue-computed {Boolean} canPickAgain - True if another game can be selected, or false if the voting process needs to be restarted
 	 * @vue-computed {{[string]:mixed}} poll - The number of votes tallied for the selected game, along with game data
@@ -170,21 +185,14 @@
 				this.picks++;
 				this.$parent.votes = this.$parent.votes.filter(vote => vote.id !== this.chosen.id);
 
-				const voteCount = this.$parent.votes.length;
-
-				if (!voteCount) {
-					this.$parent.reset();
-					return;
-				}
-
-				this.$parent.choose();
+				this.$emit(this.$parent.votes.length > 0 ? 'choose' : 'reset');
 			}
 		}
 	};
 </script>
 
 <style lang="scss" scoped>
-	@import '../css/variables.scss';
+	@import '../css/_variables.scss';
 
 	.choice__details {
 		display: flex;

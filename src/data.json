@@ -37,11 +37,11 @@
       "gamePlatform": "Nintendo Switch"
     },
     {
-      "id": "pokemon-quest",
-      "name": "Pokémon Quest",
-      "img": "assets/games/pokemon-quest.jpg",
-      "numberOfPlayers": 1,
-      "playMode": "SinglePlayer",
+      "id": "katamari-damacy",
+      "name": "Katamari Damacy ",
+      "img": "assets/games/katamari.jpg",
+      "numberOfPlayers": 2,
+      "playMode": "MultiPlayer",
       "familyFriendly": true,
       "contentRating": "E",
       "publisher":"Nintendo",

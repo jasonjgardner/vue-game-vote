@@ -29,6 +29,6 @@ export default {
 			return this.choices[Math.floor(Math.random() * this.choices.length)];
 		}
 	},
-	template: `<span v-if="html" v-html="random()"></span><span v-else>{{ random() }}</span>`
+	template: `<span v-if="html === true" v-html="random()"></span><span v-else>{{ random() }}</span>`
 };
 

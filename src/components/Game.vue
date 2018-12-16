@@ -170,6 +170,7 @@
 		display: flex;
 		flex: 1 1 var(--size-game-cover, #{$size-game-cover});
 		justify-content: center;
+		user-select: none;
 
 		figure {
 			cursor: pointer;
@@ -214,14 +215,15 @@
 				font-weight: 300;
 				line-height: $size-base * 2;
 				height: $size-base * 2;
-				left: $size-base * 2.5;
+				left: 50%;
 				opacity: 0;
 				padding: .125em 0;
 				position: absolute;
 				text-align: center;
 				transition: opacity .333s ease-out;
 				transition-delay: 0s;
-				width: $size-game-cover - ($size-base * 5);
+				transform: translateX(-50%);
+				width: calc(var(--size-game-cover) - #{($size-base * 5)});
 				z-index: $zindex-cover + 1;
 			}
 		}
@@ -323,6 +325,16 @@
 		.game__cover {
 			filter: saturate(.3);
 			outline: 4px solid $color-dark;
+		}
+	}
+
+	@media screen and (min-width: #{$media-screen-sm}) {
+		.game:first-of-type {
+			margin-left: $size-base;
+		}
+
+		.game + .game {
+			margin-left: $size-base;
 		}
 	}
 </style>

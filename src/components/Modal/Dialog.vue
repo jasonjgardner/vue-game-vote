@@ -3,11 +3,11 @@
 		<div class="modal">
 			<div class="dialog">
 				<div class="dialog__header">
-					<slot name="header"></slot>
+					<slot name="header" />
 				</div>
 
 				<div class="dialog__body">
-					<slot name="message"></slot>
+					<slot name="message" />
 				</div>
 
 				<div class="dialog__footer">

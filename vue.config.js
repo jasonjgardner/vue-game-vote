@@ -1,7 +1,13 @@
 const pkg = require('./package.json'),
-	path = require('path');
+	path = require('path'),
+	merge = require('babel-merge');
 
-const DEV = process.env.NODE_ENV !== 'production';
+const DEV = process.env.NODE_ENV !== 'production',
+	INCLUDES = [
+		'C:\\node_modules',
+		'D:\\node_modules',
+		path.join(__dirname, '/node_modules')
+	];
 
 module.exports = {
 	assetsDir: 'assets',
@@ -11,20 +17,23 @@ module.exports = {
 		extract: !DEV,
 		loaderOptions: {
 			sass: {
+				sourceMap: DEV,
+				indentedSyntax: false,
 				includePaths: [
 					path.resolve(__dirname, '/node_modules/')
 				]
 			},
 			postcss: {
-				plugins: () => [
-					require('autoprefixer')(),
-					require('postcss-preset-env')({
+				sourceMap: DEV,
+				plugins: {
+					'autoprefixer': {},
+					'postcss-preset-env': {
 						stage: 0
-					}),
-					require('cssnano')({
+					},
+					'cssnano': {
 						preset: 'default'
-					})
-				]
+					}
+				}
 			}
 		}
 	},
@@ -41,6 +50,131 @@ module.exports = {
 		]
 	},
 	chainWebpack: config => {
+		/*config.module.rule('scss')
+			.test(/\.scss$/)
+			.oneOf('vue-modules')
+				.resourceQuery(/module/)
+					.use('vue')
+						.loader('vue-style-loader')
+							.tap(options => merge(options, {
+							sourceMap: DEV,
+							shadowMode: false
+						}))
+						.end()
+					.use('css')
+						.loader('css-loader')
+							.tap(options => merge(options, {
+								sourceMap: DEV,
+								importLoaders: 1,
+								modules: true,
+								localIdentName: '[name]_[local]_[hash:base64:5]'
+							}))
+						.end()
+					.use('postcss')
+						.loader('postcss-loader')
+							.tap(options => merge(options, {plugins: []}))
+						.end()
+					.use('sass')
+						.loader('sass-loader')
+						.tap(options => merge(options, {
+								sourceMap: DEV,
+								indentedSyntax: false,
+								includePaths: INCLUDES
+							}));
+
+		config.module.rule('scss').test(/\.scss$/)
+			.oneOf('vue')
+			.resourceQuery(/\?vue/)
+				.use('vue')
+						.loader('vue-style-loader')
+							.tap(options => merge(options, {
+							sourceMap: DEV,
+							shadowMode: false
+						}))
+						.end()
+					.use('css')
+						.loader('css-loader')
+							.tap(options => merge(options, {
+								sourceMap: DEV,
+								importLoaders: 1,
+								modules: true,
+								localIdentName: '[name]_[local]_[hash:base64:5]'
+							}))
+						.end()
+					.use('postcss')
+						.loader('postcss-loader')
+							.tap(options => merge(options, {plugins: []}))
+						.end()
+					.use('sass')
+						.loader('sass-loader')
+						.tap(options => merge(options, {
+								sourceMap: DEV,
+								indentedSyntax: false,
+								includePaths: INCLUDES
+							}));
+
+		config.module.rule('scss').test(/\.scss$/)
+			.oneOf('normal-modules')
+			.test(/\.module\.\w+$/)
+				.use('vue')
+						.loader('vue-style-loader')
+							.tap(options => merge(options, {
+							sourceMap: DEV,
+							shadowMode: false
+						}))
+						.end()
+					.use('css')
+						.loader('css-loader')
+							.tap(options => merge(options, {
+								sourceMap: DEV,
+								importLoaders: 1,
+								modules: true,
+								localIdentName: '[name]_[local]_[hash:base64:5]'
+							}))
+						.end()
+					.use('postcss')
+						.loader('postcss-loader')
+							.tap(options => merge(options, {plugins: []}))
+						.end()
+					.use('sass')
+						.loader('sass-loader')
+						.tap(options => merge(options, {
+								sourceMap: DEV,
+								indentedSyntax: false,
+								includePaths: INCLUDES
+							}));
+
+		config.module.rule('scss').test(/\.scss$/)
+			.oneOf('normal')
+			.use('vue')
+				.loader('vue-style-loader')
+					.tap(options => merge(options, {
+					sourceMap: DEV,
+					shadowMode: false
+				}))
+					.end()
+				.use('css')
+						.loader('css-loader')
+							.tap(options => merge(options, {
+								sourceMap: DEV,
+								importLoaders: 1,
+								modules: true,
+								localIdentName: '[name]_[local]_[hash:base64:5]'
+							}))
+						.end()
+					.use('postcss')
+						.loader('postcss-loader')
+							.tap(options => merge(options, {plugins: []}))
+						.end()
+					.use('sass')
+						.loader('sass-loader')
+						.tap(options => merge(options, {
+								sourceMap: DEV,
+								indentedSyntax: false,
+								includePaths: INCLUDES
+							}));
+*/
+
 		config.module.rule('md')
 			.test(/\.md$/)
 			.use('markdown-loader')
@@ -55,6 +189,6 @@ module.exports = {
 			args[0].themeColor = pkg.config.themeColor;
 
 			return args;
-		})
+		});
 	}
 };

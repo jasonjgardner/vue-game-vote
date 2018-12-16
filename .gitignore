@@ -3,6 +3,8 @@ node_modules
 dist/
 npm-debug.log*
 .idea
+docs/
+!docs/conf.json
 
 # Assets folder contains copyrighted video game cover art graphics, thus is excluded from the repo
 src/assets/

@@ -39,7 +39,7 @@
 </script>
 
 <style lang="scss">
-	@import '../css/variables.scss';
+	@import '../css/_variables.scss';
 
 	.modal {
 		align-items: center;

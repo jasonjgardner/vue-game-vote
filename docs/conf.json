@@ -6,7 +6,9 @@
     "includePattern": ".+\\.(js(doc|x)?|vue)$",
     "excludePattern": "(^|\\/|\\\\)_"
   },
-  "plugins": [],
+  "plugins": [
+    "../node_modules/jsdoc-vuejs"
+  ],
   "templates": {
     "cleverLinks": false,
     "monospaceLinks": false,

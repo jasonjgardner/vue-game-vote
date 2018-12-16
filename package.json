@@ -19,11 +19,14 @@
   "scripts": {
     "serve": "vue-cli-service serve --modern --copy",
     "build": "vue-cli-service build --modern --mode production",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "doc": "jsdoc src/App.vue src/components/Selection.vue src/components/RandomString.js src/components/Modal.vue src/components/Game.vue src/components/Modal/Dialog.vue -c docs/conf.json -d docs/"
   },
   "dependencies": {
     "feather-icons": "^4.9.0",
     "normalize.css": "^8.0.1",
+    "postcss-each": "^0.10.0",
+    "postcss-import": "^12.0.1",
     "register-service-worker": "^1.5.2",
     "vue": "^2.5.17",
     "vue-feather-icon": "^1.2.0"
@@ -35,6 +38,7 @@
     "@vue/cli-service": "^3.2.0",
     "autoprefixer": "^9.4.2",
     "babel-eslint": "^10.0.1",
+    "babel-merge": "^2.0.1",
     "cssnano": "^4.1.7",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0-0",
@@ -44,11 +48,15 @@
     "jsdoc-vuejs": "^2.3.3",
     "markdown-loader": "^4.0.0",
     "node-sass": "^4.10.0",
+    "postcss-color-function": "^4.0.1",
+    "postcss-for": "^2.1.1",
+    "postcss-nested": "^4.1.0",
     "postcss-preset-env": "^6.4.0",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
     "stylelint": "^9.8.0",
-    "vue-template-compiler": "^2.5.17"
+    "vue-template-compiler": "^2.5.17",
+    "postcss-simple-vars": "latest"
   },
   "config": {
     "title": "Video Game Vote",
