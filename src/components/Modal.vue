@@ -44,6 +44,7 @@
 	.modal {
 		align-items: center;
 		background-color: $color-modal-background;
+		backdrop-filter: blur(10px);
 		display: flex;
 		flex-flow: column nowrap;
 		height: 100%;
@@ -56,7 +57,7 @@
 		z-index: $zindex-modal;
 
 		&__container {
-			background-color: $color-background-alt;
+			background-color: var(--color-background-alt);
 			border-radius: $size-border-radius;
 			box-shadow: 0 3px 1rem rgba(0, 0, 0, .5);
 			margin: 0 $size-base;

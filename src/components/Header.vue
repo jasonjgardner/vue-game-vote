@@ -3,29 +3,8 @@
 		<div id="icons" role="presentation"
 			 @click="showInstructions = true"
 		>
-			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 46 46">
-				<path d="M20,4V20H4V4H20m2-3H2A1,1,0,0,0,1,2V22a1,1,0,0,0,1,1H22a1,1,0,0,0,1-1V2a1,1,0,0,0-1-1Z"
-					  transform="translate(-1 -1)"/>
-				<path
-					d="M44,4V20H28V4H44m2-3H26a1,1,0,0,0-1,1V22a1,1,0,0,0,1,1H46a1,1,0,0,0,1-1V2a1,1,0,0,0-1-1Z"
-					transform="translate(-1 -1)"/>
-				<path
-					d="M44,28V44H28V28H44m2-3H26a1,1,0,0,0-1,1V46a1,1,0,0,0,1,1H46a1,1,0,0,0,1-1V26a1,1,0,0,0-1-1Z"
-					transform="translate(-1 -1)"/>
-				<path
-					d="M20,28V44H4V28H20m2-3H2a1,1,0,0,0-1,1V46a1,1,0,0,0,1,1H22a1,1,0,0,0,1-1V26a1,1,0,0,0-1-1Z"
-					transform="translate(-1 -1)"/>
-				<line x1="40" y1="30" x2="30" y2="40"/>
-				<line x1="30" y1="30" x2="40" y2="40"/>
-			</svg>
-			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 46 46">
-				<path
-					d="M7.56 38H4.44a.44.44 0 0 0-.44.44v3.12a.44.44 0 0 0 .44.44h3.12a.44.44 0 0 0 .44-.44v-3.12a.44.44 0 0 0-.44-.44zM41.56 4h-3.12a.44.44 0 0 0-.44.44v3.12a.44.44 0 0 0 .44.44h3.12a.44.44 0 0 0 .44-.44V4.44a.44.44 0 0 0-.44-.44zM7.56 4H4.44a.44.44 0 0 0-.44.44v3.12a.44.44 0 0 0 .44.44h3.12A.44.44 0 0 0 8 7.56V4.44A.44.44 0 0 0 7.56 4zM41.56 38h-3.12a.44.44 0 0 0-.44.44v3.12a.44.44 0 0 0 .44.44h3.12a.44.44 0 0 0 .44-.44v-3.12a.44.44 0 0 0-.44-.44z"></path>
-				<path
-					d="M43 3v40H3V3h40m2-3H1a1 1 0 0 0-1 1v44a1 1 0 0 0 1 1h44a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1z"></path>
-				<path
-					d="M32 19.83L27.14 24H25v5h-4v-8h4.47L28 18.85v-2.7L25.5 14h-4.66L18 16.23V19h-4v-4.83q1.13-1.08 2.37-2.1c.82-.68 1.65-1.37 2.47-2.07h8.32L32 14.17zM25 36h-4v-4h4z"></path>
-			</svg>
+			<AppIcon />
+			<HelpIcon />
 		</div>
 
 		<h1 class="title">
@@ -114,7 +93,7 @@
 
 				<aside id="mario-coin">
 					<header>
-						<CoinIcon class="rotate--90 white-stroke mr-1 mb-0" />
+						<CoinIcon class="rotate--90 light-stroke mr-1 mb-0" />
 						<h4>Mario Coins</h4>
 					</header>
 
@@ -145,9 +124,15 @@
 	// @vue/component
 	import Check from 'vue-feather-icon/components/check';
 
+	import AppIcon from '../assets/icon.svg';
+
+	import HelpIcon from '../assets/help.svg';
+
 	export default {
 		name: 'Header',
 		components: {
+			AppIcon,
+			HelpIcon,
 			ResetIcon: RotateCcw,
 			CoinIcon: MinusCircle,
 			CheckIcon: Check,
@@ -194,14 +179,14 @@
 		width: $size-app-icon;
 
 		svg {
-			fill: white;
+			fill: $color-lightest;
 			height: $size-app-icon;
 			position: absolute;
 			transition: opacity .15s ease-in, transform .25s cubic-bezier(.68, -.55, .265, 1.55);
 			width: $size-app-icon;
 
 			line {
-				stroke: white;
+				stroke: $color-lightest;
 				stroke-width: 2px;
 				stroke-linecap: round;
 				stroke-linejoin: round;
@@ -239,7 +224,7 @@
 
 	#app-header {
 		align-items: center;
-		background-color: rgba($color-background, .97);
+		background-color: rgba(map-get($theme-dark, 'background'), .97);
 		border-bottom: 1px solid rgba($color-lightest, .66);
 		box-shadow: 0 2px .3125rem rgba(0, 0, 0, .66), 0 .3125rem 1.5rem rgba(0, 0, 0, .33);
 		box-sizing: border-box;
@@ -262,7 +247,7 @@
 	}
 
 	.voters__votes {
-		background-color: $color-accent;
+		background-color: var(--color-accent);
 		border-radius: ($size-btn-fab * .5);
 		box-shadow: -1px 1px 3px rgba(0, 0, 0, .5), 0 0 5px rgba(0, 0, 0, .33);
 		color: $color-dark;
@@ -284,6 +269,11 @@
 			font-weight: bold;
 			text-align: right;
 			width: 1.5rem;
+
+			&::selection {
+				background-color: rgba(255, 255, 255, .5);
+				color: $color-primary;
+			}
 
 			&:focus {
 				color: $color-dark-alt;
@@ -309,13 +299,19 @@
 		}
 
 		input + .btn {
+			border-radius: 50%;
 			padding-left: .25em;
 			padding-right: .45em;
+
+			&:active {
+				animation: none;
+				background-color: rgba(0, 0, 0, .5);
+			}
 		}
 
 		&:focus,
 		&:focus-within {
-			background-color: mix($color-accent, $color-primary);
+			background-color: var(--color-focus);
 			color: $color-btn-background;
 			outline: none;
 		}
@@ -352,8 +348,8 @@
 		font-size: .825rem;
 	}
 
-	.white-stroke {
-		stroke: white;
+	.light-stroke {
+		stroke: $color-lightest;
 	}
 
 	@media screen and (min-width: #{($media-screen-sm)}) {

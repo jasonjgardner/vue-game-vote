@@ -14,13 +14,20 @@ $color-focus-alt: #04b9c3;
 $color-selected-alt: rgba(mix($color-selected, $color-dark), .9);
 $color-assertive: #ff762e;
 $color-brand: #e60012;
-$color-background: #2d2d2d;
-$color-background-alt: #505050;
 $color-btn-background: #1f2227;
 $color-modal-background: rgba($color-btn-background, .9);
 
-$gradient-background: linear-gradient(to bottom, $color-background 0%, $color-background-alt, 100%);
-$gradient-background-alt: linear-gradient(to top, $color-background 0%, $color-background-alt, 100%);
+$theme-dark: (
+	background: #2d2d2d,
+	background-alt: #505050,
+	accent: #02fccc
+);
+
+$theme-light: (
+	background: #ebebeb,
+	background-alt: #f0f0f0,
+	accent: #3250f0
+);
 
 $font-family-title: 'Oxygen';
 $font-family-emoji: 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';

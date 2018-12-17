@@ -40,7 +40,7 @@
 	@import '../../css/variables';
 
 	.dialog {
-		background-color: rgba(mix($color-btn-background, $color-background-alt, 90%), .95);
+		background-color: rgba(mix($color-btn-background, map-get($theme-dark, 'background-alt'), 90%), .95);
 		border: 1px solid $color-secondary;
 		border-radius: $size-border-radius;
 		box-shadow: 0 1px 5px rgba(0, 0, 0, .66), 0 2px 12px rgba(0, 0, 0, .33);

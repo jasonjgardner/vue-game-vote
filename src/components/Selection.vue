@@ -249,7 +249,7 @@
 	}
 
 	.choice__actions {
-		background-color: rgba($color-background, .95);
+		background-color: rgba(map-get($theme-dark, 'background'), .95);
 		border-top: 1px solid $color-lightest;
 		bottom: 0;
 		box-shadow: 0 -.5rem .4rem -.3rem rgba(0, 0, 0, .45);
@@ -302,7 +302,7 @@
 	tbody tr {
 		&:hover,
 		&:focus-within {
-			background-color: $color-background-alt;
+			background-color: map-get($theme-dark, 'background-alt');
 		}
 
 		&:nth-child(even) {

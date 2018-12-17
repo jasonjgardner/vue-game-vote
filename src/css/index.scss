@@ -2,6 +2,20 @@
 @import url('https://fonts.googleapis.com/css?family=#{$font-family-title}:300,400,700');
 @import '~normalize.css/normalize.css';
 
+:root {
+	--color-background: #{map-get($theme-dark, 'background')};
+	--color-background-alt: #{map-get($theme-dark, 'background-alt')};
+	--color-accent: #{map-get($theme-dark, 'accent')};
+	--color-primary-alt: #{mix($color-btn-background, map-get($theme-dark, 'accent'), 25%)};
+	--color-focus: mix(map-get($theme-dark, 'accent'), map-get($theme-dark, 'primary'));
+}
+
+body.light-scheme {
+	--color-background: #{map-get($theme-light, 'background')};
+	--color-background-alt: #{map-get($theme-light, 'background-alt')};
+	--color-accent: #{map-get($theme-light, 'accent')};
+}
+
 @keyframes focus {
 	0%,
 	100% {
@@ -68,7 +82,7 @@
 .text--accent,
 .btn.text--accent,
 tr.text--accent td {
-	color: $color-accent;
+	color: var(--color-accent);
 }
 
 .text--center {
@@ -104,7 +118,7 @@ $sides: (
 
 .btn {
 	-webkit-appearance: none;
-	background-color: $color-background-alt;
+	background-color: var(--color-background-alt);
 	border: 0;
 	border-radius: $size-border-radius;
 	box-sizing: border-box;
@@ -122,14 +136,19 @@ $sides: (
 		outline: none;
 	}
 
+	&:focus,
+	&:active {
+		animation: focus 1s infinite;
+	}
+
 	&--primary {
-		background-color: $color-accent;
+		background-color: var(--color-accent);
 		color: $color-dark;
 
 		&:hover,
 		&:focus,
 		&:active {
-			background-color: mix($color-btn-background, $color-accent, 25%);
+			background-color: var(--color-primary-alt);
 			color: $color-dark-alt;
 		}
 	}
@@ -142,6 +161,7 @@ $sides: (
 		display: flex;
 		height: $size-btn-fab;
 		justify-content: center;
+		line-height: 1;
 		text-align: center;
 		transition: background-color .3s ease-in-out, box-shadow .5s ease-out, transform .666s cubic-bezier(.175, .885, .32, 1.275);
 		width: $size-btn-fab;
@@ -181,7 +201,7 @@ html {
 }
 
 body {
-	background-color: $color-background;
+	background-color: var(--color-background);
 	display: flex;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
@@ -232,13 +252,13 @@ blockquote {
 	position: relative;
 
 	&::before {
-		background-color: $color-accent;
+		background-color: var(--color-accent);
 		content: '';
 		display: block;
 		height: 100%;
 		left: 0;
 		position: absolute;
 		top: 0;
-		width: 3px;
+		width: $size-gap;
 	}
 }

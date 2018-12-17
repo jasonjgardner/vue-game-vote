@@ -122,7 +122,7 @@
 		created() {
 			this.voters = this.initialVoters;
 
-			document.body.style.setProperty('--size-game-cover', '320px');
+			//document.body.style.setProperty('--size-game-cover', '320px');
 		},
 		methods: {
 			/**

@@ -216,6 +216,7 @@
 				line-height: $size-base * 2;
 				height: $size-base * 2;
 				left: 50%;
+				min-width: 200px;
 				opacity: 0;
 				padding: .125em 0;
 				position: absolute;
@@ -239,7 +240,7 @@
 
 		/// Game vote count bubble
 		&__tally {
-			background-color: $color-accent;
+			background-color: var(--color-accent);
 			border-radius: 50%;
 			box-shadow: 0 1px 3px rgba(0, 0, 0, .66);
 			color: $color-dark;
@@ -255,7 +256,7 @@
 
 		/// Game vote count dots
 		&__votes {
-			color: $color-accent;
+			color: var(--color-accent);
 			line-height: 1;
 			text-align: right;
 			text-shadow: 0 1px 2px rgba(0, 0, 0, .6);
@@ -274,7 +275,7 @@
 
 			/// Create tooltip bubble from description
 			.game__description {
-				background-color: $color-background-alt;
+				background-color: var(--color-background-alt);
 				box-shadow: 0 1px 5px rgba(0, 0, 0, .66), 0 2px 10px rgba(0, 0, 0, .33);
 				top: 10px;
 
@@ -284,11 +285,12 @@
 					transition-delay: 1.5s;
 				}
 
+				/// Bubble arrow
 				&::after {
 					content: '';
 					border-width: ceil($size-base * .666);
 					border-style: solid;
-					border-color: transparent transparent $color-background-alt;
+					border-color: transparent transparent var(--color-background-alt);
 					bottom: calc(#{($size-base * 2) + 5} + 1.125em);
 					height: 0;
 					left: calc(50% - #{$size-base * .5});
