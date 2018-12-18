@@ -1,62 +1,225 @@
+/// Darkest color
+/// @type Color
+/// @deprecated Use `$theme` map instead of this variable
 $color-dark: #323232;
+
 $color-dark-alt: #414141;
 $color-neutral: #ddd;
 $color-light: #fefefe;
 $color-lightest: white;
-$color-primary: #1bb9ff;
 $color-secondary: #686868;
-$color-muted: #666;
-$color-accent: #02fccc;
-$color-active: #9c0;
 $color-selected: #4dc0dd;
 $color-focus: #3fe9d3;
 $color-focus-alt: #04b9c3;
 $color-selected-alt: rgba(mix($color-selected, $color-dark), .9);
-$color-assertive: #ff762e;
+
+/// Nintendo Switch brand color
+/// @type Color
+/// @group theming
 $color-brand: #e60012;
-$color-btn-background: #1f2227;
-$color-modal-background: rgba($color-btn-background, .9);
 
-$theme-dark: (
-	background: #2d2d2d,
-	background-alt: #505050,
-	accent: #02fccc
+/// Nintendo Switch theme colors
+/// @group theming
+/// @access public
+/// @property {Map} dark - Dark theme colors
+/// @property {Color} dark.background [#2d2d2d] - Dark theme background color
+/// @property {Color} dark.background-alt [#505050] - Alternate dark theme background color
+/// @property {Color} dark.btn-background [#1f2227] - Dark theme button background color
+/// @property {Color} dark.modal-background [#1f2227] - Modal overlay background color
+/// @property {Color} dark.dialog-background - Dialog overlay background color
+/// @property {Color} dark.light [#fefefe] - Light color
+/// @property {Color} dark.lightest [white] - Lightest color
+/// @property {Color} dark.primary [#1bb9ff] - Primary theme color
+/// @property {Color} dark.secondary [#686868] - Secondary theme color
+/// @property {Color} dark.accent [#02fccc] - Theme accent color
+/// @property {Color} dark.assertive [#ff762e] - Bold/assertive theme color
+/// @property {Color} dark.active [#9c0] - Active item theme color
+/// @property {Map} light - Light theme colors
+/// @property {Color} light.background [#ebebeb] - Light theme background
+/// @property {Color} light.background-alt [#f0f0f0] - Alternate light theme background color
+/// @property {Color} light.accent [#3250f0] - Light theme accent color
+$themes: (
+	dark: (
+		background: #2d2d2d,
+		background-alt: #505050,
+		btn-background: #1f2227,
+		modal-background: #1f2227,
+		dialog-background: rgba(mix(#1f2227, #505050, 90%), .95),
+		light: #fefefe,
+		lightest: white,
+		primary: #1bb9ff,
+		secondary: #686868,
+		accent: #02fccc,
+		muted: #666,
+		assertive: #ff762e,
+		active: #9c0
+	),
+	light: (
+		background: #ebebeb,
+		background-alt: #f0f0f0,
+		accent: #3250f0
+	)
 );
 
-$theme-light: (
-	background: #ebebeb,
-	background-alt: #f0f0f0,
-	accent: #3250f0
-);
+/// Default theme name. Must be in `$themes` map
+/// @type String
+/// @access public
+$defaultTheme: 'dark' !default;
 
-$font-family-title: 'Oxygen';
-$font-family-emoji: 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
-$font-family-system: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-$font-family-sans-serif: $font-family-title, 'Lato', 'Open Sans', $font-family-system;
+/// Font family used in titles (Oxygen)
+/// @link https://fonts.google.com/specimen/Oxygen
+/// @type String
+/// @group typography
+/// @name font-family-title
+/// @access public
+$font-family-title: 'Oxygen' !default;
 
-$font-size-base: 18px;
-$line-height-base: 1.5;
+/// Emoji font stack
+/// @type String
+/// @group typography
+/// @access public
+$font-family-emoji: 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol' !default;
 
+/// System font stack
+/// @type String
+/// @group typography
+/// @access public
+$font-family-system: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !default;
+
+/// Sans-serif font stack
+/// @type String
+/// @group typography
+/// @access public
+/// @see font-family-title
+$font-family-sans-serif: $font-family-title, 'Lato', 'Open Sans', $font-family-system !default;
+
+/// Base font size (equal to `1rem`)
+/// @type Length
+/// @name font-size-base
+/// @group typography
+/// @access public
+$font-size-base: 18px !default;
+
+/// Base line height
+/// @type Number
+/// @access public
+$line-height-base: 1.5 !default;
+
+/// Vertical rhythm base size
+/// @type Length
+/// @name size-base
+/// @group rhythm
+/// @access public
 $size-base: 15px;
+
+/// Vertical rhythm spacer size
+/// @type Length
+/// @access public
+/// @see size-base
 $size-gap: round($size-base * (1/3));
-$size-btn-fab: 2.25rem;
-$size-border-radius: 4px;
+
+/// Floating action button diameter
+/// @type Length
+/// @access public
+$size-btn-fab: 2.25rem !default;
+
+/// Box and button border radius
+/// @type Length
+/// @access public
+$size-border-radius: 4px !default;
+
+/// Default game cover size
+/// @type Length
+/// @group games
+/// @access public
 $size-game-cover: 256px !default;
-$size-game-cover-max: 512px;
-$size-app-icon: 48px;
 
-$padding-container: $size-base;
+/// Maximum game cover image size
+/// @type Length
+/// @group games
+/// @access public
+$size-game-cover-max: 512px !default;
 
+/// App icon in header width and height
+/// @type Length
+/// @group icons
+/// @access public
+$size-app-icon: 48px !default;
+
+/// Container padding width
+/// @type Length
+/// @access public
+/// @see size-base
+$padding-container: $size-base !default;
+
+/// Default UI Gaussian blur amount
+/// @type Length
+/// @access public
+$blur-radius: 10px;
+
+/// Smallest screen size media query width
+/// @type Length
+/// @group media-queries
+/// @access public
+/// @deprecated
 $media-screen-min: 290px;
+
+/// Extra-small screen size media query width (mobile)
+/// @type Length
+/// @group media-queries
+/// @access public
 $media-screen-xs: 320px;
+
+/// Small screen size media query width (mobile)
+/// @type Length
+/// @group media-queries
+/// @access public
 $media-screen-sm: 375px;
+
+/// Medium screen size media query width (tablets)
+/// @type Length
+/// @group media-queries
+/// @access public
 $media-screen-md: 768px;
+
+/// Large screen size media query width (laptops)
+/// @type Length
+/// @group media-queries
+/// @access public
 $media-screen-lg: 1024px;
+
+/// High-definition screen size media query (desktops)
+/// @type Length
+/// @group media-queries
+/// @access public
 $media-screen-hd: 1440px;
 
+/// Toolbar `z-index`
+/// @type Number
+/// @group z-indexes
+/// @access public
 $zindex-toolbar: 100;
+
+/// Tooltip `z-index`. Place above everything else.
+/// @type Number
+/// @group z-indexes
+/// @access public
 $zindex-tooltip: 210;
+
+/// Modal `z-index`. Place above content
+/// @type Number
+/// @group z-indexes
+/// @access public
 $zindex-modal: 200;
+
+/// Game cover `z-index`. Place below component indexes and above lowest index
+/// @type Number
+/// @group z-indexes
+/// @access public
 $zindex-cover: 2;
 
+/// Header tag selector
+/// @type {Selector}
+/// @group Headers
+/// @access public
 $--hn: 'h1, h2, h3, h4, h5, h6';

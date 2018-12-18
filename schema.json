@@ -1,0 +1,103 @@
+{
+  "title": "Video game vote app data",
+  "$id": "https://jasongardner.co/game-vote/schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "App data containing array of game details",
+  "type": "object",
+  "properties": {
+    "games": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/game"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    }
+  },
+  "definitions": {
+    "game": {
+      "title": "Video Game data",
+      "type": "object",
+      "properties": {
+        "id": {
+          "title": "Game ID",
+          "type": "string",
+          "description": "Unique identifier",
+          "minLength": 1
+        },
+        "name": {
+          "title": "Game title",
+          "type": "string",
+          "description": "Video game title",
+          "minLength": 1
+        },
+        "image": {
+          "title": "Game cover",
+          "type": "string",
+          "description": "Game cover image. Must end with a file extension",
+          "minLength": 3,
+          "pattern": ".+\\.[a-z]+$"
+        },
+        "numberOfPlayers": {
+          "title": "Number of players",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8,
+          "description": "Number of supported players",
+          "default": 1
+        },
+        "playMode": {
+          "title": "Play mode",
+          "type": "string",
+          "enum": [
+            "CoOp",
+            "MultiPlayer",
+            "SinglePlayer"
+          ],
+          "description": "Indicates whether this game is multi-player, co-op or single-player. (GamePlayMode enum)"
+        },
+        "familyFriendly": {
+          "title": "Family friendly game",
+          "type": "boolean",
+          "description": "Whether or not game is appropriate for all ages",
+          "default": false
+        },
+        "contentRating": {
+          "title": "Content rating",
+          "type": "string",
+          "enum": [
+            "RP",
+            "EC",
+            "E",
+            "E10+",
+            "T",
+            "M",
+            "AO"
+          ],
+          "description": "ERSB rating"
+        },
+        "publisher": {
+          "type": "string",
+          "description": "Video game publisher",
+          "minLength": 1
+        },
+        "developer": {
+          "type": "string",
+          "description": "Name of video game developer",
+          "minLength": 1
+        },
+        "gamePlatform": {
+          "type": "string",
+          "description": "The video game platform on which this game runs",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "img"
+      ],
+      "additionalProperties": true
+    }
+  }
+}

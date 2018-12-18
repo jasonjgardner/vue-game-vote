@@ -3,11 +3,11 @@
     {
       "id": "mario-party",
       "name": "Mario Party",
-      "img": "assets/games/mario-party.jpg",
+      "image": "assets/games/mario-party.jpg",
       "numberOfPlayers": 4,
       "playMode": "MultiPlayer",
       "familyFriendly": true,
-      "ersb": "E",
+      "contentRating": "E",
       "publisher": "Nintendo",
       "developer": "Nintendo",
       "gamePlatform": "Nintendo Switch"
@@ -15,11 +15,11 @@
     {
       "id": "super-smash-bros",
       "name": "Super Smash Bros.",
-      "img": "assets/games/super-smash-bros.jpg",
+      "image": "assets/games/super-smash-bros.jpg",
       "numberOfPlayers": 8,
       "playMode": "MultiPlayer",
       "familyFriendly": true,
-      "esrb": "E10+",
+      "contentRating": "E10+",
       "publisher": "Nintendo",
       "developer": "Nintendo / Sora Ltd. / BANDAI NAMCO Studios Inc.",
       "gamePlatform": "Nintendo Switch"
@@ -27,7 +27,7 @@
     {
       "id": "pokemon",
       "name": "Let's Go Pikachu",
-      "img": "assets/games/pokemon.jpg",
+      "image": "assets/games/pokemon.jpg",
       "numberOfPlayers": 2,
       "playMode": "CoOp",
       "familyFriendly": true,
@@ -39,7 +39,7 @@
     {
       "id": "katamari-damacy",
       "name": "Katamari Damacy ",
-      "img": "assets/games/katamari.jpg",
+      "image": "assets/games/katamari.jpg",
       "numberOfPlayers": 2,
       "playMode": "MultiPlayer",
       "familyFriendly": true,
@@ -51,7 +51,7 @@
     {
       "id": "mario-kart",
       "name": "Mario Kart 8",
-      "img":"assets/games/mario-kart.jpg",
+      "image":"assets/games/mario-kart.jpg",
       "numberOfPlayers": 4,
       "playMode": "MultiPlayer",
       "familyFriendly": true,
@@ -63,11 +63,11 @@
     {
       "id": "mario-tennis",
       "name": "Mario Tennis",
-      "img": "assets/games/mario-tennis.jpg",
+      "image": "assets/games/mario-tennis.jpg",
       "numberOfPlayers": 4,
       "playMode": "MultiPlayer",
       "familyFriendly": true,
-      "ersb": "E",
+      "contentRating": "E",
       "publisher": "Nintendo",
       "developer": "Nintendo",
       "gamePlatform": "Nintendo Switch"
@@ -75,11 +75,11 @@
     {
       "id": "mario-odyssey",
       "name": "Super Mario Odyssey",
-      "img": "assets/games/super-mario-odyssey.jpg",
+      "image": "assets/games/super-mario-odyssey.jpg",
       "numberOfPlayers":  2,
       "playMode": "CoOp",
       "familyFriendly": true,
-      "ersb": "E",
+      "contentRating": "E",
       "publisher": "Nintendo",
       "developer": "Nintendo",
       "gamePlatform": "Nintendo Switch"
@@ -87,11 +87,11 @@
     {
       "id": "minecraft",
       "name": "Minecraft",
-      "img": "assets/games/minecraft.jpg",
+      "image": "assets/games/minecraft.jpg",
       "numberOfPlayers":  2,
       "playMode": "CoOp",
       "familyFriendly": true,
-      "ersb": "E",
+      "contentRating": "E",
       "publisher": "Microsoft",
       "developer": "Mojang AB",
       "gamePlatform": "Nintendo Switch"
@@ -99,11 +99,11 @@
     {
       "id": "1-2-switch",
       "name": "1-2 Switch",
-      "img": "assets/games/1-2-switch.jpg",
+      "image": "assets/games/1-2-switch.jpg",
       "numberOfPlayers":  2,
       "playMode": "MultiPlayer",
       "familyFriendly": true,
-      "ersb": "E",
+      "contentRating": "E",
       "publisher": "Nintendo",
       "developer": "Nintendo",
       "gamePlatform": "Nintendo Switch"
@@ -111,11 +111,11 @@
     {
       "id": "astro-bears",
       "name": "Astro Bears",
-      "img": "assets/games/astro-bears.jpg",
+      "image": "assets/games/astro-bears.jpg",
       "numberOfPlayers": 4,
       "playMode": "MultiPlayer",
       "familyFriendly": true,
-      "ersb": "E",
+      "contentRating": "E",
       "publisher": "QubicGames",
       "developer": "QubicGames",
       "gamePlatform": "Nintendo Switch"
@@ -123,7 +123,7 @@
     {
       "id": "arms",
       "name": "Arms",
-      "img": "assets/games/arms.jpg",
+      "image": "assets/games/arms.jpg",
       "numberOfPlayers": 4,
       "playMode": "MultiPlayer",
       "familyFriendly": true,
@@ -133,11 +133,11 @@
     {
       "id": "rocket-league",
       "name": "Rocket League",
-      "img": "assets/games/rocket-league.jpg",
+      "image": "assets/games/rocket-league.jpg",
       "numberOfPlayers": 4,
       "playMode": "MultiPlayer",
       "familyFriendly": true,
-      "ersb": "E",
+      "contentRating": "E",
       "publisher": "Psyonix",
       "developer": "Psyonix",
       "gamePlatform": "Nintendo Switch"

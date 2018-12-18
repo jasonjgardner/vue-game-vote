@@ -18,6 +18,9 @@
 </template>
 
 <script>
+	/**
+	 * @module Controls
+	 */
 	export default {
 		name: 'Controls',
 		data: () => {

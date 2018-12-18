@@ -1,0 +1,20 @@
+@import 'variables';
+
+/// Theme map helper function
+/// @require $defaultTheme
+/// @parameter {String} $key - Theme variable name to use
+/// @parameter {String} $theme [$defaultTheme] - The theme map from which the variable will be retrieved
+@function theme($key, $theme: $defaultTheme) {
+	@if not (map-has-key($themes, $theme)) {
+		@error 'Theme `#{$theme}` map not found';
+	}
+	@else {
+		$map: map-get($themes, $theme);
+
+		@if (map-has-key($map, $key)) {
+			@return map-get($map, $key);
+		}
+
+		@error 'Theme `#{$theme}` does not have key `#{$key}`';
+	}
+}

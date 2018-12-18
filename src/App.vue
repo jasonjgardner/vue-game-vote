@@ -1,7 +1,5 @@
 <template>
-	<div id="app"
-		 :class="{'no-voters': voters < 1, 'cant-vote': voters < 0, 'modal-visible': showModal || dialogMessage }"
-	>
+	<div id="app" :class="{'no-voters': voters < 1 }">
 		<section v-if="chosen" id="choice" class="d-flex flex-column flex-1">
 			<Selected :chosen="chosen" :games="this.$parent.games"
 				@choose="choose"
@@ -44,45 +42,38 @@
 </template>
 
 <script>
-	// @vue/component
+	/**
+	 * Game data [schema]{@link https://schema.org/VideoGame}
+	 * @typedef {Object<string,any>} GameData
+	 * @property {String} id - Unique game ID
+	 * @property {String} name - Game name
+	 * @property {String} img - Image source path
+	 * @property {String} [developer] - Game developer
+	 * @property {String} [publisher] - Game publisher
+	 * @property {String} [gamePlatform] - Game platform/system
+	 * @property {Boolean} [familyFriendly] - Game is family-friendly
+	 * @property {'RP'|'EC'|'E'|'E10+'|'T'|'M'|'AO'} [contentRating] - ESRB game rating
+	 * @property {'CoOp'|'MultiPlayer'|'SinglePlayer'} [playMode] - Identifies game as single or multi-player
+	 * @property {Number} [numberOfPlayers=1] - Number of players
+	 */
 	import Header from './components/Header';
-
-	// @vue/component
 	import Game from './components/Game';
+	import HorizontalScroll from './lib/HorizontalScroll';
 
-	let scrollRate = 1;
-
-	function scrollX (event) {
-		if (event.delta !== 0 && !document.body.classList.contains('backdrop-visible')) {
-			window.scroll(window.scrollX + event.deltaY * scrollRate, window.scrollY);
-			event.preventDefault();
-		}
-	}
-
-	function resetScroll() {
-		if (document.body.scrollHeight > document.body.clientHeight) { /// Has vertical scroll
-			/// Turn off `scrollX`
-			window.removeEventListener('wheel', scrollX);
-			return;
-		}
-
-		window.addEventListener('wheel', scrollX);
-	}
-
-	window.addEventListener('resize', resetScroll);
-	resetScroll();
+	const Scroller = new HorizontalScroll();
+	Scroller.attach();
 
 	/**
 	 * Game votes app
-	 * @vue-prop {Object[]} games - Array of game data objects
+	 * @vue-prop {GameData[]} games - Array of game data objects
 	 * @vue-prop {Number} initialVoters - Number of votes initially allotted
 	 * @vue-data {Number} errors - Number of votes cast after allotted votes have been used
-	 * @vue-data {Object[]} votes - Array of game data objects for which votes have been cast
+	 * @vue-data {GameData[]} votes - Array of game data objects for which votes have been cast
 	 * @vue-data {Object} chosen - Selected game's data
 	 * @vue-data {Boolean|String} showModal - Shows a specific modal when set to a string ID. Set to `false` to hide modal
 	 * @vue-data {Boolean|String} dialogMessage - Displays a dialog if a string value is set. Hides the dialog if `false`
 	 * @vue-data {Number} voters - Number of votes remaining
-	 * @vue-computed {Object[]} filteredGames - Array of game data filtered by certain parameters
+	 * @vue-computed {GameData[]} filteredGames - Array of game data filtered by certain parameters
 	 */
 	export default {
 		name: 'App',
@@ -126,7 +117,7 @@
 		},
 		methods: {
 			/**
-			 * Selects a candidate at random
+			 * @description Selects a candidate at random
 			 */
 			choose() {
 				this.dialogMessage = false;
@@ -135,7 +126,7 @@
 				window.scrollTo(0, 0);
 			},
 			/**
-			 * Resets votes, vote counts, and selected game
+			 * @description Resets votes, vote counts, and selected game
 			 */
 			reset() {
 				this.dialogMessage = false;
@@ -170,18 +161,18 @@
 		& > main {
 			display: flex;
 			flex-flow: column wrap;
-			min-height: 100%;
 			justify-content: center;
+			min-height: 100%;
 		}
 	}
 
 	#games {
 		display: flex;
 		flex-flow: row wrap;
-		margin-top: (2 * $size-base) + $size-app-icon + 1;
+		margin-top: calc((2 * var(--size-base)) + var(--size-app-icon) + 1px);
 	}
 
-	@media (min-width: #{$media-screen-sm}) {
+	@media (min-width: #{$media-screen-sm}), screen and (orientation: landscape) {
 		#games {
 			flex-wrap: nowrap;
 		}
@@ -193,13 +184,7 @@
 		}
 	}
 
-	@media screen and (orientation: landscape) {
-		#games {
-			flex-wrap: nowrap;
-		}
-	}
-
-	.modal-visible #games {
+	.backdrop-visible #games {
 		margin-top: 0;
 	}
 </style>

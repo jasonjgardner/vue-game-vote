@@ -23,11 +23,13 @@
 </template>
 
 <script>
-	// @vue/mixin
 	import ModalMixin from './Mixin';
 
 	/**
-	 * Dialog box component
+	 * @namespace Modal
+	 * @module Modal
+	 * @description Dialog box component
+	 * @requires Modal/Mixin
 	 * @emits Dialog#dismiss
 	 */
 	export default {
@@ -38,25 +40,27 @@
 
 <style lang="scss">
 	@import '../../css/variables';
+	@import '../../css/mixins';
 
 	.dialog {
-		background-color: rgba(mix($color-btn-background, map-get($theme-dark, 'background-alt'), 90%), .95);
-		border: 1px solid $color-secondary;
+		background-color: var(--color-dialog-background);
+		border: 1px solid var(--color-secondary);
 		border-radius: $size-border-radius;
 		box-shadow: 0 1px 5px rgba(0, 0, 0, .66), 0 2px 12px rgba(0, 0, 0, .33);
 		color: $color-lightest;
 		display: flex;
 		flex-flow: column nowrap;
 		left: 50%;
-		position: absolute;
+		position: fixed;
 		top: 50%;
 		transform: translate(-50%, -50%);
 		width: 90%;
+		z-index: $zindex-modal + 1;
 
 		&__header {
-			color: mix($color-muted, $color-light);
+			color: var(--color-muted);
 			font-size: .925rem;
-			padding: ceil($size-base * .5) $size-base 0;
+			padding: calc(.5 * var(--size-base)) var(--size-base) 0;
 
 			&:empty {
 				display: none;
@@ -70,7 +74,7 @@
 		}
 
 		&__body {
-			padding: ceil($size-base * .5) $size-base;
+			padding: calc(.5 * var(--size-base)) var(--size-base);
 
 			p:first-child {
 				margin-top: 0;
@@ -82,13 +86,13 @@
 		}
 
 		&__footer {
-			border-top: 1px solid $color-light;
+			border-top: 1px solid var(--color-border);
 			display: flex;
 			justify-content: stretch;
 			width: 100%;
 
 			.btn {
-				background-color: $color-btn-background;
+				background-color: var(--color-btn-background);
 				flex: 2 1 50%;
 
 				&:hover,
@@ -108,7 +112,7 @@
 
 		.dialog__header,
 		.dialog__body {
-			padding: $size-base ceil($size-base * 2);
+			padding: var(--size-base) calc(2 * var(--size-base));
 		}
 
 		.dialog__header {

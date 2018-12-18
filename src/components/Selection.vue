@@ -15,7 +15,7 @@
 
 				<div class="choice__cover">
 					<img class="focus" itemprop="image"
-						 :src="require(`../${chosen.img}`)"
+						 :src="require(`../${chosen.image}`)"
 						 :alt="chosen.name"
 					>
 				</div>
@@ -74,33 +74,18 @@
 </template>
 
 <script>
-	// @vue/component
 	import CheckCircle from 'vue-feather-icon/components/check-circle';
-
-	// @vue/component
 	import RandomText from './RandomString';
 
 	/**
-	 * Game data
-	 * @typedef {Object<string,any>} GameData
-	 * @property {String} id - Unique game ID
-	 * @property {String} name - Game name
-	 * @property {String} img - Image source path
-	 * @property {String} [developer] - Game developer
-	 * @property {String} [publisher] - Game publisher
-	 * @property {String} [gamePlatform] - Game platform/system
-	 * @property {Boolean} [familyFriendly] - Game is family-friendly
-	 * @property {'RP'|'EC'|'E'|'E10+'|'T'|'M'|'AO'} [esrb] - ESRB game rating
-	 * @property {'CoOp'|'MultiPlayer'|'SinglePlayer'} [playMode] - Identifies game as single or multiplayer
-	 * @property {Number} [numberOfPlayers=1] - Number of players
-	 */
-
-	/**
 	 * Game selection component
+	 * @module Selection
+	 * @requires RandomText
+	 * @requires CheckCircle
 	 * @vue-prop {GameData} chosen - Selected game's data
 	 * @vue-data {Number} picks - Number of times the selection has been repicked. Used to apply conditional title
 	 * @vue-computed {Boolean} canPickAgain - True if another game can be selected, or false if the voting process needs to be restarted
-	 * @vue-computed {{[string]:mixed}} poll - The number of votes tallied for the selected game, along with game data
+	 * @vue-computed {Object<string, GameData>} poll - The number of votes tallied for the selected game, along with game data
 	 * @vue-computed {String} randomTitles - Returns a humorous random title
 	 */
 	export default {
@@ -123,7 +108,7 @@
 					type: String,
 					required: true
 				},
-				img: {
+				image: {
 					type: String,
 					required: true
 				},
@@ -131,7 +116,7 @@
 				publisher: String,
 				gamePlatform: String,
 				familyFriendly: Boolean,
-				esrb: {
+				contentRating: {
 					type: String,
 					required: false,
 					validator: rating => ['RP', 'EC', 'E', 'E10+', 'T', 'M', 'AO'].indexOf(rating) > -1
@@ -179,7 +164,7 @@
 		},
 		methods: {
 			/**
-			 * Repicks a game. Increases picks count and removes currently elected game from votes list
+			 * @description Repicks a game. Increases picks count and removes currently elected game from votes list
 			 */
 			pickAgain() {
 				this.picks++;
@@ -192,7 +177,8 @@
 </script>
 
 <style lang="scss" scoped>
-	@import '../css/_variables.scss';
+	@import '../css/variables';
+	@import '../css/mixins';
 
 	.choice__details {
 		display: flex;
@@ -249,8 +235,8 @@
 	}
 
 	.choice__actions {
-		background-color: rgba(map-get($theme-dark, 'background'), .95);
-		border-top: 1px solid $color-lightest;
+		background-color: rgba(theme('background'), .95);
+		border-top: 1px solid var(--color-border);
 		bottom: 0;
 		box-shadow: 0 -.5rem .4rem -.3rem rgba(0, 0, 0, .45);
 		box-sizing: border-box;
@@ -276,7 +262,7 @@
 		}
 
 		.btn + .btn {
-			margin-left: $size-base;
+			margin-left: var(--size-base);
 		}
 	}
 
@@ -302,7 +288,7 @@
 	tbody tr {
 		&:hover,
 		&:focus-within {
-			background-color: map-get($theme-dark, 'background-alt');
+			background-color: var(--color-background-alt);
 		}
 
 		&:nth-child(even) {

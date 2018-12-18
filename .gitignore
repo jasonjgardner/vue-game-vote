@@ -1,10 +1,13 @@
-node_modules
-.pocket/
+node_modules/
 dist/
+.pocket/
 npm-debug.log*
-.idea
+.idea/
+
+# Ignore docs output but not configuration files
 docs/
-!docs/conf.json
+!docs/*conf.js*
 
 # Assets folder contains copyrighted video game cover art graphics, thus is excluded from the repo
-src/assets/
+src/assets/games/
+

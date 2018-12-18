@@ -115,19 +115,20 @@
 </template>
 
 <script>
-	// @vue/component
 	import RotateCcw from 'vue-feather-icon/components/rotate-ccw';
-
-	// @vue/component
 	import MinusCircle from 'vue-feather-icon/components/minus-circle';
-
-	// @vue/component
 	import Check from 'vue-feather-icon/components/check';
 
 	import AppIcon from '../assets/icon.svg';
-
 	import HelpIcon from '../assets/help.svg';
 
+	/**
+	 * App header component
+	 * @module Header
+	 * @vue-prop {number} voters - Number of votes remaining
+	 * @vue-prop {boolean} [hasVotes=false] - `true` if votes are available, otherwise `false`
+	 * @vue-data {boolean} [showInstructions=false] - Set to `true` to show instructions modal, or `false` to hide it
+	 */
 	export default {
 		name: 'Header',
 		components: {
@@ -156,7 +157,8 @@
 		},
 		methods: {
 			/**
-			 * Adds voters
+			 * @description Adds voters and plays confirmation audio
+			 * @memberof Header
 			 */
 			buyVote() {
 				(
@@ -170,23 +172,25 @@
 </script>
 
 <style lang="scss" scoped>
-	@import '../css/_variables.scss';
+	@import '../css/variables';
+	@import '../css/mixins';
 
 	#icons {
 		cursor: pointer;
-		height: $size-app-icon;
+		height: var(--size-app-icon);
 		position: relative;
-		width: $size-app-icon;
+		width: var(--size-app-icon);
 
 		svg {
-			fill: $color-lightest;
-			height: $size-app-icon;
+			color: var(--color-lightest);
+			fill: var(--color-lightest);
+			height: var(--size-app-icon);
 			position: absolute;
 			transition: opacity .15s ease-in, transform .25s cubic-bezier(.68, -.55, .265, 1.55);
-			width: $size-app-icon;
+			width: var(--size-app-icon);
 
 			line {
-				stroke: $color-lightest;
+				stroke: var(--color-lightest);
 				stroke-width: 2px;
 				stroke-linecap: round;
 				stroke-linejoin: round;
@@ -194,13 +198,13 @@
 
 			+ svg {
 				opacity: 0;
-				transform: translate(#{$size-gap * -1}, 0);
+				transform: translate(calc(-1 * var(--size-gap)), 0);
 			}
 		}
 
 		&:hover svg {
 			opacity: 0;
-			transform: translate(0, #{$size-gap * -1});
+			transform: translate(0, calc(-1 * var(--size-gap)));
 
 			+ svg {
 				opacity: 1;
@@ -213,7 +217,7 @@
 		display: inline-block;
 		font-size: 1rem;
 		font-weight: normal;
-		margin: 0 auto 0 $size-base;
+		margin: 0 auto 0 var(--size-base);
 		max-width: 150px;
 		overflow: hidden;
 		text-align: left;
@@ -224,7 +228,7 @@
 
 	#app-header {
 		align-items: center;
-		background-color: rgba(map-get($theme-dark, 'background'), .97);
+		background-color: rgba(theme('background'), .97);
 		border-bottom: 1px solid rgba($color-lightest, .66);
 		box-shadow: 0 2px .3125rem rgba(0, 0, 0, .66), 0 .3125rem 1.5rem rgba(0, 0, 0, .33);
 		box-sizing: border-box;
@@ -233,7 +237,7 @@
 		justify-content: space-between;
 		left: 0;
 		margin: 0;
-		padding: $size-base $padding-container;
+		padding: var(--size-base);
 		position: fixed;
 		transition: border-bottom-color .5s ease-out;
 		top: 0;
@@ -242,24 +246,24 @@
 
 		&:hover,
 		&:focus-within {
-			border-bottom-color: $color-lightest;
+			border-bottom-color: var(--color-border);
 		}
 	}
 
 	.voters__votes {
 		background-color: var(--color-accent);
-		border-radius: ($size-btn-fab * .5);
+		border-radius: calc(.5 * var(--size-fab));
 		box-shadow: -1px 1px 3px rgba(0, 0, 0, .5), 0 0 5px rgba(0, 0, 0, .33);
 		color: $color-dark;
 		display: flex;
-		height: $size-btn-fab;
+		height: var(--size-fab);
 		justify-content: center;
-		min-width: $size-btn-fab;
+		min-width: var(--size-fab);
 		text-align: center;
 		transition: background-color .333s ease-in-out;
 
 		&.invalid {
-			background-color: $color-assertive;
+			background-color: var(--color-assertive);
 		}
 
 		input {
@@ -272,7 +276,7 @@
 
 			&::selection {
 				background-color: rgba(255, 255, 255, .5);
-				color: $color-primary;
+				color: var(--color-primary);
 			}
 
 			&:focus {
@@ -312,14 +316,14 @@
 		&:focus,
 		&:focus-within {
 			background-color: var(--color-focus);
-			color: $color-btn-background;
+			color: var(--color-btn-background);
 			outline: none;
 		}
 	}
 
 	.no-voters .voters__votes {
 		border-radius: 50%;
-		width: $size-btn-fab;
+		width: var(--size-fab);
 	}
 
 	#voters {
@@ -339,8 +343,8 @@
 		display: flex;
 
 		#{$--hn} {
-			margin-bottom: $size-gap;
-			margin-top: $size-gap;
+			margin-bottom: var(--size-gap);
+			margin-top: var(--size-gap);
 		}
 	}
 
@@ -349,7 +353,7 @@
 	}
 
 	.light-stroke {
-		stroke: $color-lightest;
+		stroke: var(--color-lightest);
 	}
 
 	@media screen and (min-width: #{($media-screen-sm)}) {
@@ -360,7 +364,7 @@
 		}
 
 		.title {
-			margin: 0 auto 0 $size-base;
+			margin: 0 auto 0 var(--size-base);
 		}
 	}
 </style>

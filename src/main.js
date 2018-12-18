@@ -1,3 +1,10 @@
+/**
+ * Video Game Votes
+ * @author Jason Gardner <holler@jasongardner.co>
+ * @version 1.0.0
+ * @licence MIT
+ */
+
 import './css/index.scss';
 import './registerServiceWorker';
 import Vue from 'vue';
@@ -9,7 +16,7 @@ import App from './App.vue';
 import('./data.json').then(data => {
 	new Vue({
 		render: h => h(App, {
-			props: {
+				props: {
 				initialVoters: 2,
 				games: data.games
 			}

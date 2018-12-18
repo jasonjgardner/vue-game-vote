@@ -1,19 +1,42 @@
+///
+/// Game Votes
+/// @author Jason Gardner <holler@jasongardner.co>
+///
+
 @import 'variables';
+@import 'mixins';
 @import url('https://fonts.googleapis.com/css?family=#{$font-family-title}:300,400,700');
 @import '~normalize.css/normalize.css';
 
 :root {
-	--color-background: #{map-get($theme-dark, 'background')};
-	--color-background-alt: #{map-get($theme-dark, 'background-alt')};
-	--color-accent: #{map-get($theme-dark, 'accent')};
-	--color-primary-alt: #{mix($color-btn-background, map-get($theme-dark, 'accent'), 25%)};
-	--color-focus: mix(map-get($theme-dark, 'accent'), map-get($theme-dark, 'primary'));
+	--color-background: #{theme('background')};
+	--color-background-alt: #{theme('background-alt')};
+	--color-btn-background: #{theme('btn-background')};
+	--color-modal-background: #{rgba(theme('modal-background'), .75)};
+	--color-dialog-background: #{rgba(theme('dialog-background'), .95)};
+	--color-accent: #{theme('accent')};
+	--color-primary: #{theme('primary')};
+	--color-primary-alt: #{mix(theme('btn-background'), theme('accent'), 25%)};
+	--color-secondary: #{theme('secondary')};
+	--color-assertive: #{theme('assertive')};
+	--color-focus: #{mix(theme('accent'), theme('primary'))};
+	--color-lightest: #{theme('lightest')};
+	--color-muted: #{theme('muted')};
+	--color-border: #{theme('light')};
+	--color-text: #{theme('light')};
+	--color-link: #{theme('light')};
+	--color-link-hover: #{theme('lightest')};
+	--color-link-active: #{theme('secondary')};
+	--size-base: #{$size-base};
+	--size-gap: #{$size-gap};
+	--size-app-icon: #{$size-app-icon};
+	--size-fab: #{$size-btn-fab};
 }
 
 body.light-scheme {
-	--color-background: #{map-get($theme-light, 'background')};
-	--color-background-alt: #{map-get($theme-light, 'background-alt')};
-	--color-accent: #{map-get($theme-light, 'accent')};
+	--color-background: #{theme('background', 'light')};
+	--color-background-alt: #{theme('background-alt', 'light')};
+	--color-accent: #{theme('accent', 'light')};
 }
 
 @keyframes focus {
@@ -90,13 +113,20 @@ tr.text--accent td {
 }
 
 .text--secondary {
-	color: $color-secondary;
+	color: var(--color-secondary);
 }
 
 .text--muted {
-	color: $color-muted;
+	color: var(--color-muted);
 }
 
+/// Margin and padding side IDs
+/// @access private
+/// @type {Map}
+/// @property {String} t [top] - Top side label
+/// @property {String} b [bottom] - Bottom side label
+/// @property {String} r [right] - Right side label
+/// @property {String} l [left] - Left side label
 $sides: (
 	t: top,
 	b: bottom,
@@ -104,6 +134,7 @@ $sides: (
 	l: left
 );
 
+/// Generate spacing helpers
 @each $side in map-keys($sides) {
 	@for $itr from 0 through 5 {
 		.m#{$side}-#{$itr} {
@@ -122,7 +153,7 @@ $sides: (
 	border: 0;
 	border-radius: $size-border-radius;
 	box-sizing: border-box;
-	color: $color-light;
+	color: var(--color-text);
 	cursor: pointer;
 	line-height: 1.5;
 	padding: .333em .5em;
@@ -132,7 +163,7 @@ $sides: (
 	&:hover,
 	&:focus,
 	&:active {
-		color: $color-lightest;
+		color: var(--color-border);
 		outline: none;
 	}
 
@@ -159,12 +190,12 @@ $sides: (
 		box-shadow: -1px 1px 3px rgba(0, 0, 0, .5), 0 0 5px rgba(0, 0, 0, .33);
 		color: $color-light;
 		display: flex;
-		height: $size-btn-fab;
+		height: var(--size-fab);
 		justify-content: center;
 		line-height: 1;
 		text-align: center;
 		transition: background-color .3s ease-in-out, box-shadow .5s ease-out, transform .666s cubic-bezier(.175, .885, .32, 1.275);
-		width: $size-btn-fab;
+		width: var(--size-fab);
 
 		svg {
 			stroke: currentColor;
@@ -188,11 +219,11 @@ $sides: (
 .backdrop-visible {
 	overflow: hidden;
 
-	.modal-visible > *:not(.modal) {
-		filter: blur(10px) saturate(.9);
-		pointer-events: none;
-		user-select: none;
-	}
+	//main > *:not(.modal) {
+	//	filter: blur($blur-radius) saturate(.9);
+	//	pointer-events: none;
+	//	user-select: none;
+	//}
 }
 
 html {
@@ -206,7 +237,7 @@ body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	font: #{$font-size-base}/#{$line-height-base} $font-family-sans-serif;
-	color: $color-light;
+	color: var(--color-text);
 	flex-flow: column nowrap;
 	height: 100%;
 	margin: 0;
@@ -231,24 +262,24 @@ a {
 
 	&:hover,
 	&:focus {
-		color: $color-lightest;
+		color: var(--color-link-hover);
 	}
 
 	&:active {
-		color: $color-secondary;
+		color: var(--color-link-active);
 		text-decoration: underline;
 	}
 }
 
 h5 {
-	margin-bottom: $size-base;
-	margin-top: $size-base;
+	margin-bottom: var(--size-base);
+	margin-top: var(--size-base);
 }
 
 blockquote {
 	color: $color-neutral;
-	margin-left: $size-gap;
-	padding-left: $size-base;
+	margin-left: var(--size-gap);
+	padding-left: var(--size-base);
 	position: relative;
 
 	&::before {
@@ -259,6 +290,6 @@ blockquote {
 		left: 0;
 		position: absolute;
 		top: 0;
-		width: $size-gap;
+		width: var(--size-gap);
 	}
 }

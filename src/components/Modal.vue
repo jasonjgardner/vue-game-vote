@@ -30,6 +30,8 @@
 
 	/**
 	 * Modal component
+	 * @module Modal
+	 * @requires Modal/Mixin
 	 * @emits Modal#close
 	 */
 	export default {
@@ -39,12 +41,13 @@
 </script>
 
 <style lang="scss">
-	@import '../css/_variables.scss';
+	@import '../css/variables';
+	@import '../css/mixins';
 
 	.modal {
 		align-items: center;
-		background-color: $color-modal-background;
-		backdrop-filter: blur(10px);
+		background-color: var(--color-modal-background);
+		backdrop-filter: blur($blur-radius);
 		display: flex;
 		flex-flow: column nowrap;
 		height: 100%;
@@ -60,24 +63,24 @@
 			background-color: var(--color-background-alt);
 			border-radius: $size-border-radius;
 			box-shadow: 0 3px 1rem rgba(0, 0, 0, .5);
-			margin: 0 $size-base;
-			padding: $size-base;
+			margin: 0 var(--size-base);
+			padding: var(--size-base);
 			transition: all .3s ease;
 			max-height: 98vh;
 			max-width: 90%;
-			min-width: $media-screen-xs - ($size-base * 2);
+			min-width: calc(#{$media-screen-xs} - (var(--size-base) * 2));
 		}
 
 		&__body {
 			font-size: .925rem;
 			max-height: 66vh;
 			overflow: auto;
-			padding: $size-gap;
+			padding: var(--size-gap);
 		}
 
 		&__header {
-			border-bottom: 1px solid $color-secondary;
-			padding-bottom: $size-base;
+			border-bottom: 1px solid var(--color-secondary);
+			padding-bottom: var(--size-base);
 
 			&:empty {
 				display: none;
@@ -93,16 +96,16 @@
 
 		&__footer {
 			align-items: center;
-			border-top: 1px solid $color-secondary;
+			border-top: 1px solid var(--color-secondary);
 			display: flex;
 			flex-flow: row nowrap;
 			justify-content: flex-end;
-			padding-top: $size-base;
+			padding-top: var(--size-base);
 
 			.btn {
 				box-shadow: 0 1px 3px rgba(0, 0, 0, .33), 0 2px 5px rgba(0, 0, 0, .25);
-				padding-left: $size-base * 2;
-				padding-right: $size-base * 2;
+				padding-left: calc(2 * var(--size-base));
+				padding-right: calc(2 * var(--size-base));
 			}
 		}
 	}

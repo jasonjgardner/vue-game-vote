@@ -7,7 +7,7 @@
 					@click="vote(game)"
 			>
 				<img class="game__cover" itemprop="image"
-					 :src="require(`../${game.img}`)"
+					 :src="require(`../${game.image}`)"
 					 :alt="game.name"
 				>
 				<figcaption class="game__description">
@@ -35,9 +35,10 @@
 <script>
 	/**
 	 * Game choice component
+	 * @module Game
 	 * @emits Game#vote
-	 * @vue-prop {{id:string,name:string,img:string}} game - Game data
-	 * @vue-computed {String} title - Conditional game title. Shows vote count when no voters remain, otherwise shows "Vote for..." message
+	 * @vue-prop {GameData} game - Game data
+	 * @vue-computed {string} title - Conditional game title. Shows vote count when no voters remain, otherwise shows "Vote for..." message
 	 * @vue-computed {Number} tally - Number of votes received
 	 */
 	export default {
@@ -78,7 +79,7 @@
 		},
 		methods: {
 			/**
-			 * Casts a vote for this game
+			 * @description Casts a vote for this game
 			 * @param {Object} game - Game data
 			 * @event Game#vote
 			 */
@@ -103,7 +104,7 @@
 </script>
 
 <style lang="scss">
-	@import '../css/variables.scss';
+	@import '../css/variables';
 
 	/*---
 	title: Wiggle
@@ -195,7 +196,7 @@
 			align-items: center;
 			border-radius: $size-border-radius;
 			display: flex;
-			height: ($size-base * 4) - 5;
+			height: calc((4 * var(--size-base)) - var(--size-gap));
 			flex-flow: row nowrap;
 			justify-content: space-between;
 			padding: 0 .666rem;
@@ -206,16 +207,17 @@
 			/// Game cover tooltip
 			&::before {
 				background-color: rgba(0, 0, 0, .75);
-				border: 2px solid $color-lightest;
-				border-radius: calc(#{$size-base} + .125em);
-				bottom: $size-base * 5;
-				color: $color-lightest;
+				border: 2px solid var(--color-border);
+				border-radius: calc(.125em + var(--size-base));
+				bottom: calc(5 * var(--size-base));
+				color: var(--color-lightest);
 				content: 'Vote';
 				font-size: 1.125rem;
 				font-weight: 300;
-				line-height: $size-base * 2;
-				height: $size-base * 2;
+				line-height: calc(2 * var(--size-base));
+				height: calc(2 * var(--size-base));
 				left: 50%;
+				max-width: 300px;
 				min-width: 200px;
 				opacity: 0;
 				padding: .125em 0;
@@ -224,7 +226,7 @@
 				transition: opacity .333s ease-out;
 				transition-delay: 0s;
 				transform: translateX(-50%);
-				width: calc(var(--size-game-cover) - #{($size-base * 5)});
+				width: calc(var(--size-game-cover) - (5 * var(--size-base)));
 				z-index: $zindex-cover + 1;
 			}
 		}
@@ -270,14 +272,14 @@
 
 			/// Highlight title on hover
 			.game__title {
-				color: $color-primary;
+				color: var(--color-primary);
 			}
 
 			/// Create tooltip bubble from description
 			.game__description {
 				background-color: var(--color-background-alt);
 				box-shadow: 0 1px 5px rgba(0, 0, 0, .66), 0 2px 10px rgba(0, 0, 0, .33);
-				top: 10px;
+				top: calc(2 * var(--size-gap));
 
 				&::before {
 					opacity: 1;
@@ -288,12 +290,12 @@
 				/// Bubble arrow
 				&::after {
 					content: '';
-					border-width: ceil($size-base * .666);
+					border-width: calc(.666 * var(--size-base));
 					border-style: solid;
 					border-color: transparent transparent var(--color-background-alt);
-					bottom: calc(#{($size-base * 2) + 5} + 1.125em);
+					bottom: calc(1.125em + var(--size-gap) + (2 * var(--size-base)));
 					height: 0;
-					left: calc(50% - #{$size-base * .5});
+					left: calc(50% - (.5 * var(--size-base)));
 					position: absolute;
 					width: 0;
 					z-index: $zindex-cover + 1;
@@ -331,12 +333,13 @@
 	}
 
 	@media screen and (min-width: #{$media-screen-sm}) {
-		.game:first-of-type {
-			margin-left: $size-base;
+		.game:first-of-type,
+		.game + .game {
+			margin-left: var(--size-base);
 		}
 
-		.game + .game {
-			margin-left: $size-base;
+		.game:last-of-type {
+			margin-right: var(--size-base);
 		}
 	}
 </style>
