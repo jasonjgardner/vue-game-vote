@@ -150,7 +150,7 @@
 				default: false
 			}
 		},
-		data: () => {
+		data() {
 			return {
 				showInstructions: false
 			}

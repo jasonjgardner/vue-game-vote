@@ -23,7 +23,7 @@
 	 */
 	export default {
 		name: 'Controls',
-		data: () => {
+		data() {
 			return {
 				controls: {
 					A: 'OK',

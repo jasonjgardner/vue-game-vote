@@ -132,7 +132,7 @@
 				}
 			}
 		},
-		data: () => {
+		data() {
 			return {
 				picks: 0
 			};
