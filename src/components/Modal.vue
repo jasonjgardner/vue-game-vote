@@ -48,6 +48,7 @@
 		align-items: center;
 		background-color: var(--color-modal-background);
 		backdrop-filter: blur($blur-radius);
+		color: var(--color-text);
 		display: flex;
 		flex-flow: column nowrap;
 		height: 100%;
@@ -87,7 +88,7 @@
 			}
 
 			#{$--hn} {
-				color: $color-lightest;
+				color: var(--color-text);
 				font-weight: 300;
 				line-height: 1.25;
 				margin: 0;

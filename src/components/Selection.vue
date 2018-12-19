@@ -164,7 +164,11 @@
 		},
 		methods: {
 			/**
-			 * @description Repicks a game. Increases picks count and removes currently elected game from votes list
+			 * Pick Again
+			 * @description Repicks a game. Increases picks count and removes currently elected game from votes list.
+			 * @memberof Selection
+			 * @event Selection#choose
+			 * @event Selection#reset
 			 */
 			pickAgain() {
 				this.picks++;

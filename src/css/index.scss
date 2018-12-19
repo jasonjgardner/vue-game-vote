@@ -22,7 +22,7 @@
 	--color-focus: #{mix(theme('accent'), theme('primary'))};
 	--color-lightest: #{theme('lightest')};
 	--color-muted: #{theme('muted')};
-	--color-border: #{theme('light')};
+	--color-border: var(--color-lightest);
 	--color-text: #{theme('light')};
 	--color-link: #{theme('light')};
 	--color-link-hover: #{theme('lightest')};
@@ -43,6 +43,8 @@
 	--color-input: #{theme('light', 'light')};
 	--color-btn: #{$color-dark};
 	--color-btn-alt: #{$color-dark-alt};
+	--color-border: #{theme('background', 'dark')};
+	--color-text: #{theme('background', 'dark')};
 }
 
 @keyframes focus {

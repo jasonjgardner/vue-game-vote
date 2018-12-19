@@ -22,7 +22,6 @@
 					   v-model.number="voters"
 					   :readonly="hasVotes"
 					   :title="`${voters} vote${voters === 1 ? '' : 's'} remaining`"
-					   :blur="voters = Math.max(1, voters)"
 					   type="number"
 					   placeholder="#"
 					   max="99" min="0"
@@ -159,6 +158,7 @@
 			/**
 			 * @description Adds voters and plays confirmation audio
 			 * @memberof Header
+			 * @event Header#buyVote
 			 */
 			buyVote() {
 				(
@@ -171,6 +171,12 @@
 	};
 </script>
 
+<style lang="scss">
+	.light-scheme {
+		--color-app-header: rgba(theme('background', 'light'), .97);
+	}
+</style>
+
 <style lang="scss" scoped>
 	@import '../css/variables';
 	@import '../css/mixins';
@@ -182,15 +188,15 @@
 		width: var(--size-app-icon);
 
 		svg {
-			color: var(--color-lightest);
-			fill: var(--color-lightest);
+			color: var(--color-text);
+			fill: var(--color-text);
 			height: var(--size-app-icon);
 			position: absolute;
 			transition: opacity .15s ease-in, transform .25s cubic-bezier(.68, -.55, .265, 1.55);
 			width: var(--size-app-icon);
 
 			line {
-				stroke: var(--color-lightest);
+				stroke: var(--color-text);
 				stroke-width: 2px;
 				stroke-linecap: round;
 				stroke-linejoin: round;
@@ -214,6 +220,7 @@
 	}
 
 	.title {
+		color: var(--color-text);
 		display: inline-block;
 		font-size: 1rem;
 		font-weight: normal;
@@ -222,15 +229,14 @@
 		overflow: hidden;
 		text-align: left;
 		text-overflow: ellipsis;
-		text-shadow: 1px 1px 1px rgba(0, 0, 0, .5);
 		white-space: nowrap;
 	}
 
 	#app-header {
 		align-items: center;
-		background-color: rgba(theme('background'), .97);
-		border-bottom: 1px solid rgba($color-lightest, .66);
-		box-shadow: 0 2px .3125rem rgba(0, 0, 0, .66), 0 .3125rem 1.5rem rgba(0, 0, 0, .33);
+		background-color: var(--color-app-header, #{rgba(theme('background'), .97)});
+		border-bottom: 1px solid var(--color-border);
+
 		box-sizing: border-box;
 		display: flex;
 		flex-wrap: nowrap;
@@ -247,6 +253,7 @@
 		&:hover,
 		&:focus-within {
 			border-bottom-color: var(--color-border);
+			box-shadow: 0 2px .3125rem rgba(0, 0, 0, .33), 0 .3125rem 1.5rem rgba(0, 0, 0, .125);
 		}
 	}
 

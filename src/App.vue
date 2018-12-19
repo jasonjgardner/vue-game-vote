@@ -118,6 +118,7 @@
 		},
 		methods: {
 			/**
+			 * Choose
 			 * @description Selects a candidate at random
 			 */
 			choose() {
@@ -127,6 +128,7 @@
 				window.scrollTo(0, 0);
 			},
 			/**
+			 * Reset votes
 			 * @description Resets votes, vote counts, and selected game
 			 */
 			reset() {
@@ -154,6 +156,7 @@
 	@import './css/variables';
 
 	#app {
+		background-color: var(--color-background);
 		display: flex;
 		flex: 1;
 		flex-flow: column nowrap;

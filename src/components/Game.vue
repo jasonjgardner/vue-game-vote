@@ -80,7 +80,7 @@
 		methods: {
 			/**
 			 * @description Casts a vote for this game
-			 * @param {Object} game - Game data
+			 * @param {GameData} game - Data belonging to the chosen game
 			 * @event Game#vote
 			 */
 			vote(game) {
