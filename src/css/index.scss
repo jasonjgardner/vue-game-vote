@@ -14,6 +14,7 @@
 	--color-btn-background: #{theme('btn-background')};
 	--color-modal-background: #{rgba(theme('modal-background'), .75)};
 	--color-dialog-background: #{rgba(theme('dialog-background'), .95)};
+	--color-tooltip-background: #{rgba(theme('background-alt'), .95)};
 	--color-accent: #{theme('accent')};
 	--color-primary: #{theme('primary')};
 	--color-primary-alt: #{mix(theme('btn-background'), theme('accent'), 25%)};
@@ -28,8 +29,11 @@
 	--color-link-hover: #{theme('lightest')};
 	--color-link-active: #{theme('secondary')};
 	--color-input: #{$color-dark};
-	--color-btn: var(--color-text);
+	--color-btn: #{$color-dark};
 	--color-btn-alt: #{theme('lightest')};
+	--color-fab: #{theme('fab')};
+	--color-title: var(--color-text);
+	--color-title-active: var(--color-primary);
 	--size-base: #{$size-base};
 	--size-gap: #{$size-gap};
 	--size-app-icon: #{$size-app-icon};
@@ -39,12 +43,18 @@
 .light-scheme {
 	--color-background: #{theme('background', 'light')};
 	--color-background-alt: #{theme('background-alt', 'light')};
+	--color-tooltip-background: white;
 	--color-accent: #{theme('accent', 'light')};
+	--color-primary: #{theme('primary', 'light')};
+	--color-primary-alt: #{mix(theme('btn-background', 'light'), theme('accent', 'light'), 25%)};
 	--color-input: #{theme('light', 'light')};
-	--color-btn: #{$color-dark};
-	--color-btn-alt: #{$color-dark-alt};
+	--color-btn: #{theme('lightest', 'light')};
+	--color-btn-alt: #{theme('light', 'light')};
+	--color-fab: #{theme('fab', 'light')};
 	--color-border: #{theme('background', 'dark')};
 	--color-text: #{theme('background', 'dark')};
+	--color-title: var(--color-primary);
+	--color-title-active: var(--color-text);
 }
 
 @keyframes focus {
@@ -196,7 +206,7 @@ $sides: (
 		align-items: center;
 		border-radius: 50%;
 		box-shadow: -1px 1px .25rem rgba(0, 0, 0, .5), 0 0 .333rem rgba(0, 0, 0, .33);
-		color: var(--color-btn);
+		color: var(--color-fab);
 		display: flex;
 		height: var(--size-fab);
 		justify-content: center;
@@ -226,12 +236,6 @@ $sides: (
 
 .backdrop-visible {
 	overflow: hidden;
-
-	//main > *:not(.modal) {
-	//	filter: blur($blur-radius) saturate(.9);
-	//	pointer-events: none;
-	//	user-select: none;
-	//}
 }
 
 html {

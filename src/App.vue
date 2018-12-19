@@ -1,5 +1,5 @@
 <template>
-	<div id="app" :class="{'no-voters': voters < 1, 'light-scheme': useLightScheme }">
+	<div id="app" :class="{'no-voters': voters < 1 }">
 		<section v-if="chosen" id="choice" class="d-flex flex-column flex-1">
 			<Selected :chosen="chosen" :games="this.$parent.games"
 				@choose="choose"
@@ -7,7 +7,8 @@
 			/>
 		</section>
 		<main v-else>
-			<Header :voters="voters" :has-votes="votes.length > 0"
+			<AppHeader :voters="voters" :has-votes="votes.length > 0"
+			    @showModal="showModal"
 				@buyVote="voters = Math.max(1, voters + 1)"
 				@choose="choose"
 				@reset="reset"
@@ -22,20 +23,63 @@
 			</div>
 		</main>
 
-		<Alert v-if="dialogMessage.length > 0" role="alert" @dismissed="dialogMessage = false">
+		<Modal v-if="modal === 'instructions'" aria-modal="true"
+			   :aria-hidden="modal !== 'instructions'"
+			   @dismissed="modal = false">
+			<header slot="header">
+				<h3>Instructions</h3>
+			</header>
+			<template slot="body">
+				<h2 class="mt-0">
+					Voting
+				</h2>
+				<p>
+					The number of remaining votes is displayed inside a circle positioned in the upper
+					right corner of the app.
+				</p>
+
+				<p>
+					<b>Tap the <span class="text--accent">green</span> circle to adjust the allotted votes</b> via keyboard input.
+					The new value must be between 1 and 99. Set the initial value to the number of voters participating.
+				</p>
+
+				<h3>Buying Votes</h3>
+				<p>
+					The number of remaining votes can also be adjusted by pressing the <b>Coin</b> button. Pay <b>one</b>&nbsp;
+					<a href="#mario-coin">Mario coin</a> per additional vote.
+				</p>
+
+				<aside id="mario-coin">
+					<header>
+						<CoinIcon class="rotate--90 light-stroke mr-1 mb-0" />
+						<h4>Mario Coins</h4>
+					</header>
+
+					<blockquote>
+						<p>
+							Mario Coins are toy coins embossed with Mario's face. They're given as a reward for good behavior and
+							taken away for bad behavior, poor sportsmanship, bitching, moaning, etc.
+						</p>
+					</blockquote>
+				</aside>
+			</template>
+			<div slot="footer">
+				<button class="btn btn--primary" type="button" @click="modal = false">
+					OK
+				</button>
+			</div>
+		</Modal>
+
+		<Alert v-if="showNoVoteDialog" role="alert" @dismissed="showNoVoteDialog = false">
 			<h4 slot="header">
-				Stop!
+				Hang on!
 			</h4>
 			<p slot="message">
-				{{ dialogMessage }}
+				You&rsquo;re out of votes!
 			</p>
 			<template slot="footer">
-				<button class="btn" type="reset" @click.prevent="reset">
-					Reset
-				</button>
-				<button class="btn" type="submit" @click.prevent="choose">
-					Elect
-				</button>
+				<button class="btn" type="reset" @click.prevent="reset">Reset</button>
+				<button class="btn" type="submit" @click.prevent="choose">Elect</button>
 			</template>
 		</Alert>
 	</div>
@@ -56,6 +100,8 @@
 	 * @property {'CoOp'|'MultiPlayer'|'SinglePlayer'} [playMode] - Identifies game as single or multi-player
 	 * @property {Number} [numberOfPlayers=1] - Number of players
 	 */
+
+	import MinusCircle from 'vue-feather-icon/components/minus-circle';
 	import Header from './components/Header';
 	import Game from './components/Game';
 	import HorizontalScroll from './lib/HorizontalScroll';
@@ -78,10 +124,12 @@
 	export default {
 		name: 'App',
 		components: {
-			Header,
+			AppHeader: Header,
 			Game,
-			Alert: () => import(/* webpackChunkName: "modal" */'./components/Modal/Dialog'),
+			Modal: () => import(/* webpackChunkName: "dialog" */'./components/Dialog/Modal'),
+			Alert: () => import(/* webpackChunkName: "dialog" */'./components/Dialog/Alert'),
 			Selected: () => import(/* webpackChunkName: "selection" */'./components/Selection'),
+			CoinIcon: MinusCircle
 		},
 		props: {
 			games: {
@@ -99,10 +147,9 @@
 				errors: 0,
 				votes: [],
 				chosen: null,
-				showModal: false,
-				dialogMessage: false,
-				voters: undefined,
-				useLightScheme: true
+				modal: false,
+				showNoVoteDialog: false,
+				voters: undefined
 			};
 		},
 		computed: {
@@ -113,27 +160,24 @@
 		},
 		created() {
 			this.voters = this.initialVoters;
-
-			//document.body.style.setProperty('--size-game-cover', '320px');
+			document.body.classList.toggle('light-scheme', (new Date()).getHours() <= 18); /// Light scheme during day
 		},
 		methods: {
 			/**
-			 * Choose
 			 * @description Selects a candidate at random
 			 */
 			choose() {
-				this.dialogMessage = false;
-				this.showModal = false;
+				this.showNoVoteDialog = false;
+				this.modal = false;
 				this.chosen = this.votes[Math.floor(Math.random() * this.votes.length)];
 				window.scrollTo(0, 0);
 			},
 			/**
-			 * Reset votes
 			 * @description Resets votes, vote counts, and selected game
 			 */
 			reset() {
-				this.dialogMessage = false;
-				this.showModal = false;
+				this.showNoVoteDialog = false;
+				this.modal = false;
 				this.errors = 0;
 				this.voters = this.initialVoters;
 				this.chosen = null;
@@ -144,9 +188,10 @@
 					this.errors++;
 				}
 
-				if (this.errors > 2) {
-					this.dialogMessage = 'You\'re out of votes!';
-				}
+				this.showNoVoteDialog = this.errors > 2;
+			},
+			showModal(which) {
+				this.modal = which;
 			}
 		}
 	};
@@ -160,6 +205,7 @@
 		display: flex;
 		flex: 1;
 		flex-flow: column nowrap;
+		margin: 0 auto;
 		width: 100%;
 
 		& > main {
@@ -188,7 +234,15 @@
 		}
 	}
 
-	.backdrop-visible #games {
-		margin-top: 0;
+	.backdrop-visible {
+		#app > *:not(.modal) {
+			filter: blur($blur-radius) saturate(.9);
+			pointer-events: none;
+			user-select: none;
+		}
+
+		#games {
+			margin-top: 0;
+		}
 	}
 </style>

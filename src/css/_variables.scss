@@ -25,7 +25,7 @@ $color-brand: #e60012;
 /// @property {Color} dark.background [#2d2d2d] - Dark theme background color
 /// @property {Color} dark.background-alt [#505050] - Alternate dark theme background color
 /// @property {Color} dark.btn-background [#1f2227] - Dark theme button background color
-/// @property {Color} dark.modal-background [#1f2227] - Modal overlay background color
+/// @property {Color} dark.modal-background [#1f2227] - Dialog overlay background color
 /// @property {Color} dark.dialog-background - Dialog overlay background color
 /// @property {Color} dark.light [#fefefe] - Light color
 /// @property {Color} dark.lightest [white] - Lightest color
@@ -45,6 +45,7 @@ $themes: (
 		btn-background: #1f2227,
 		modal-background: #1f2227,
 		dialog-background: rgba(mix(#1f2227, #505050, 90%), .95),
+		fab: white,
 		light: #fefefe,
 		lightest: white,
 		primary: #1bb9ff,
@@ -60,6 +61,7 @@ $themes: (
 		btn-background: #1f2227,
 		modal-background: #1f2227,
 		dialog-background: rgba(mix(#1f2227, #505050, 90%), .95),
+		fab: $color-dark,
 		light: #fefefe,
 		lightest: white,
 		primary: #0cc,
@@ -215,7 +217,7 @@ $zindex-toolbar: 100;
 /// @access public
 $zindex-tooltip: 210;
 
-/// Modal `z-index`. Place above content
+/// Dialog `z-index`. Place above content
 /// @type Number
 /// @group z-indexes
 /// @access public

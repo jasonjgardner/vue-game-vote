@@ -164,8 +164,7 @@
 		},
 		methods: {
 			/**
-			 * Pick Again
-			 * @description Repicks a game. Increases picks count and removes currently elected game from votes list.
+			 * @description Repicks a game
 			 * @memberof Selection
 			 * @event Selection#choose
 			 * @event Selection#reset
@@ -205,7 +204,7 @@
 		margin-bottom: 1rem;
 
 		svg {
-			stroke: $color-lightest;
+			stroke: var(--color-primary);
 		}
 	}
 
@@ -239,10 +238,10 @@
 	}
 
 	.choice__actions {
-		background-color: rgba(theme('background'), .95);
+		background-color: var(--color-background);
 		border-top: 1px solid var(--color-border);
 		bottom: 0;
-		box-shadow: 0 -.5rem .4rem -.3rem rgba(0, 0, 0, .45);
+		box-shadow: 0 -.5rem .4rem -.3rem rgba(0, 0, 0, .125);
 		box-sizing: border-box;
 		display: flex;
 		flex-flow: row nowrap;
@@ -315,5 +314,13 @@
 		color: #999;
 		margin: 0;
 		padding: .25em .5em;
+	}
+
+	@media screen and (min-width: #{$media-screen-md}) {
+		.choice__actions {
+			box-shadow: none;
+			transform: translateX(var(--size-base));
+			width: calc(100% - (2 * var(--size-base)));
+		}
 	}
 </style>

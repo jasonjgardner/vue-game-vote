@@ -25,14 +25,13 @@
 </template>
 
 <script>
-	// @vue/mixin
-	import ModalMixin from './Modal/Mixin';
+	import ModalMixin from './Mixin';
 
 	/**
-	 * Modal component
+	 * Dialog component
 	 * @module Modal
 	 * @requires Modal/Mixin
-	 * @emits Modal#close
+	 * @emits Dialog#close
 	 */
 	export default {
 		name: 'Modal',
@@ -41,8 +40,8 @@
 </script>
 
 <style lang="scss">
-	@import '../css/variables';
-	@import '../css/mixins';
+	@import '../../css/variables';
+	@import '../../css/mixins';
 
 	.modal {
 		align-items: center;

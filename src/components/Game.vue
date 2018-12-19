@@ -185,9 +185,11 @@
 
 		/// Game title
 		&__title {
+			color: var(--color-title);
 			display: inline-block;
 			font-size: 1rem;
-			font-weight: 300;
+			font-weight: normal;
+			transition: color .425s ease-out;
 		}
 
 		/// Game description
@@ -207,7 +209,7 @@
 			/// Game cover tooltip
 			&::before {
 				background-color: rgba(0, 0, 0, .75);
-				border: 2px solid var(--color-border);
+				border: 2px solid white;
 				border-radius: calc(.125em + var(--size-base));
 				bottom: calc(5 * var(--size-base));
 				color: var(--color-lightest);
@@ -272,13 +274,13 @@
 
 			/// Highlight title on hover
 			.game__title {
-				color: var(--color-primary);
+				color: var(--color-title-active);
 			}
 
 			/// Create tooltip bubble from description
 			.game__description {
-				background-color: var(--color-background-alt);
-				box-shadow: 0 1px 5px rgba(0, 0, 0, .66), 0 2px 10px rgba(0, 0, 0, .33);
+				background-color: var(--color-tooltip-background);
+				box-shadow: 0 1px .275rem rgba(0, 0, 0, .25), 0 2px .825rem rgba(0, 0, 0, .125);
 				top: calc(2 * var(--size-gap));
 
 				&::before {
@@ -292,7 +294,7 @@
 					content: '';
 					border-width: calc(.666 * var(--size-base));
 					border-style: solid;
-					border-color: transparent transparent var(--color-background-alt);
+					border-color: transparent transparent var(--color-tooltip-background);
 					bottom: calc(1.125em + var(--size-gap) + (2 * var(--size-base)));
 					height: 0;
 					left: calc(50% - (.5 * var(--size-base)));

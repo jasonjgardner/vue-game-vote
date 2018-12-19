@@ -93,6 +93,7 @@
 
 			.btn {
 				background-color: var(--color-btn-background);
+				color: var(--color-lightest);
 				flex: 2 1 50%;
 
 				&:hover,

@@ -23,3 +23,5 @@ import('./data.json').then(data => {
 		})
 	}).$mount('#app');
 });
+
+export const Bus = new Vue();

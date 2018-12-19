@@ -1,7 +1,7 @@
 <template>
 	<header id="app-header" :class="{'no-voters': voters.length < 1}">
 		<div id="icons" role="presentation"
-			 @click="showInstructions = true"
+			 @click="$emit('showModal', 'instructions')"
 		>
 			<AppIcon />
 			<HelpIcon />
@@ -65,51 +65,6 @@
 				</span>
 			</button>
 		</form>
-
-		<Modal v-if="showInstructions" id="instructions">
-			<h3 slot="header">
-				Instructions
-			</h3>
-			<template slot="body">
-				<h2 class="mt-0">
-					Voting
-				</h2>
-				<p>
-					The number of remaining votes is displayed inside a circle positioned in the upper
-					right corner of the app.
-				</p>
-
-				<p>
-					<b>Tap the <span class="text--accent">green</span> circle to adjust the allotted votes</b> via keyboard input.
-					The new value must be between 1 and 99. Set the initial value to the number of voters participating.
-				</p>
-
-				<h3>Buying Votes</h3>
-				<p>
-					The number of remaining votes can also be adjusted by pressing the <b>Coin</b> button. Pay <b>one</b>&nbsp;
-					<a href="#mario-coin">Mario coin</a> per additional vote.
-				</p>
-
-				<aside id="mario-coin">
-					<header>
-						<CoinIcon class="rotate--90 light-stroke mr-1 mb-0" />
-						<h4>Mario Coins</h4>
-					</header>
-
-					<blockquote>
-						<p>
-							Mario Coins are toy coins embossed with Mario's face. They're given as a reward for good behavior and
-							taken away for bad behavior, poor sportsmanship, bitching, moaning, etc.
-						</p>
-					</blockquote>
-				</aside>
-			</template>
-			<template slot="footer">
-				<button class="btn btn--primary" type="button" @click="showInstructions = false">
-					OK
-				</button>
-			</template>
-		</Modal>
 	</header>
 </template>
 
@@ -117,7 +72,6 @@
 	import RotateCcw from 'vue-feather-icon/components/rotate-ccw';
 	import MinusCircle from 'vue-feather-icon/components/minus-circle';
 	import Check from 'vue-feather-icon/components/check';
-
 	import AppIcon from '../assets/icon.svg';
 	import HelpIcon from '../assets/help.svg';
 
@@ -135,8 +89,7 @@
 			HelpIcon,
 			ResetIcon: RotateCcw,
 			CoinIcon: MinusCircle,
-			CheckIcon: Check,
-			Modal: () => import(/* webpackChunkName: "modal" */'./Modal')
+			CheckIcon: Check
 		},
 		props: {
 			voters: {
@@ -236,7 +189,6 @@
 		align-items: center;
 		background-color: var(--color-app-header, #{rgba(theme('background'), .97)});
 		border-bottom: 1px solid var(--color-border);
-
 		box-sizing: border-box;
 		display: flex;
 		flex-wrap: nowrap;
@@ -253,15 +205,15 @@
 		&:hover,
 		&:focus-within {
 			border-bottom-color: var(--color-border);
-			box-shadow: 0 2px .3125rem rgba(0, 0, 0, .33), 0 .3125rem 1.5rem rgba(0, 0, 0, .125);
+			//box-shadow: 0 2px .3125rem rgba(0, 0, 0, .33), 0 .3125rem 1.5rem rgba(0, 0, 0, .125);
 		}
 	}
 
 	.voters__votes {
 		background-color: var(--color-accent);
 		border-radius: calc(.5 * var(--size-fab));
-		box-shadow: -1px 1px 3px rgba(0, 0, 0, .5), 0 0 5px rgba(0, 0, 0, .33);
-		color: $color-dark;
+		box-shadow: -1px 1px .25rem rgba(0, 0, 0, .5), 0 0 .275rem rgba(0, 0, 0, .33);
+		color: var(--color-fab);
 		display: flex;
 		height: var(--size-fab);
 		justify-content: center;
@@ -302,7 +254,7 @@
 
 		.btn {
 			background-color: transparent;
-			color: $color-dark;
+			color: var(--color-btn);
 			margin: 0;
 			padding-bottom: 0;
 			padding-left: 0;
@@ -311,8 +263,13 @@
 
 		input + .btn {
 			border-radius: 50%;
+			color: var(--color-btn-alt);
 			padding-left: .25em;
 			padding-right: .45em;
+
+			svg {
+				stroke: currentColor;
+			}
 
 			&:active {
 				animation: none;
@@ -373,6 +330,13 @@
 
 		.title {
 			margin: 0 auto 0 var(--size-base);
+		}
+	}
+
+	@media screen and (min-width: #{$media-screen-md}) {
+		#app-header {
+			width: calc(100% - (2 * var(--size-base)));
+			transform: translateX(var(--size-base));
 		}
 	}
 </style>
