@@ -57,7 +57,16 @@ $themes: (
 	light: (
 		background: #ebebeb,
 		background-alt: #f0f0f0,
-		accent: #3250f0
+		btn-background: #1f2227,
+		modal-background: #1f2227,
+		dialog-background: rgba(mix(#1f2227, #505050, 90%), .95),
+		light: #fefefe,
+		lightest: white,
+		primary: #04adbf,
+		accent: #3250f0,
+		muted: #666,
+		assertive: #ff762e,
+		active: #9c0
 	)
 );
 

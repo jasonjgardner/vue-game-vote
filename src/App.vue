@@ -1,5 +1,5 @@
 <template>
-	<div id="app" :class="{'no-voters': voters < 1 }">
+	<div id="app" :class="{'no-voters': voters < 1, 'light-scheme': useLightScheme }">
 		<section v-if="chosen" id="choice" class="d-flex flex-column flex-1">
 			<Selected :chosen="chosen" :games="this.$parent.games"
 				@choose="choose"
@@ -94,19 +94,20 @@
 				validator: val => val > 0
 			}
 		},
-		data: function () {
+		data() {
 			return {
 				errors: 0,
 				votes: [],
 				chosen: null,
 				showModal: false,
 				dialogMessage: false,
-				voters: undefined
+				voters: undefined,
+				useLightScheme: true
 			};
 		},
 		computed: {
 			filteredGames() {
-				/** @var {{numberOfPlayers:number}} game - Game data **/
+				/** @var {GameData} game - Game data **/
 				return this.games.filter(game => game.numberOfPlayers >= this.initialVoters);
 			}
 		},

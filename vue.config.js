@@ -1,6 +1,5 @@
 const pkg = require('./package.json'),
-	path = require('path'),
-	merge = require('babel-merge');
+	path = require('path');
 
 const DEV = process.env.NODE_ENV !== 'production',
 	INCLUDES = [
@@ -19,18 +18,16 @@ module.exports = {
 			sass: {
 				sourceMap: DEV,
 				indentedSyntax: false,
-				includePaths: [
-					path.resolve(__dirname, '/node_modules/')
-				]
+				includePaths: INCLUDES
 			},
 			postcss: {
 				sourceMap: DEV,
 				plugins: {
-					'autoprefixer': {},
+					autoprefixer: {},
 					'postcss-preset-env': {
 						stage: 0
 					},
-					'cssnano': {
+					cssnano: {
 						preset: 'default'
 					}
 				}
@@ -50,131 +47,6 @@ module.exports = {
 		]
 	},
 	chainWebpack: config => {
-		/*config.module.rule('scss')
-			.test(/\.scss$/)
-			.oneOf('vue-modules')
-				.resourceQuery(/module/)
-					.use('vue')
-						.loader('vue-style-loader')
-							.tap(options => merge(options, {
-							sourceMap: DEV,
-							shadowMode: false
-						}))
-						.end()
-					.use('css')
-						.loader('css-loader')
-							.tap(options => merge(options, {
-								sourceMap: DEV,
-								importLoaders: 1,
-								modules: true,
-								localIdentName: '[name]_[local]_[hash:base64:5]'
-							}))
-						.end()
-					.use('postcss')
-						.loader('postcss-loader')
-							.tap(options => merge(options, {plugins: []}))
-						.end()
-					.use('sass')
-						.loader('sass-loader')
-						.tap(options => merge(options, {
-								sourceMap: DEV,
-								indentedSyntax: false,
-								includePaths: INCLUDES
-							}));
-
-		config.module.rule('scss').test(/\.scss$/)
-			.oneOf('vue')
-			.resourceQuery(/\?vue/)
-				.use('vue')
-						.loader('vue-style-loader')
-							.tap(options => merge(options, {
-							sourceMap: DEV,
-							shadowMode: false
-						}))
-						.end()
-					.use('css')
-						.loader('css-loader')
-							.tap(options => merge(options, {
-								sourceMap: DEV,
-								importLoaders: 1,
-								modules: true,
-								localIdentName: '[name]_[local]_[hash:base64:5]'
-							}))
-						.end()
-					.use('postcss')
-						.loader('postcss-loader')
-							.tap(options => merge(options, {plugins: []}))
-						.end()
-					.use('sass')
-						.loader('sass-loader')
-						.tap(options => merge(options, {
-								sourceMap: DEV,
-								indentedSyntax: false,
-								includePaths: INCLUDES
-							}));
-
-		config.module.rule('scss').test(/\.scss$/)
-			.oneOf('normal-modules')
-			.test(/\.module\.\w+$/)
-				.use('vue')
-						.loader('vue-style-loader')
-							.tap(options => merge(options, {
-							sourceMap: DEV,
-							shadowMode: false
-						}))
-						.end()
-					.use('css')
-						.loader('css-loader')
-							.tap(options => merge(options, {
-								sourceMap: DEV,
-								importLoaders: 1,
-								modules: true,
-								localIdentName: '[name]_[local]_[hash:base64:5]'
-							}))
-						.end()
-					.use('postcss')
-						.loader('postcss-loader')
-							.tap(options => merge(options, {plugins: []}))
-						.end()
-					.use('sass')
-						.loader('sass-loader')
-						.tap(options => merge(options, {
-								sourceMap: DEV,
-								indentedSyntax: false,
-								includePaths: INCLUDES
-							}));
-
-		config.module.rule('scss').test(/\.scss$/)
-			.oneOf('normal')
-			.use('vue')
-				.loader('vue-style-loader')
-					.tap(options => merge(options, {
-					sourceMap: DEV,
-					shadowMode: false
-				}))
-					.end()
-				.use('css')
-						.loader('css-loader')
-							.tap(options => merge(options, {
-								sourceMap: DEV,
-								importLoaders: 1,
-								modules: true,
-								localIdentName: '[name]_[local]_[hash:base64:5]'
-							}))
-						.end()
-					.use('postcss')
-						.loader('postcss-loader')
-							.tap(options => merge(options, {plugins: []}))
-						.end()
-					.use('sass')
-						.loader('sass-loader')
-						.tap(options => merge(options, {
-								sourceMap: DEV,
-								indentedSyntax: false,
-								includePaths: INCLUDES
-							}));
-*/
-
 		const svgRule = config.module.rule('svg');
 
 		svgRule.uses.clear();

@@ -269,7 +269,7 @@
 		input {
 			background-color: transparent;
 			border: 0;
-			color: $color-dark;
+			color: var(--color-input);
 			font-weight: bold;
 			text-align: right;
 			width: 1.5rem;
@@ -315,6 +315,7 @@
 
 		&:focus,
 		&:focus-within {
+			animation: focus 2s infinite;
 			background-color: var(--color-focus);
 			color: var(--color-btn-background);
 			outline: none;
