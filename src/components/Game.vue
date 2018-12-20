@@ -235,7 +235,7 @@
 
 		/// Game box art
 		&__cover {
-			box-shadow: 0 0 5px rgba(0, 0, 0, .75), 0 2px 10px rgba(0, 0, 0, .5);
+			box-shadow: .01rem .125rem .25rem rgba(0, 0, 0, .45), 0 .125rem .825rem rgba(0, 0, 0, .25);
 			height: var(--size-game-cover, #{$size-game-cover});
 			transition: filter .25s ease-out;
 			width: var(--size-game-cover, #{$size-game-cover});
@@ -246,7 +246,7 @@
 		&__tally {
 			background-color: var(--color-accent);
 			border-radius: 50%;
-			box-shadow: 0 1px 3px rgba(0, 0, 0, .66);
+			box-shadow: 0 1px 4px rgba(0, 0, 0, .125);
 			color: $color-dark;
 			font-size: .825rem;
 			font-weight: bold;
@@ -280,7 +280,7 @@
 			/// Create tooltip bubble from description
 			.game__description {
 				background-color: var(--color-tooltip-background);
-				box-shadow: 0 1px .275rem rgba(0, 0, 0, .25), 0 2px .825rem rgba(0, 0, 0, .125);
+				box-shadow: 0 .1rem .275rem rgba(0, 0, 0, .25), 0 .125rem .825rem rgba(0, 0, 0, .125);
 				top: calc(2 * var(--size-gap));
 
 				&::before {

@@ -161,6 +161,7 @@
 		created() {
 			this.voters = this.initialVoters;
 			document.body.classList.toggle('light-scheme', (new Date()).getHours() <= 18); /// Light scheme during day
+			document.body.classList.add('scrollbar');
 		},
 		methods: {
 			/**
@@ -222,7 +223,7 @@
 		margin-top: calc((2 * var(--size-base)) + var(--size-app-icon) + 1px);
 	}
 
-	@media (min-width: #{$media-screen-sm}), screen and (orientation: landscape) {
+	@media (min-width: #{$media-screen-md}), screen and (orientation: landscape) {
 		#games {
 			flex-wrap: nowrap;
 		}

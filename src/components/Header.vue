@@ -124,12 +124,6 @@
 	};
 </script>
 
-<style lang="scss">
-	.light-scheme {
-		--color-app-header: rgba(theme('background', 'light'), .97);
-	}
-</style>
-
 <style lang="scss" scoped>
 	@import '../css/variables';
 	@import '../css/mixins';
@@ -187,7 +181,7 @@
 
 	#app-header {
 		align-items: center;
-		background-color: var(--color-app-header, #{rgba(theme('background'), .97)});
+		background-color: var(--color-app-header);
 		border-bottom: 1px solid var(--color-border);
 		box-sizing: border-box;
 		display: flex;
@@ -205,14 +199,14 @@
 		&:hover,
 		&:focus-within {
 			border-bottom-color: var(--color-border);
-			//box-shadow: 0 2px .3125rem rgba(0, 0, 0, .33), 0 .3125rem 1.5rem rgba(0, 0, 0, .125);
+			box-shadow: 0 2px .3125rem rgba(0, 0, 0, .33), 0 .3125rem 1.5rem rgba(0, 0, 0, .125);
 		}
 	}
 
 	.voters__votes {
 		background-color: var(--color-accent);
 		border-radius: calc(.5 * var(--size-fab));
-		box-shadow: -1px 1px .25rem rgba(0, 0, 0, .5), 0 0 .275rem rgba(0, 0, 0, .33);
+		box-shadow: -1px .125rem .25rem rgba(0, 0, 0, .25), 0 .1rem .275rem rgba(0, 0, 0, .25);
 		color: var(--color-fab);
 		display: flex;
 		height: var(--size-fab);
@@ -335,8 +329,13 @@
 
 	@media screen and (min-width: #{$media-screen-md}) {
 		#app-header {
-			width: calc(100% - (2 * var(--size-base)));
 			transform: translateX(var(--size-base));
+			width: calc(100% - (2 * var(--size-base)));
+
+			&,
+			&:hover {
+				box-shadow: none;
+			}
 		}
 	}
 </style>
