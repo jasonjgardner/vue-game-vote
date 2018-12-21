@@ -38,7 +38,7 @@
 	 * Game choice component
 	 * @module Game
 	 * @emits Game#vote
-	 * @vue-prop {App~GameData} game - Game data
+	 * @vue-prop {GameData} game - Game data
 	 * @vue-computed {string} title - Conditional game title. Shows vote count when no voters remain, otherwise shows "Vote for..." message
 	 * @vue-computed {Number} tally - Number of votes received
 	 */

@@ -2,12 +2,14 @@
 	<Transition appear name="fade">
 		<main class="choice__results" aria-labelledby="choice-intro">
 			<p id="choice-intro" class="text--secondary mb-0" role="heading">
-				<RandomText :choices="randomTitles" :html="true" />
+				<RandomText :choices="randomTitles" :html="true"/>
 			</p>
 
-			<div class="choice__details" itemscope itemtype="http://schema.org/VideoGame">
+			<div class="choice__details" itemscope
+				 itemtype="http://schema.org/VideoGame"
+				 aria-labelledby="choice-name">
 				<div class="choice__header">
-					<CheckCircle aria-hidden="true" />
+					<CheckCircle aria-hidden="true"/>
 					<h2 id="choice-name" class="choice__title" itemprop="name">
 						{{ chosen.name }}
 					</h2>
@@ -21,19 +23,33 @@
 						 aria-labelledby="choice-name"
 					>
 
-					<!--<figcaption>-->
-						<!--<dl>-->
-						<!--<dt>Developer</dt>-->
-						<!--<dd itemprop="developer">{{ chosen.developer }}</dd>-->
-						<!--<dt>Publisher</dt>-->
-						<!--<dd itemprop="publisher">{{ chosen.publisher }}</dd>-->
-						<!--<dt>Players</dt>-->
-						<!--<dd>-->
-						<!--<span itemprop="numberOfPlayers">{{ chosen.numberOfPlayers }}</span>&nbsp;-->
-						<!--<span class="text&#45;&#45;secondary" itemprop="playMode">({{ chosen.playMode }})</span>-->
-						<!--</dd>-->
-						<!--</dl>-->
-					<!--</figcaption>-->
+					<figcaption>
+						<dl>
+							<dt>Developer</dt>
+							<dd itemprop="developer">{{ chosen.developer }}</dd>
+							<dt>Publisher</dt>
+							<dd itemprop="publisher">{{ chosen.publisher }}</dd>
+							<dt>Players</dt>
+							<dd>
+								<span itemprop="numberOfPlayers">{{ chosen.numberOfPlayers }}</span>&nbsp;
+								<span class="text--secondary" itemprop="playMode">({{ chosen.playMode }})</span>
+							</dd>
+						</dl>
+
+						<div v-if="chosen.hasOwnProperty('contentRating')">
+							<span class="sr-only" itemprop="contentRating"
+								  :aria-label="`Rated ${chosen.contentRating} by ESRB`">
+								{{ chosen.contentRating }}
+							</span>
+
+							<img id="esrb-icon" :src="require(`../assets/esrb/${chosen.contentRating}.png`)"
+								 :alt="`ESRB rating ${chosen.contentRating}`"
+								 :title="`Rated ${chosen.contentRating}`"
+							>
+						</div>
+
+						<p v-if="chosen.familyFriendly"><small>This is a <b>family-friendly</b> game.</small></p>
+					</figcaption>
 				</figure>
 			</div>
 
@@ -102,19 +118,19 @@
 			chosen: {
 				type: Object,
 				default: () => {
-					return {}
+					return {};
 				},
 				id: {
 					type: String,
-					required: true
+					required: true,
 				},
 				name: {
 					type: String,
-					required: true
+					required: true,
 				},
 				image: {
 					type: String,
-					required: true
+					required: true,
 				},
 				developer: String,
 				publisher: String,
@@ -123,22 +139,22 @@
 				contentRating: {
 					type: String,
 					required: false,
-					validator: rating => ['RP', 'EC', 'E', 'E10+', 'T', 'M', 'AO'].indexOf(rating) > -1
+					validator: rating => ['RP', 'EC', 'E', 'E10+', 'T', 'M', 'AO'].indexOf(rating) > -1,
 				},
 				playMode: {
 					type: String,
 					required: false,
-					validator: gamePlayMode => ['CoOp', 'MultiPlayer', 'SinglePlayer'].indexOf(gamePlayMode) > -1
+					validator: gamePlayMode => ['CoOp', 'MultiPlayer', 'SinglePlayer'].indexOf(gamePlayMode) > -1,
 				},
 				numberOfPlayers: {
 					type: Number,
-					default: 1
-				}
-			}
+					default: 1,
+				},
+			},
 		},
 		data() {
 			return {
-				picks: 0
+				picks: 0,
 			};
 		},
 		computed: {
@@ -152,7 +168,7 @@
 					results[vote.id] = {
 						...vote,
 						total: this.$parent.votes.filter(v => v.id === vote.id).length,
-						chosen: this.chosen.id === vote.id
+						chosen: this.chosen.id === vote.id,
 					};
 				}
 
@@ -164,7 +180,7 @@
 				}
 
 				return ['Let&rsquo;s play&hellip;', 'How about&hellip;'];
-			}
+			},
 		},
 		methods: {
 			/**
@@ -179,7 +195,7 @@
 
 				this.$emit(this.$parent.votes.length > 0 ? 'choose' : 'reset');
 			}
-		}
+		},
 	};
 </script>
 
@@ -187,19 +203,13 @@
 	@import '../css/variables';
 	@import '../css/mixins';
 
+	#esrb-icon {
+		height: auto;
+		max-width: calc(4 * var(--size-base));
+	}
+
 	.choice__details {
-		display: flex;
-		flex-flow: column nowrap;
-
-		dt,
-		dd {
-			float: left;
-			width: 50%;
-		}
-
-		dt {
-			clear: left;
-		}
+		margin: 0 auto;
 	}
 
 	.choice__header {
@@ -221,16 +231,18 @@
 	}
 
 	.choice__cover {
-		box-shadow: 1px .125rem 1.125rem rgba(0, 0, 0, .75);
-		margin: 0 auto 1rem;
-		max-height: $size-game-cover-max;
-		max-width: $size-game-cover-max;
-		height: 90vw;
-		width: 90vw;
+		display: flex;
+		flex-flow: column nowrap;
+		margin: 0 auto calc(2 * var(--size-base));
+		max-width: 90vw;
+		width: 100%;
 
-		img {
+		> img {
+			filter: drop-shadow(1px .125rem 1.125rem rgba(0, 0, 0, .75));
 			height: 100%;
 			margin: 0 auto;
+			max-height: $size-game-cover-max;
+			max-width: $size-game-cover-max;
 			object-fit: fill;
 			width: 100%;
 		}
@@ -238,6 +250,7 @@
 
 	.choice__results {
 		margin: 0 auto;
+		max-width: calc(2 * var(--size-game-cover));
 		width: 90%;
 	}
 
@@ -257,7 +270,7 @@
 		width: 100%;
 
 		.btn {
-			box-shadow: -1px 1px 3px rgba(0, 0, 0, .5), 0 0 .275rem rgba(0, 0, 0, .33);
+			box-shadow: -1px .125rem .25rem rgba(0, 0, 0, .125), 0 0 .275rem rgba(0, 0, 0, .25);
 			display: block;
 			flex: 1;
 			max-width: $size-game-cover-max;
@@ -279,6 +292,11 @@
 
 	.chosen-leave-active {
 		opacity: 0;
+	}
+
+	caption {
+		line-height: 1.5;
+		margin-bottom: 1rem;
 	}
 
 	table {
@@ -317,7 +335,7 @@
 
 	td {
 		border: 0;
-		color: #999;
+		color: var(--color-text);
 		margin: 0;
 		padding: .25em .5em;
 	}
@@ -331,7 +349,57 @@
 		}
 	}
 
+	dl {
+		font-size: .925rem;
+		margin-left: auto;
+		margin-right: auto;
+		width: calc(15 * var(--size-base));
+	}
+
+	dt,
+	dd {
+		margin-bottom: var(--size-gap);
+		overflow: hidden;
+		padding: var(--size-gap);
+		text-overflow: ellipsis;
+	}
+
+	dt {
+		--size-term: calc(5 * var(--size-base));
+		border-bottom: 1px solid var(--color-border);
+		color: var(--color-secondary);
+		float: left;
+		font-size: .875em;
+		font-weight: bold;
+		padding-right: var(--size-base);
+		width: var(--size-term);
+	}
+
+	dd {
+
+	}
+
 	@media screen and (min-width: #{$media-screen-md}) {
+		.choice__cover {
+			flex-direction: row;
+			justify-content: space-around;
+			width: 90%;
+
+			img {
+				margin-right: calc(2 * var(--size-base));
+			}
+
+			dl {
+				font-size: 1.125rem;
+				margin-left: 0;
+				width: calc(18 * var(--size-base));
+			}
+
+			dt {
+				--size-term: 100%;
+			}
+		}
+
 		.choice__actions {
 			box-shadow: none;
 			transform: translateX(var(--size-base));
