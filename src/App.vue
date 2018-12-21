@@ -1,12 +1,14 @@
 <template>
-	<div id="app" :class="{'no-voters': voters < 1 }">
-		<section v-if="chosen" id="choice" class="d-flex flex-column flex-1">
+	<div id="app" :class="{'no-voters': voters < 1 }" role="application">
+		<div v-if="chosen" id="choice"
+			 class="d-flex flex-column flex-1"
+			 role="doc-conclusion">
 			<Selected :chosen="chosen" :games="this.$parent.games"
 				@choose="choose"
 				@reset="reset"
 			/>
-		</section>
-		<main v-else>
+		</div>
+		<div v-else class="container">
 			<AppHeader :voters="voters" :has-votes="votes.length > 0"
 			    @showModal="showModal"
 				@buyVote="voters = Math.max(1, voters + 1)"
@@ -14,14 +16,14 @@
 				@reset="reset"
 			/>
 
-			<div id="games">
+			<main id="games">
 				<Game v-for="game in filteredGames"
 					  :key="game.id"
 					  :game="game"
 					  @vote="onVote"
 				/>
-			</div>
-		</main>
+			</main>
+		</div>
 
 		<Modal v-if="modal === 'instructions'" aria-modal="true"
 			   :aria-hidden="modal !== 'instructions'"
@@ -39,7 +41,7 @@
 				</p>
 
 				<p>
-					<b>Tap the <span class="text--accent">green</span> circle to adjust the allotted votes</b> via keyboard input.
+					<b>Tap the <span class="text--accent">colored circle</span> to adjust the allotted votes</b> via keyboard input.
 					The new value must be between 1 and 99. Set the initial value to the number of voters participating.
 				</p>
 
@@ -70,7 +72,7 @@
 			</div>
 		</Modal>
 
-		<Alert v-if="showNoVoteDialog" role="alert" @dismissed="showNoVoteDialog = false">
+		<Alert v-if="showNoVoteDialog" :role="'alert'" @dismissed="showNoVoteDialog = false">
 			<h4 slot="header">
 				Hang on!
 			</h4>
@@ -86,21 +88,6 @@
 </template>
 
 <script>
-	/**
-	 * Game data [schema]{@link https://schema.org/VideoGame}
-	 * @typedef {Object<string,any>} GameData
-	 * @property {String} id - Unique game ID
-	 * @property {String} name - Game name
-	 * @property {String} img - Image source path
-	 * @property {String} [developer] - Game developer
-	 * @property {String} [publisher] - Game publisher
-	 * @property {String} [gamePlatform] - Game platform/system
-	 * @property {Boolean} [familyFriendly] - Game is family-friendly
-	 * @property {'RP'|'EC'|'E'|'E10+'|'T'|'M'|'AO'} [contentRating] - ESRB game rating
-	 * @property {'CoOp'|'MultiPlayer'|'SinglePlayer'} [playMode] - Identifies game as single or multi-player
-	 * @property {Number} [numberOfPlayers=1] - Number of players
-	 */
-
 	import MinusCircle from 'vue-feather-icon/components/minus-circle';
 	import Header from './components/Header';
 	import Game from './components/Game';
@@ -160,7 +147,7 @@
 		},
 		created() {
 			this.voters = this.initialVoters;
-			document.body.classList.toggle('light-scheme', (new Date()).getHours() <= 18); /// Light scheme during day
+			document.body.classList.toggle('light-scheme', +(new Date()).getHours() <= 18); /// Light scheme during day
 			document.body.classList.add('scrollbar');
 		},
 		methods: {
@@ -209,7 +196,7 @@
 		margin: 0 auto;
 		width: 100%;
 
-		& > main {
+		.container {
 			display: flex;
 			flex-flow: column wrap;
 			justify-content: center;

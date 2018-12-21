@@ -1,7 +1,7 @@
 <template>
 	<Transition appear name="alert">
-		<div class="modal">
-			<div class="dialog">
+		<div class="modal" role="dialog" aria-modal="true">
+			<div class="dialog" :role="role">
 				<div class="dialog__header">
 					<slot name="header" />
 				</div>
@@ -34,7 +34,13 @@
 	 */
 	export default {
 		name: 'Dialog',
-		mixins: [ModalMixin]
+		mixins: [ModalMixin],
+		props: {
+			role: {
+				type: String,
+				default: 'dialog'
+			}
+		}
 	};
 </script>
 

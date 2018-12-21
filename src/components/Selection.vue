@@ -1,39 +1,43 @@
 <template>
 	<Transition appear name="fade">
-		<div class="choice__results">
-			<p class="text--secondary mb-0">
+		<main class="choice__results" aria-labelledby="choice-intro">
+			<p id="choice-intro" class="text--secondary mb-0" role="heading">
 				<RandomText :choices="randomTitles" :html="true" />
 			</p>
 
 			<div class="choice__details" itemscope itemtype="http://schema.org/VideoGame">
 				<div class="choice__header">
-					<CheckCircle />
-					<h2 class="choice__title" itemprop="name">
+					<CheckCircle aria-hidden="true" />
+					<h2 id="choice-name" class="choice__title" itemprop="name">
 						{{ chosen.name }}
 					</h2>
 				</div>
 
-				<div class="choice__cover">
+				<figure class="choice__cover">
 					<img class="focus" itemprop="image"
 						 :src="require(`../${chosen.image}`)"
 						 :alt="chosen.name"
+						 role="presentation"
+						 aria-labelledby="choice-name"
 					>
-				</div>
 
-				<!--<dl>-->
-					<!--<dt>Developer</dt>-->
-					<!--<dd itemprop="developer">{{ chosen.developer }}</dd>-->
-					<!--<dt>Publisher</dt>-->
-					<!--<dd itemprop="publisher">{{ chosen.publisher }}</dd>-->
-					<!--<dt>Players</dt>-->
-					<!--<dd>-->
+					<!--<figcaption>-->
+						<!--<dl>-->
+						<!--<dt>Developer</dt>-->
+						<!--<dd itemprop="developer">{{ chosen.developer }}</dd>-->
+						<!--<dt>Publisher</dt>-->
+						<!--<dd itemprop="publisher">{{ chosen.publisher }}</dd>-->
+						<!--<dt>Players</dt>-->
+						<!--<dd>-->
 						<!--<span itemprop="numberOfPlayers">{{ chosen.numberOfPlayers }}</span>&nbsp;-->
 						<!--<span class="text&#45;&#45;secondary" itemprop="playMode">({{ chosen.playMode }})</span>-->
-					<!--</dd>-->
-				<!--</dl>-->
+						<!--</dd>-->
+						<!--</dl>-->
+					<!--</figcaption>-->
+				</figure>
 			</div>
 
-			<table>
+			<table title="The results are in!">
 				<thead>
 				<tr>
 					<th>Choice</th>
@@ -41,9 +45,9 @@
 				</tr>
 				</thead>
 				<tbody>
-				<tr v-for="game in poll" :key="game.id" :class="{'text--accent': game.chosen}">
+				<tr v-for="game in poll" :key="game.id" :class="{'selected': game.chosen}">
 					<td>{{ game.name }}</td>
-					<td class="text--center">
+					<td class="text--center" :aria-label="`${game.total} vote(s)`">
 						{{ game.total }}
 					</td>
 				</tr>
@@ -51,7 +55,7 @@
 				<caption>Voting Results</caption>
 			</table>
 
-			<footer class="choice__actions">
+			<div class="choice__actions" role="form">
 				<button v-if="canPickAgain"
 						ref="repick"
 						class="btn btn--secondary text--accent"
@@ -68,8 +72,8 @@
 				>
 					Start Over
 				</button>
-			</footer>
-		</div>
+			</div>
+		</main>
 	</Transition>
 </template>
 
@@ -217,7 +221,7 @@
 	}
 
 	.choice__cover {
-		box-shadow: 1px 3px 20px rgba(0, 0, 0, .75);
+		box-shadow: 1px .125rem 1.125rem rgba(0, 0, 0, .75);
 		margin: 0 auto 1rem;
 		max-height: $size-game-cover-max;
 		max-width: $size-game-cover-max;
@@ -253,7 +257,7 @@
 		width: 100%;
 
 		.btn {
-			box-shadow: -1px 1px 3px rgba(0, 0, 0, .5), 0 0 5px rgba(0, 0, 0, .33);
+			box-shadow: -1px 1px 3px rgba(0, 0, 0, .5), 0 0 .275rem rgba(0, 0, 0, .33);
 			display: block;
 			flex: 1;
 			max-width: $size-game-cover-max;
@@ -285,24 +289,26 @@
 	}
 
 	thead {
-		border-bottom: 1px solid $color-light;
+		background-color: var(--color-background-table-row-alt);
+		border-bottom: 1px solid var(--color-border);
 	}
 
 	tbody tr {
+		background-color: var(--color-background-table-row);
+
 		&:hover,
 		&:focus-within {
 			background-color: var(--color-background-alt);
 		}
 
 		&:nth-child(even) {
-			background-color: #3a3a3a;
+			background-color: var(--color-background-table-row-alt);
 		}
 	}
 
 	th {
-		color: #ccc;
-		font-size: .925rem;
-		padding: .25em .125em;
+		color: var(--color-secondary);
+		padding: .5em;
 
 		&:first-child {
 			text-align: left;
@@ -314,6 +320,15 @@
 		color: #999;
 		margin: 0;
 		padding: .25em .5em;
+	}
+
+	.selected {
+		color: var(--color-accent);
+		border-left: 2px solid var(--color-accent);
+
+		td {
+			color: var(--color-accent);
+		}
 	}
 
 	@media screen and (min-width: #{$media-screen-md}) {

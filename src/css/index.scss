@@ -15,7 +15,7 @@
 	--color-modal-background: #{rgba(theme('modal-background'), .75)};
 	--color-dialog-background: #{rgba(theme('dialog-background'), .95)};
 	--color-tooltip-background: #{rgba(theme('background-alt'), .95)};
-	--color-app-header: var(--color-background-alt);
+	--color-app-header: #{rgba(theme('background'), .95)};
 	--color-accent: #{theme('accent')};
 	--color-primary: #{theme('primary')};
 	--color-primary-alt: #{mix(theme('btn-background'), theme('accent'), 25%)};
@@ -52,11 +52,14 @@
 	--color-input: #{theme('light', 'light')};
 	--color-btn: #{theme('lightest', 'light')};
 	--color-btn-alt: #{theme('light', 'light')};
+	--color-background-fab: #{theme('lightest', 'light')};
 	--color-fab: #{theme('fab', 'light')};
-	--color-border: #{theme('background', 'dark')};
+	--color-border: #cdcdcd;
 	--color-text: #{theme('background', 'dark')};
 	--color-title: var(--color-primary);
 	--color-title-active: var(--color-text);
+	--color-background-table-row: #eaeaea;
+	--color-background-table-row-alt: #efefef;
 }
 
 @keyframes focus {
@@ -206,6 +209,7 @@ $sides: (
 
 	&--fab {
 		align-items: center;
+		background-color: var(--color-background-fab, var(--color-background-alt));
 		border-radius: 50%;
 		box-shadow: -1px 1px .25rem rgba(0, 0, 0, .5), 0 0 .333rem rgba(0, 0, 0, .33);
 		color: var(--color-fab);

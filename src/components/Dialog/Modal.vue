@@ -39,7 +39,7 @@
 	};
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 	@import '../../css/variables';
 	@import '../../css/mixins';
 
@@ -123,5 +123,9 @@
 
 	.modal-leave-active {
 		opacity: 0;
+	}
+
+	a {
+		color: var(--color-primary);
 	}
 </style>

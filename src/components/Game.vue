@@ -9,6 +9,7 @@
 				<img class="game__cover" itemprop="image"
 					 :src="require(`../${game.image}`)"
 					 :alt="game.name"
+					 :title='`"${game.name}" cover art`'
 				>
 				<figcaption class="game__description">
 					<h3 class="game__title" itemprop="name">
@@ -16,14 +17,14 @@
 					</h3>
 
 					<p v-if="tally > 5" class="game__tally" title="Votes cast">
-						{{ tally }}
+						{{ tally }} <span class="sr-only">Votes for {{ game.name }}</span>
 					</p>
 					<p v-else-if="tally > 0" class="game__votes" :title="`Vote count for ${game.name}`">
 						<span v-for="idx in tally" :key="idx" aria-hidden="true">
 							&#9679;
 						</span>
 						<span class="sr-only">
-							{{ `${tally} votes` }}
+							{{ `${tally} votes for ${game.name}` }}
 						</span>
 					</p>
 				</figcaption>
@@ -37,7 +38,7 @@
 	 * Game choice component
 	 * @module Game
 	 * @emits Game#vote
-	 * @vue-prop {GameData} game - Game data
+	 * @vue-prop {App~GameData} game - Game data
 	 * @vue-computed {string} title - Conditional game title. Shows vote count when no voters remain, otherwise shows "Vote for..." message
 	 * @vue-computed {Number} tally - Number of votes received
 	 */
@@ -80,8 +81,9 @@
 		methods: {
 			/**
 			 * @description Casts a vote for this game
-			 * @param {GameData} game - Data belonging to the chosen game
+			 * @param {Object} game - `GameData` belonging to the chosen game
 			 * @event Game#vote
+			 * @see GameData
 			 */
 			vote(game) {
 				let ok = this.$parent.voters > 0;
@@ -237,16 +239,18 @@
 		&__cover {
 			box-shadow: .01rem .125rem .25rem rgba(0, 0, 0, .45), 0 .125rem .825rem rgba(0, 0, 0, .25);
 			height: var(--size-game-cover, #{$size-game-cover});
+			max-height: calc(100vh - ((2 * var(--size-base)) + var(--size-app-icon) + 1px) - 3rem);
 			transition: filter .25s ease-out;
-			width: var(--size-game-cover, #{$size-game-cover});
+			max-width: var(--size-game-cover, #{$size-game-cover});
 			z-index: $zindex-cover;
+			object-fit: contain;
 		}
 
 		/// Game vote count bubble
 		&__tally {
 			background-color: var(--color-accent);
 			border-radius: 50%;
-			box-shadow: 0 1px 4px rgba(0, 0, 0, .125);
+			box-shadow: 0 1px .125rem rgba(0, 0, 0, .125);
 			color: $color-dark;
 			font-size: .825rem;
 			font-weight: bold;

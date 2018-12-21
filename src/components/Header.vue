@@ -1,5 +1,5 @@
 <template>
-	<header id="app-header" :class="{'no-voters': voters.length < 1}">
+	<header id="app-header" :class="{'no-voters': voters.length < 1}" role="banner">
 		<div id="icons" role="presentation"
 			 @click="$emit('showModal', 'instructions')"
 		>
@@ -12,7 +12,7 @@
 		</h1>
 
 		<form id="voters" class="d-flex">
-			<label class="sr-only" for="votes-remaining">
+			<label id="votes-remaining-label" class="sr-only" for="votes-remaining">
 				Votes Remaining:
 			</label>
 
@@ -25,6 +25,7 @@
 					   type="number"
 					   placeholder="#"
 					   max="99" min="0"
+					   aria-labelledby="votes-remaining-label"
 				>
 
 				<button v-if="hasVotes"
@@ -253,6 +254,10 @@
 			padding-bottom: 0;
 			padding-left: 0;
 			padding-right: 0;
+
+			svg {
+				stroke: currentColor;
+			}
 		}
 
 		input + .btn {
@@ -260,10 +265,6 @@
 			color: var(--color-btn-alt);
 			padding-left: .25em;
 			padding-right: .45em;
-
-			svg {
-				stroke: currentColor;
-			}
 
 			&:active {
 				animation: none;
