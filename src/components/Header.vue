@@ -109,8 +109,7 @@
 			}
 		},
 		methods: {
-			/**
-			 * @description Adds voters and plays confirmation audio
+			/** @description Adds voters and plays confirmation audio
 			 * @memberof Header
 			 * @event Header#buyVote
 			 */

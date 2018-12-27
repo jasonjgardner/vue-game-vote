@@ -151,18 +151,14 @@
 			document.body.classList.add('scrollbar');
 		},
 		methods: {
-			/**
-			 * @description Selects a candidate at random
-			 */
+			/** @description Selects a candidate at random */
 			choose() {
 				this.showNoVoteDialog = false;
 				this.modal = false;
 				this.chosen = this.votes[Math.floor(Math.random() * this.votes.length)];
 				window.scrollTo(0, 0);
 			},
-			/**
-			 * @description Resets votes, vote counts, and selected game
-			 */
+			/** @description Resets votes, vote counts, and selected game */
 			reset() {
 				this.showNoVoteDialog = false;
 				this.modal = false;

@@ -183,8 +183,7 @@
 			},
 		},
 		methods: {
-			/**
-			 * @description Repicks a game
+			/** @description Repicks a game
 			 * @memberof Selection
 			 * @event Selection#choose
 			 * @event Selection#reset

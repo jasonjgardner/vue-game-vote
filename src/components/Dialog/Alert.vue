@@ -29,7 +29,7 @@
 	 * @namespace Modal
 	 * @module Modal
 	 * @description Dialog box component
-	 * @requires Modal/Mixin
+	 * @requires ModalMixin
 	 * @emits Dialog#dismiss
 	 */
 	export default {

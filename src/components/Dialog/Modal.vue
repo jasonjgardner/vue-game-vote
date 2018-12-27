@@ -30,7 +30,7 @@
 	/**
 	 * Dialog component
 	 * @module Modal
-	 * @requires Modal/Mixin
+	 * @requires ModalMixin
 	 * @emits Dialog#close
 	 */
 	export default {

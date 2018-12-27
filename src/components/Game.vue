@@ -79,8 +79,7 @@
 			}
 		},
 		methods: {
-			/**
-			 * @description Casts a vote for this game
+			/** @description Casts a vote for this game
 			 * @param {Object} game - `GameData` belonging to the chosen game
 			 * @event Game#vote
 			 * @see GameData
