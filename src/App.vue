@@ -93,6 +93,7 @@
 	import Game from './components/Game';
 	import RandomText from './components/RandomString';
 	import HorizontalScroll from './lib/HorizontalScroll';
+	import typekitLoader from './lib/TypekitLoader';
 
 	const Scroller = new HorizontalScroll();
 	Scroller.attach();
@@ -151,6 +152,8 @@
 			this.voters = this.initialVoters;
 			document.body.classList.toggle('light-scheme', +(new Date()).getHours() <= 18); /// Light scheme during day
 			document.body.classList.add('scrollbar');
+
+			typekitLoader('apf6wfj');
 		},
 		methods: {
 			/** @description Selects a candidate at random */

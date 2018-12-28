@@ -78,13 +78,12 @@ $themes: (
 /// @access public
 $defaultTheme: 'dark' !default;
 
-/// Font family used in titles (Oxygen)
-/// @link https://fonts.google.com/specimen/Oxygen
+/// Font family used in titles
 /// @type String
 /// @group typography
 /// @name font-family-title
 /// @access public
-$font-family-title: Oxygen !default;
+$font-family-title: a-otf-ud-shin-go-pr6n, Oxygen !default;
 
 /// Emoji font stack
 /// @type String

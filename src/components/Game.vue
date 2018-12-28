@@ -189,7 +189,7 @@
 			color: var(--color-title);
 			display: inline-block;
 			font-size: 1rem;
-			font-weight: normal;
+			font-weight: bold;
 			transition: color .425s ease-out;
 		}
 
@@ -236,13 +236,15 @@
 
 		/// Game box art
 		&__cover {
+			border-radius: $size-border-radius - 1;
+			box-sizing: border-box;
 			box-shadow: .01rem .125rem .25rem rgba(0, 0, 0, .45), 0 .125rem .825rem rgba(0, 0, 0, .25);
 			height: var(--size-game-cover, #{$size-game-cover});
 			max-height: calc(100vh - ((2 * var(--size-base)) + var(--size-app-icon) + 1px) - 3rem);
 			transition: filter .25s ease-out;
 			max-width: var(--size-game-cover, #{$size-game-cover});
-			z-index: $zindex-cover;
 			object-fit: contain;
+			z-index: $zindex-cover;
 		}
 
 		/// Game vote count bubble
@@ -264,9 +266,10 @@
 		/// Game vote count dots
 		&__votes {
 			color: var(--color-accent);
+			font-family: sans-serif;
 			line-height: 1;
 			text-align: right;
-			text-shadow: 0 1px 2px rgba(0, 0, 0, .6);
+			text-shadow: 0 1px 2px rgba(0, 0, 0, .33);
 		}
 
 		/// Hocus events
@@ -285,6 +288,7 @@
 				background-color: var(--color-tooltip-background);
 				box-shadow: 0 .1rem .275rem rgba(0, 0, 0, .25), 0 .125rem .825rem rgba(0, 0, 0, .125);
 				top: calc(2 * var(--size-gap));
+				z-index: $zindex-cover + 1;
 
 				&::before {
 					opacity: 1;
@@ -314,6 +318,7 @@
 			.game__cover {
 				// stylelint-disable no-unknown-animations
 				animation: focus 1s infinite;
+				filter: drop-shadow(0 3px 5px rgba(0, 0, 0, .5));
 			}
 		}
 	}

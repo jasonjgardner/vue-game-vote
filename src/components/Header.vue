@@ -42,18 +42,20 @@
 				</button>
 			</div>
 
-			<button v-if="hasVotes"
-					class="btn btn--secondary btn--fab"
-					type="reset"
-					name="reset"
-					title="Reset voting"
-					@click.prevent="$emit('reset')"
-			>
-				<ResetIcon />
-				<span class="sr-only">
-					Reset
-				</span>
-			</button>
+			<Transition name="fade">
+				<button v-if="hasVotes"
+						class="btn btn--secondary btn--fab"
+						type="reset"
+						name="reset"
+						title="Reset voting"
+						@click.prevent="$emit('reset')"
+				>
+					<ResetIcon />
+					<span class="sr-only">
+						Reset
+					</span>
+				</button>
+			</Transition>
 
 			<button class="btn btn--secondary btn--fab"
 					type="button"
@@ -168,14 +170,16 @@
 
 	.title {
 		color: var(--color-text);
+		cursor: default;
 		display: inline-block;
 		font-size: 1rem;
-		font-weight: normal;
+		font-weight: bold;
 		margin: 0 auto 0 var(--size-base);
 		max-width: 150px;
 		overflow: hidden;
 		text-align: left;
 		text-overflow: ellipsis;
+		transition: color .5s ease-out;
 		white-space: nowrap;
 	}
 
@@ -200,6 +204,10 @@
 		&:focus-within {
 			border-bottom-color: var(--color-border);
 			box-shadow: 0 2px .3125rem rgba(0, 0, 0, .33), 0 .3125rem 1.5rem rgba(0, 0, 0, .125);
+
+			.title {
+				color: var(--color-primary);
+			}
 		}
 	}
 
