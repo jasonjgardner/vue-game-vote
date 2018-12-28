@@ -10,5 +10,5 @@ docs/
 
 # Assets folder contains copyrighted video game cover art / graphics, thus is excluded from the repo
 src/assets/games/
-!src/assets/esrb/
+src/assets/fonts/
 

@@ -295,10 +295,10 @@
 				/// Bubble arrow
 				&::after {
 					content: '';
-					border-width: calc(.666 * var(--size-base));
+					border-width: calc(.9 * var(--size-base));
 					border-style: solid;
 					border-color: transparent transparent var(--color-tooltip-background);
-					bottom: calc(1.125em + var(--size-gap) + (2 * var(--size-base)));
+					bottom: calc(1em + var(--size-gap) + (2 * var(--size-base)));
 					height: 0;
 					left: calc(50% - (.5 * var(--size-base)));
 					position: absolute;

@@ -5,7 +5,7 @@
 
 @import 'variables';
 @import 'mixins';
-@import url('https://fonts.googleapis.com/css?family=#{$font-family-title}:300,400,700');
+@import 'fonts';
 @import '~normalize.css/normalize.css';
 
 :root {
@@ -50,6 +50,7 @@
 	--color-primary: #{theme('primary', 'light')};
 	--color-primary-alt: #{mix(theme('btn-background', 'light'), theme('accent', 'light'), 25%)};
 	--color-input: #{theme('light', 'light')};
+	--color-link: #{theme('link', 'light')};
 	--color-btn: #{theme('lightest', 'light')};
 	--color-btn-alt: #{theme('light', 'light')};
 	--color-background-fab: #{theme('lightest', 'light')};

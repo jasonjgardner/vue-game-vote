@@ -62,6 +62,7 @@ $themes: (
 		modal-background: #1f2227,
 		dialog-background: rgba(mix(#1f2227, #505050, 90%), .95),
 		fab: $color-dark,
+		link: #0cc,
 		light: #fefefe,
 		lightest: white,
 		primary: #0cc,
@@ -83,7 +84,7 @@ $defaultTheme: 'dark' !default;
 /// @group typography
 /// @name font-family-title
 /// @access public
-$font-family-title: 'Oxygen' !default;
+$font-family-title: Oxygen !default;
 
 /// Emoji font stack
 /// @type String
@@ -102,7 +103,7 @@ $font-family-system: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !default;
 /// @group typography
 /// @access public
 /// @see font-family-title
-$font-family-sans-serif: $font-family-title, 'Lato', 'Open Sans', $font-family-system !default;
+$font-family-sans-serif: $font-family-title, Lato, 'Open Sans', $font-family-system, $font-family-emoji !default;
 
 /// Base font size (equal to `1rem`)
 /// @type Length

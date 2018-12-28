@@ -47,14 +47,14 @@
 
 				<h3>Buying Votes</h3>
 				<p>
-					The number of remaining votes can also be adjusted by pressing the <b>Coin</b> button. Pay <b>one</b>&nbsp;
-					<a href="#mario-coin">Mario coin</a> per additional vote.
+					The number of remaining votes can also be adjusted by pressing the <b>Coin</b> button. Pay
+					<b>one <a href="#mario-coin">Mario coin</a></b>  per additional vote.
 				</p>
 
 				<aside id="mario-coin">
-					<header>
-						<CoinIcon class="rotate--90 light-stroke mr-1 mb-0" />
-						<h4>Mario Coins</h4>
+					<header class="d-flex align--center">
+						<CoinIcon class="rotate--90 light-stroke mr-1 mb-0 mt-0" />
+						<h4 class="mb-0 mt-0">Mario Coins</h4>
 					</header>
 
 					<blockquote>
@@ -74,10 +74,10 @@
 
 		<Alert v-if="showNoVoteDialog" :role="'alert'" @dismissed="showNoVoteDialog = false">
 			<h4 slot="header">
-				Hang on!
+				<RandomText :choices="['Hang on!', 'Wait!', 'Woops']" />
 			</h4>
 			<p slot="message">
-				You&rsquo;re out of votes!
+				<RandomText :choices="['You\'re out of votes!', 'We\'ve run out of votes! Are you ready to decide?']" />
 			</p>
 			<template slot="footer">
 				<button class="btn" type="reset" @click.prevent="reset">Reset</button>
@@ -91,6 +91,7 @@
 	import MinusCircle from 'vue-feather-icon/components/minus-circle';
 	import Header from './components/Header';
 	import Game from './components/Game';
+	import RandomText from './components/RandomString';
 	import HorizontalScroll from './lib/HorizontalScroll';
 
 	const Scroller = new HorizontalScroll();
@@ -113,6 +114,7 @@
 		components: {
 			AppHeader: Header,
 			Game,
+			RandomText,
 			Modal: () => import(/* webpackChunkName: "dialog" */'./components/Dialog/Modal'),
 			Alert: () => import(/* webpackChunkName: "dialog" */'./components/Dialog/Alert'),
 			Selected: () => import(/* webpackChunkName: "selection" */'./components/Selection'),
