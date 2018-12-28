@@ -22,33 +22,40 @@
 						 role="presentation"
 						 aria-labelledby="choice-name"
 					>
-
 					<figcaption>
 						<dl>
-							<dt>Developer</dt>
-							<dd itemprop="developer">{{ chosen.developer }}</dd>
-							<dt>Publisher</dt>
-							<dd itemprop="publisher">{{ chosen.publisher }}</dd>
+							<div v-if="chosen.hasOwnProperty('developer') && chosen.developer.length > 0">
+								<dt>Developer</dt>
+								<dd itemprop="developer">{{ chosen.developer }}</dd>
+							</div>
+							<div v-if="chosen.hasOwnProperty('publisher') && chosen.publisher.length > 0">
+								<dt>Publisher</dt>
+								<dd itemprop="publisher">{{ chosen.publisher }}</dd>
+							</div>
 							<dt>Players</dt>
 							<dd>
-								<span itemprop="numberOfPlayers">{{ chosen.numberOfPlayers }}</span>&nbsp;
+								<span itemprop="numberOfPlayers">{{ chosen.numberOfPlayers > 1 ? `1 - ${chosen.numberOfPlayers}` : 1 }}</span>&nbsp;
 								<span class="text--secondary" itemprop="playMode">({{ chosen.playMode }})</span>
 							</dd>
 						</dl>
 
-						<div v-if="chosen.hasOwnProperty('contentRating')">
-							<span class="sr-only" itemprop="contentRating"
-								  :aria-label="`Rated ${chosen.contentRating} by ESRB`">
-								{{ chosen.contentRating }}
-							</span>
+						<div id="content-rating">
+							<FamilyFriendlyIcon v-if="chosen.familyFriendly" class="icon" title="This is a family-friendly game." />
+							<FamilyUnfriendlyIcon v-else class="icon" title="This is not a family-friendly game." />
 
-							<img id="esrb-icon" :src="require(`../assets/esrb/${chosen.contentRating}.png`)"
-								 :alt="`ESRB rating ${chosen.contentRating}`"
-								 :title="`Rated ${chosen.contentRating}`"
-							>
+							<div v-if="chosen.hasOwnProperty('contentRating')" class="icon">
+								<span class="sr-only" itemprop="contentRating"
+									  :aria-label="`Rated ${chosen.contentRating} by ESRB`">
+									{{ chosen.contentRating }}
+								</span>
+
+								<img id="esrb-icon" :src="require(`../assets/esrb/${chosen.contentRating}.png`)"
+									 :alt="`ESRB rating ${chosen.contentRating}`"
+									 :title="`Rated ${chosen.contentRating}`"
+								>
+							</div>
 						</div>
 
-						<p v-if="chosen.familyFriendly"><small>This is a <b>family-friendly</b> game.</small></p>
 					</figcaption>
 				</figure>
 			</div>
@@ -68,7 +75,7 @@
 					</td>
 				</tr>
 				</tbody>
-				<caption>Voting Results</caption>
+				<caption>{{ votesCaption }} casted</caption>
 			</table>
 
 			<div class="choice__actions" role="form">
@@ -97,6 +104,9 @@
 	import CheckCircle from 'vue-feather-icon/components/check-circle';
 	import RandomText from './RandomString';
 
+	import FamilyFriendlyIcon from '../assets/is-family-friendly.svg';
+	import FamilyUnfriendlyIcon from '../assets/not-family-friendly.svg';
+
 	/**
 	 * Game selection component
 	 * @module Selection
@@ -112,7 +122,9 @@
 		name: 'Selection',
 		components: {
 			CheckCircle,
-			RandomText
+			RandomText,
+			FamilyFriendlyIcon,
+			FamilyUnfriendlyIcon
 		},
 		props: {
 			chosen: {
@@ -174,6 +186,15 @@
 
 				return results;
 			},
+			 votesCaption() {
+				const total = this.$parent.votes.length;
+
+				if (total !== 1) {
+					return `${total} votes`;
+				}
+
+				return '1 vote';
+			},
 			randomTitles() {
 				if (this.picks <= 0 && [...new Set(this.$parent.votes)].length === 1) {
 					return ['It\'s unanimous!', 'We\'ve agreed on'];
@@ -202,9 +223,26 @@
 	@import '../css/variables';
 	@import '../css/mixins';
 
-	#esrb-icon {
+	.icon {
+		display: inline-flex;
+		fill: var(--color-secondary);
 		height: auto;
+		justify-content: center;
+		max-height: 48px;
 		max-width: calc(4 * var(--size-base));
+	}
+
+	.icon + .icon {
+		margin-left: calc(2 * var(--size-gap));
+	}
+
+	#content-rating {
+		align-items: center;
+		border-top: 1px solid var(--color-border);
+		display: flex;
+		margin-top: var(--size-base);
+		padding-top: var(--size-base);
+		width: 100%;
 	}
 
 	.choice__details {
@@ -214,7 +252,7 @@
 	.choice__header {
 		align-items: center;
 		display: flex;
-		margin-bottom: 1rem;
+		margin-bottom: calc(2 * var(--size-base));
 
 		svg {
 			stroke: var(--color-primary);
@@ -236,14 +274,19 @@
 		max-width: 90vw;
 		width: 100%;
 
-		> img {
-			filter: drop-shadow(1px .125rem 1.125rem rgba(0, 0, 0, .75));
+		[itemprop='image'] {
+			filter: drop-shadow(1px .5rem 1rem rgba(0, 0, 0, .66));
 			height: 100%;
-			margin: 0 auto;
+			margin: 0 calc(4 * var(--size-gap)) 0 0;
 			max-height: $size-game-cover-max;
 			max-width: $size-game-cover-max;
 			object-fit: fill;
 			width: 100%;
+
+			&:only-child {
+				margin-left: auto;
+				margin-right: auto;
+			}
 		}
 	}
 
@@ -294,13 +337,17 @@
 	}
 
 	caption {
+		font-weight: 500;
 		line-height: 1.5;
 		margin-bottom: 1rem;
+		text-transform: capitalize;
 	}
 
 	table {
+		background-color: var(--color-background);
 		border-collapse: collapse;
 		border-spacing: 0;
+		box-shadow: 1px -1px 10px rgba(0, 0, 0, .05);
 		margin-bottom: 8rem;
 		width: 100%;
 	}
