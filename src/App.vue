@@ -16,13 +16,17 @@
 				@reset="reset"
 			/>
 
-			<main id="games">
+			<main id="games" class="scrollbar">
 				<Game v-for="game in filteredGames"
 					  :key="game.id"
 					  :game="game"
 					  @vote="onVote"
 				/>
 			</main>
+
+			<footer>
+				<abbr title="Version">v</abbr><a :href="config.GIT_REPO">{{ config.VERSION }}</a> | <a href="https://jasongardner.co">By Jason</a>
+			</footer>
 		</div>
 
 		<Modal v-if="modal === 'instructions'" aria-modal="true"
@@ -130,6 +134,10 @@
 				type: Number,
 				required: true,
 				validator: val => val > 0
+			},
+			config: {
+				type: Object,
+				required: true
 			}
 		},
 		data() {
@@ -151,7 +159,6 @@
 		created() {
 			this.voters = this.initialVoters;
 			document.body.classList.toggle('light-scheme', +(new Date()).getHours() <= 18); /// Light scheme during day
-			document.body.classList.add('scrollbar');
 
 			typekitLoader('apf6wfj');
 		},
@@ -199,16 +206,18 @@
 
 		.container {
 			display: flex;
-			flex-flow: column wrap;
+			flex-flow: column nowrap;
 			justify-content: center;
 			min-height: 100%;
 		}
 	}
 
 	#games {
+		align-items: center;
 		display: flex;
+		flex-grow: 1;
 		flex-flow: row wrap;
-		margin-top: calc((2 * var(--size-base)) + var(--size-app-icon) + 1px);
+		margin-top: calc((2 * var(--size-base)) + var(--size-app-icon) + var(--size-gap) + 1px);
 	}
 
 	@media (min-width: #{$media-screen-md}), screen and (orientation: landscape) {
@@ -232,6 +241,29 @@
 
 		#games {
 			margin-top: 0;
+		}
+	}
+
+	main + footer {
+		box-sizing: border-box;
+		color: var(--color-muted);
+		font-size: .75rem;
+		padding: 0 var(--size-gap);
+		text-align: right;
+		width: 100%;
+
+		a {
+			color: currentColor;
+
+			&:hover,
+			&:focus,
+			&:active {
+				color: var(--color-primary);
+			}
+		}
+
+		abbr {
+			text-decoration: none;
 		}
 	}
 </style>

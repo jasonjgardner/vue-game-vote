@@ -35,7 +35,7 @@
 							<dt>Players</dt>
 							<dd>
 								<span itemprop="numberOfPlayers">{{ chosen.numberOfPlayers > 1 ? `1 - ${chosen.numberOfPlayers}` : 1 }}</span>&nbsp;
-								<span class="text--secondary" itemprop="playMode">({{ chosen.playMode }})</span>
+								<meta itemprop="playMode" :content="chosen.playMode">
 							</dd>
 						</dl>
 
@@ -49,6 +49,7 @@
 									{{ chosen.contentRating }}
 								</span>
 
+								<!-- TODO: Use srcset -->
 								<img id="esrb-icon" :src="require(`../assets/esrb/${chosen.contentRating}.png`)"
 									 :alt="`ESRB rating ${chosen.contentRating}`"
 									 :title="`Rated ${chosen.contentRating}`"
@@ -75,7 +76,7 @@
 					</td>
 				</tr>
 				</tbody>
-				<caption>{{ votesCaption }} casted</caption>
+				<caption>{{ votesCaption }} cast</caption>
 			</table>
 
 			<div class="choice__actions" role="form">
@@ -224,12 +225,13 @@
 	@import '../css/mixins';
 
 	.icon {
-		display: inline-flex;
+		display: block;
 		fill: var(--color-secondary);
 		height: auto;
 		justify-content: center;
 		max-height: 48px;
 		max-width: calc(4 * var(--size-base));
+		min-width: calc(2 * var(--size-base));
 	}
 
 	.icon + .icon {
@@ -275,6 +277,8 @@
 		width: 100%;
 
 		[itemprop='image'] {
+			border: 1px solid var(--color-lightest);
+			border-radius: $size-border-radius;
 			filter: drop-shadow(1px .5rem 1rem rgba(0, 0, 0, .66));
 			height: 100%;
 			margin: 0 calc(4 * var(--size-gap)) 0 0;
@@ -308,7 +312,7 @@
 		left: 0;
 		margin: auto 0 0;
 		padding: 1.5rem 1rem;
-		position: fixed;
+		//position: fixed;
 		width: 100%;
 
 		.btn {
@@ -320,6 +324,10 @@
 
 			&:only-child {
 				margin-left: auto;
+			}
+
+			&:not(.btn--primary) {
+				background-color: var(--color-lightest);
 			}
 		}
 
@@ -404,6 +412,7 @@
 
 	dt,
 	dd {
+		border-bottom: 1px solid var(--color-border);
 		margin-bottom: var(--size-gap);
 		overflow: hidden;
 		padding: var(--size-gap);
@@ -412,11 +421,11 @@
 
 	dt {
 		--size-term: calc(5 * var(--size-base));
-		border-bottom: 1px solid var(--color-border);
 		color: var(--color-secondary);
 		float: left;
 		font-size: .875em;
 		font-weight: bold;
+		line-height: 1.75;
 		padding-right: var(--size-base);
 		width: var(--size-term);
 	}
@@ -450,6 +459,12 @@
 			box-shadow: none;
 			transform: translateX(var(--size-base));
 			width: calc(100% - (2 * var(--size-base)));
+		}
+	}
+
+	@media screen and (min-width: #{$media-screen-lg}) {
+		.choice__actions {
+			position: fixed;
 		}
 	}
 </style>

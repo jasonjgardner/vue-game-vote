@@ -95,6 +95,29 @@
 	opacity: 0;
 }
 
+.jump-enter-active {
+	animation: jump .2s;
+	transition: opacity .5s ease-out;
+}
+
+.jump-leave-active {
+	animation: jump .2s reverse;
+}
+
+@keyframes jump {
+	0% {
+		transform: translateY(10px);
+	}
+
+	50% {
+		transform: translateY(-10px);
+	}
+
+	100% {
+		transform: translateY(0);
+	}
+}
+
 .focus,
 .h-focus:hover,
 .h-focus:focus,
@@ -254,6 +277,8 @@ $sides: (
 }
 
 .scrollbar {
+	overflow: auto;
+
 	&::-webkit-scrollbar-track {
 		background-color: var(--color-background-alt);
 		border-radius: $size-border-radius;

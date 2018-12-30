@@ -42,7 +42,7 @@
 				</button>
 			</div>
 
-			<Transition name="fade">
+			<Transition name="jump">
 				<button v-if="hasVotes"
 						class="btn btn--secondary btn--fab"
 						type="reset"
@@ -130,6 +130,10 @@
 	@import '../css/variables';
 	@import '../css/mixins';
 
+	.btn svg {
+		stroke: currentColor;
+	}
+
 	#icons {
 		cursor: pointer;
 		height: var(--size-app-icon);
@@ -203,7 +207,6 @@
 		&:hover,
 		&:focus-within {
 			border-bottom-color: var(--color-border);
-			box-shadow: 0 2px .3125rem rgba(0, 0, 0, .33), 0 .3125rem 1.5rem rgba(0, 0, 0, .125);
 
 			.title {
 				color: var(--color-primary);
@@ -233,7 +236,7 @@
 			color: var(--color-input);
 			font-weight: bold;
 			text-align: right;
-			width: 1.5rem;
+			max-width: 1.5rem;
 
 			&::selection {
 				background-color: rgba(255, 255, 255, .5);
@@ -261,10 +264,6 @@
 			padding-bottom: 0;
 			padding-left: 0;
 			padding-right: 0;
-
-			svg {
-				stroke: currentColor;
-			}
 		}
 
 		input + .btn {
@@ -303,6 +302,10 @@
 		> .btn {
 			margin-left: 1rem;
 		}
+
+		.jump-leave-active {
+			animation: none;
+		}
 	}
 
 	aside header {
@@ -337,6 +340,7 @@
 
 	@media screen and (min-width: #{$media-screen-md}) {
 		#app-header {
+			--size-fab: 3rem;
 			transform: translateX(var(--size-base));
 			width: calc(100% - (2 * var(--size-base)));
 

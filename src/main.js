@@ -25,7 +25,7 @@ import './registerServiceWorker';
 import sortBy from './lib/sortBy';
 import Vue from 'vue';
 
-Vue.config.productionTip = process.env.NODE_ENV === '"development"';
+Vue.config.productionTip = process.env.NODE_ENV === 'development';
 
 import App from './App.vue';
 
@@ -34,12 +34,14 @@ import('./data.json').then(data => {
 
 	new Vue({
 		render: h => h(App, {
-				props: {
+			props: {
 				initialVoters: 2,
-				games: data.games
+				games: data.games,
+				config: {
+					VERSION: (process.env.VUE_APP_VERSION || '0.1.0') + (process.env.NODE_ENV === 'production' ? '' : '-beta'),
+					GIT_REPO: process.env.VUE_APP_GIT_REPO
+				}
 			}
 		})
 	}).$mount('#app');
 });
-
-export const Bus = new Vue();

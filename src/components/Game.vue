@@ -196,26 +196,27 @@
 		/// Game description
 		/// Shows tooltips on hover
 		&__description {
+			--height: calc(1rem + var(--size-base));
 			align-items: center;
 			border-radius: $size-border-radius;
 			display: flex;
-			height: calc((4 * var(--size-base)) - var(--size-gap));
+			height: var(--height);
 			flex-flow: row nowrap;
 			justify-content: space-between;
 			padding: 0 .666rem;
 			position: relative;
 			top: 0;
-			transition: background-color .25s ease-out, box-shadow .25s ease-in-out, top .25s;
+			transition: background-color .25s ease-out, box-shadow .25s ease-in-out, top .25s ease-out;
 
 			/// Game cover tooltip
 			&::before {
 				background-color: rgba(0, 0, 0, .75);
 				border: 2px solid white;
 				border-radius: calc(.125em + var(--size-base));
-				bottom: calc(5 * var(--size-base));
+				bottom: calc(var(--height) + var(--size-gap));
 				color: var(--color-lightest);
 				content: 'Vote';
-				font-size: 1.125rem;
+				font-size: 1rem;
 				font-weight: 300;
 				line-height: calc(2 * var(--size-base));
 				height: calc(2 * var(--size-base));
@@ -231,6 +232,13 @@
 				transform: translateX(-50%);
 				width: calc(var(--size-game-cover) - (5 * var(--size-base)));
 				z-index: $zindex-cover + 1;
+			}
+
+			p,
+			#{$--hn} {
+				line-height: 1;
+				margin: 0;
+				padding: 0;
 			}
 		}
 
@@ -287,6 +295,7 @@
 			.game__description {
 				background-color: var(--color-tooltip-background);
 				box-shadow: 0 .1rem .275rem rgba(0, 0, 0, .25), 0 .125rem .825rem rgba(0, 0, 0, .125);
+				height: var(--height);
 				top: calc(2 * var(--size-gap));
 				z-index: $zindex-cover + 1;
 
@@ -302,7 +311,7 @@
 					border-width: calc(.9 * var(--size-base));
 					border-style: solid;
 					border-color: transparent transparent var(--color-tooltip-background);
-					bottom: calc(1em + var(--size-gap) + (2 * var(--size-base)));
+					top: calc(-.5 * var(--height));
 					height: 0;
 					left: calc(50% - (.5 * var(--size-base)));
 					position: absolute;
@@ -350,6 +359,14 @@
 
 		.game:last-of-type {
 			margin-right: var(--size-base);
+		}
+
+		.game__description {
+			--height: calc(1em + var(--size-gap) + (2 * var(--size-base)));
+
+			&::before {
+				bottom: calc(var(--height) + var(--size-gap) + var(--size-base));
+			}
 		}
 	}
 </style>
