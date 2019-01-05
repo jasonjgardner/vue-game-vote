@@ -4,12 +4,12 @@
 			<figure v-if="game.id"
 					:title="title"
 					itemscope itemtype="http://schema.org/VideoGame"
-					@click="vote(game)"
+					@click="select"
 			>
 				<img class="game__cover" itemprop="image"
 					 :src="require(`../${game.image}`)"
-					 :alt="game.name"
-					 :title='`"${game.name}" cover art`'
+					 :alt='`"${game.name}" cover art`'
+					 :title="game.name"
 				>
 				<figcaption class="game__description">
 					<h3 class="game__title" itemprop="name">
@@ -38,6 +38,7 @@
 	 * Game choice component
 	 * @module Game
 	 * @emits Game#vote
+	 * @vue-prop {Number} voters - Remaining votes
 	 * @vue-prop {GameData} game - Game data
 	 * @vue-computed {string} title - Conditional game title. Shows vote count when no voters remain, otherwise shows "Vote for..." message
 	 * @vue-computed {Number} tally - Number of votes received
@@ -45,6 +46,16 @@
 	export default {
 		name: 'Game',
 		props: {
+			tally: {
+				type: Number,
+				required: false,
+				default: 0
+			},
+			voters: {
+				type: Number,
+				required: false,
+				default: 0
+			},
 			game: {
 				type: Object,
 				default: () => {
@@ -66,39 +77,20 @@
 		},
 		computed: {
 			title() {
-				if (this.$parent.voters > 0) {
+				if (this.voters > 0) {
 					return `✔ Vote for ${this.game.name}`;
 				}
 
-				const votes = this.$parent.votes.filter(vote => vote.id === this.game.id).length;
-
-				return `${this.game.name} (${votes} vote${votes !== 1 ? 's' : ''})`;
+				return `${this.game.name} (${this.tally} vote${this.tally !== 1 ? 's' : ''})`;
 			},
-			tally() {
-				return this.$parent.votes.filter(vote => vote.id === this.game.id).length;
-			}
 		},
 		methods: {
 			/** @description Casts a vote for this game
-			 * @param {Object} game - `GameData` belonging to the chosen game
 			 * @event Game#vote
 			 * @see GameData
 			 */
-			vote(game) {
-				let ok = this.$parent.voters > 0;
-
-				if (ok) {
-					this.$parent.votes.push(game);
-				}
-
-				--this.$parent.voters;
-
-				if (this.$parent.voters < 0) {
-					this.$parent.voters = 0;
-					ok = false;
-				}
-
-				this.$emit('vote', ok);
+			select() {
+				this.$emit('vote', this.game);
 			}
 		}
 	};
@@ -252,6 +244,7 @@
 			transition: filter .25s ease-out;
 			max-width: var(--size-game-cover, #{$size-game-cover});
 			object-fit: contain;
+			pointer-events: none; /// Do not show <img/> title. Title is SR-only
 			z-index: $zindex-cover;
 		}
 

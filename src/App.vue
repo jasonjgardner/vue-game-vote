@@ -1,31 +1,33 @@
 <template>
-	<div id="app" :class="{'no-voters': voters < 1 }" role="application">
+	<div id="app" :class="{'no-voters': voters < 1, 'light-scheme': prefersLightScheme }" role="application">
 		<div v-if="chosen" id="choice"
 			 class="d-flex flex-column flex-1"
 			 role="doc-conclusion">
 			<Selected :chosen="chosen" :games="this.$parent.games"
-				@choose="choose"
-				@reset="reset"
+					  @choose="choose"
+					  @reset="reset"
 			/>
 		</div>
 		<div v-else class="container">
 			<AppHeader :voters="voters" :has-votes="votes.length > 0"
-			    @showModal="showModal"
-				@buyVote="voters = Math.max(1, voters + 1)"
-				@choose="choose"
-				@reset="reset"
+					   @showModal="showModal"
+					   @buyVote="voters = Math.max(1, voters + 1)"
+					   @choose="choose"
+					   @reset="reset"
 			/>
 
-			<main id="games" class="scrollbar">
-				<Game v-for="game in filteredGames"
-					  :key="game.id"
-					  :game="game"
-					  @vote="onVote"
-				/>
-			</main>
-
+				<main class="scrollbar" id="games">
+					<Game v-for="game in filteredGames"
+						  :key="game.id"
+						  :voters="voters"
+						  :tally="votes.filter(vote => vote.id === game.id).length"
+						  :game="game"
+						  @vote="onVote"
+					/>
+				</main>
 			<footer>
-				<abbr title="Version">v</abbr><a :href="config.GIT_REPO">{{ config.VERSION }}</a> | <a href="https://jasongardner.co">By Jason</a>
+				<abbr title="Version">v</abbr><a :href="config.GIT_REPO">{{ config.VERSION }}</a> | <a
+				href="https://jasongardner.co">By Jason</a>
 			</footer>
 		</div>
 
@@ -45,25 +47,27 @@
 				</p>
 
 				<p>
-					<b>Tap the <span class="text--accent">colored circle</span> to adjust the allotted votes</b> via keyboard input.
+					<b>Tap the <span class="text--accent">colored circle</span> to adjust the allotted votes</b> via
+					keyboard input.
 					The new value must be between 1 and 99. Set the initial value to the number of voters participating.
 				</p>
 
 				<h3>Buying Votes</h3>
 				<p>
 					The number of remaining votes can also be adjusted by pressing the <b>Coin</b> button. Pay
-					<b>one <a href="#mario-coin">Mario coin</a></b>  per additional vote.
+					<b>one <a href="#mario-coin">Mario coin</a></b> per additional vote.
 				</p>
 
 				<aside id="mario-coin">
 					<header class="d-flex align--center">
-						<CoinIcon class="rotate--90 light-stroke mr-1 mb-0 mt-0" />
+						<CoinIcon class="rotate--90 light-stroke mr-1 mb-0 mt-0"/>
 						<h4 class="mb-0 mt-0">Mario Coins</h4>
 					</header>
 
 					<blockquote>
 						<p>
-							Mario Coins are toy coins embossed with Mario's face. They're given as a reward for good behavior and
+							Mario Coins are toy coins embossed with Mario's face. They're given as a reward for good
+							behavior and
 							taken away for bad behavior, poor sportsmanship, bitching, moaning, etc.
 						</p>
 					</blockquote>
@@ -76,12 +80,12 @@
 			</div>
 		</Modal>
 
-		<Alert v-if="showNoVoteDialog" :role="'alert'" @dismissed="showNoVoteDialog = false">
+		<Alert v-if="!modal && showNoVoteDialog" :role="'alert'" @dismissed="showNoVoteDialog = false">
 			<h4 slot="header">
-				<RandomText :choices="['Hang on!', 'Wait!', 'Woops']" />
+				<RandomText :choices="['Hang on!', 'Wait!', 'Woops']"/>
 			</h4>
 			<p slot="message">
-				<RandomText :choices="['You\'re out of votes!', 'We\'ve run out of votes! Are you ready to decide?']" />
+				<RandomText :choices="['You\'re out of votes!', 'We\'ve run out of votes! Are you ready to decide?']"/>
 			</p>
 			<template slot="footer">
 				<button class="btn" type="reset" @click.prevent="reset">Reset</button>
@@ -96,11 +100,7 @@
 	import Header from './components/Header';
 	import Game from './components/Game';
 	import RandomText from './components/RandomString';
-	import HorizontalScroll from './lib/HorizontalScroll';
 	import typekitLoader from './lib/TypekitLoader';
-
-	const Scroller = new HorizontalScroll();
-	Scroller.attach();
 
 	/**
 	 * Game votes app
@@ -117,13 +117,13 @@
 	export default {
 		name: 'App',
 		components: {
+			CoinIcon: MinusCircle,
 			AppHeader: Header,
 			Game,
 			RandomText,
 			Modal: () => import(/* webpackChunkName: "dialog" */'./components/Dialog/Modal'),
 			Alert: () => import(/* webpackChunkName: "dialog" */'./components/Dialog/Alert'),
-			Selected: () => import(/* webpackChunkName: "selection" */'./components/Selection'),
-			CoinIcon: MinusCircle
+			Selected: () => import(/* webpackChunkName: "selection" */'./components/Selection')
 		},
 		props: {
 			games: {
@@ -147,7 +147,10 @@
 				chosen: null,
 				modal: false,
 				showNoVoteDialog: false,
-				voters: undefined
+				voters: this.initialVoters,
+				prefersLightScheme: +(
+					new Date()
+				).getHours() <= 18
 			};
 		},
 		computed: {
@@ -157,9 +160,6 @@
 			}
 		},
 		created() {
-			this.voters = this.initialVoters;
-			document.body.classList.toggle('light-scheme', +(new Date()).getHours() <= 18); /// Light scheme during day
-
 			typekitLoader('apf6wfj');
 		},
 		methods: {
@@ -179,12 +179,28 @@
 				this.chosen = null;
 				this.votes = [];
 			},
-			onVote(accepted) {
-				if (!accepted) {
+			onVote(game) {
+				let ok = this.voters > 0;
+
+				if (ok) {
+					this.votes.push(game);
+				}
+
+				--this.voters;
+
+				if (this.voters < 0) {
+					this.voters = 0;
+					ok = false;
+				}
+
+				if (!ok) {
 					this.errors++;
 				}
 
-				this.showNoVoteDialog = this.errors > 2;
+				if (this.errors > 2) {
+					this.showNoVoteDialog = true;
+					this.modal = false;
+				}
 			},
 			showModal(which) {
 				this.modal = which;
@@ -198,10 +214,12 @@
 
 	#app {
 		background-color: var(--color-background);
+		color: var(--color-text, currentColor);
 		display: flex;
 		flex: 1;
 		flex-flow: column nowrap;
 		margin: 0 auto;
+		overflow: auto;
 		width: 100%;
 
 		.container {
