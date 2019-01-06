@@ -36,11 +36,7 @@ import('./data.json').then(data => {
 		render: h => h(App, {
 			props: {
 				initialVoters: 2,
-				games: data.games,
-				config: {
-					VERSION: (process.env.VUE_APP_VERSION || '0.1.0') + (process.env.NODE_ENV === 'production' ? '' : '-beta'),
-					GIT_REPO: process.env.VUE_APP_GIT_REPO
-				}
+				games: data.games
 			}
 		})
 	}).$mount('#app');

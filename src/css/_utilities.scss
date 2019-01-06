@@ -1,0 +1,88 @@
+@import 'variables';
+
+/// Margin and padding side IDs
+/// @access private
+/// @type {Map}
+/// @property {String} t [top] - Top side label
+/// @property {String} b [bottom] - Bottom side label
+/// @property {String} r [right] - Right side label
+/// @property {String} l [left] - Left side label
+$sides: (
+	t: top,
+	b: bottom,
+	r: right,
+	l: left
+);
+
+/// Generate spacing helpers
+@each $side in map-keys($sides) {
+	@for $itr from 0 through 5 {
+		.m#{$side}-#{$itr} {
+			margin-#{map-get($sides, $side)}: calc(#{$itr} * var(--size-gap, #{$size-gap}));
+		}
+	}
+
+	.m#{$side}-auto {
+		margin-#{map-get($sides, $side)}: auto;
+	}
+}
+
+.flex-column {
+	flex-direction: column;
+}
+
+.flex-1 {
+	flex: 1;
+}
+
+.align--center {
+	align-items: center;
+}
+
+.focus,
+.h-focus:hover,
+.h-focus:focus,
+.h-focus:focus-within,
+.h-focus:active {
+	animation: focus $duration-animation-focus infinite;
+}
+
+.sr-only {
+	display: none;
+}
+
+.rotate {
+	&--90 {
+		transform: rotate(90deg);
+	}
+}
+
+.d-flex {
+	display: flex;
+	flex-flow: row wrap;
+
+	&.nowrap {
+		flex-wrap: nowrap;
+	}
+}
+
+///
+/// Typography
+///
+.text--accent,
+.btn.text--accent,
+tr.text--accent td {
+	color: var(--color-accent);
+}
+
+.text--center {
+	text-align: center;
+}
+
+.text--secondary {
+	color: var(--color-secondary);
+}
+
+.text--muted {
+	color: var(--color-muted);
+}

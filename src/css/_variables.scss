@@ -229,6 +229,12 @@ $zindex-modal: 200;
 /// @access public
 $zindex-cover: 2;
 
+/// Animation time of highlight/focus animation
+/// @type Duration
+/// @group animation
+/// @access public
+$duration-animation-focus: 1s;
+
 /// Header tag selector
 /// @type {Selector}
 /// @group Headers

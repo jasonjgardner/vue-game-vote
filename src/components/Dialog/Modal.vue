@@ -13,7 +13,7 @@
 
 					<footer class="modal__footer">
 						<slot name="footer">
-							<button class="btn" type="button" @click="$emit('close')">
+							<button class="btn h-focus" type="button" @click="$emit('close')">
 								Cancel
 							</button>
 						</slot>
@@ -95,18 +95,12 @@
 		}
 
 		&__footer {
-			align-items: center;
 			border-top: 1px solid var(--color-secondary);
+			align-items: center;
 			display: flex;
 			flex-flow: row nowrap;
 			justify-content: flex-end;
 			padding-top: var(--size-base);
-
-			.btn {
-				box-shadow: 0 1px 3px rgba(0, 0, 0, .33), 0 2px 5px rgba(0, 0, 0, .25);
-				padding-left: calc(2 * var(--size-base));
-				padding-right: calc(2 * var(--size-base));
-			}
 		}
 	}
 

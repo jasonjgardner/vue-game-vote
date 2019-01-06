@@ -16,15 +16,16 @@
 						{{ game.name }}
 					</h3>
 
-					<p v-if="tally > 5" class="game__tally" title="Votes cast">
-						{{ tally }} <span class="sr-only">Votes for {{ game.name }}</span>
+					<p v-if="tally > 5" class="game__tally"
+					   title="Votes cast"
+					   :aria-label="`${tally} votes for ${game.name}`">
+						{{ tally }}
 					</p>
-					<p v-else-if="tally > 0" class="game__votes" :title="`Vote count for ${game.name}`">
+					<p v-else-if="tally > 0" class="game__votes"
+					   :title="`Vote count for ${game.name}`"
+					   :aria-label="`${tally} votes for ${game.name}`">
 						<span v-for="idx in tally" :key="idx" aria-hidden="true">
 							&#9679;
-						</span>
-						<span class="sr-only">
-							{{ `${tally} votes for ${game.name}` }}
 						</span>
 					</p>
 				</figcaption>
@@ -82,7 +83,7 @@
 				}
 
 				return `${this.game.name} (${this.tally} vote${this.tally !== 1 ? 's' : ''})`;
-			},
+			}
 		},
 		methods: {
 			/** @description Casts a vote for this game
@@ -251,17 +252,19 @@
 		/// Game vote count bubble
 		&__tally {
 			background-color: var(--color-accent);
+			border: .666em solid var(--color-accent);
 			border-radius: 50%;
 			box-shadow: 0 1px .125rem rgba(0, 0, 0, .125);
-			color: $color-dark;
-			font-size: .825rem;
+			color: var(--color-btn);
+			display: inline-block;
+			font-size: .75rem;
 			font-weight: bold;
-			height: 1rem;
-			line-height: 1;
-			padding: .25em;
+			height: 1em;
+			line-height: $line-height-base;
+			width: 1em;
 			text-align: center;
 			transition: box-shadow 1s ease-out;
-			width: 1rem;
+			vertical-align: middle;
 		}
 
 		/// Game vote count dots

@@ -164,6 +164,11 @@
 					default: 1,
 				},
 			},
+			votes: {
+				type: Array,
+				required: true,
+				default: () => []
+			}
 		},
 		data() {
 			return {
@@ -172,15 +177,15 @@
 		},
 		computed: {
 			canPickAgain() {
-				return [...new Set(this.$parent.votes)].length > 1;
+				return [...new Set(this.votes)].length > 1;
 			},
 			poll() {
 				let results = {};
 
-				for (const vote of this.$parent.votes) {
+				for (const vote of this.votes) {
 					results[vote.id] = {
 						...vote,
-						total: this.$parent.votes.filter(v => v.id === vote.id).length,
+						total: this.votes.filter(v => v.id === vote.id).length,
 						chosen: this.chosen.id === vote.id,
 					};
 				}
@@ -188,7 +193,7 @@
 				return results;
 			},
 			 votesCaption() {
-				const total = this.$parent.votes.length;
+				const total = this.votes.length;
 
 				if (total !== 1) {
 					return `${total} votes`;
@@ -204,6 +209,11 @@
 				return ['Let&rsquo;s play&hellip;', 'How about&hellip;'];
 			},
 		},
+		mounted() {
+			(
+				new Audio(require('../assets/audio/stage-clear.mp3'))
+			).play();
+		},
 		methods: {
 			/** @description Repicks a game
 			 * @memberof Selection
@@ -212,9 +222,27 @@
 			 */
 			pickAgain() {
 				this.picks++;
-				this.$parent.votes = this.$parent.votes.filter(vote => vote.id !== this.chosen.id);
 
-				this.$emit(this.$parent.votes.length > 0 ? 'choose' : 'reset');
+				(new Promise((resolve, reject) => {
+					this.$emit(this.votes.length > 0 ? 'choose' : 'reset');
+
+					if (this.picks > 3) {
+						reject();
+					}
+
+					let speed = '';
+
+					if (this.picks > 1) {
+						speed = '@1.5';
+					} else if (this.picks > 2)  {
+						speed = '@2';
+					}
+
+					return (new Audio(require(`../assets/audio/stage-clear${speed}.mp3`))).play();
+				}))
+				.finally(() => {
+					window.scrollTo(0, 0);
+				});
 			}
 		},
 	};

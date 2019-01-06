@@ -1,0 +1,87 @@
+@import 'variables';
+
+.btn {
+	-webkit-appearance: none;
+	background-color: var(--color-background-alt);
+	border: 0;
+	border-radius: $size-border-radius;
+	box-sizing: border-box;
+	color: var(--color-btn, var(--color-text));
+	cursor: pointer;
+	line-height: 1.5;
+	padding: .333em .5em;
+	transition: background-color .333s ease-in-out;
+	user-select: none;
+
+	&:hover,
+	&:focus,
+	&:active {
+		color: var(--color-text);
+		outline: none;
+	}
+
+	//&:focus,
+	//&:active {
+	//	animation: focus 1s infinite;
+	//}
+
+	&--primary {
+		background-color: var(--color-accent);
+		color: var(--color-btn);
+
+		&:hover,
+		&:focus,
+		&:active {
+			background-color: var(--color-primary-alt);
+			color: var(--color-btn-alt);
+		}
+	}
+
+	&--secondary:hover,
+	&--secondary:focus,
+	&--secondary:active {
+		background-color: var(--color-secondary);
+	}
+
+	&--fab {
+		align-items: center;
+		background-color: var(--color-background-fab, var(--color-background-alt));
+		border-radius: 50%;
+		box-shadow: -1px 1px .25rem rgba(0, 0, 0, .5), 0 0 .333rem rgba(0, 0, 0, .33);
+		color: var(--color-fab);
+		display: flex;
+		height: var(--size-fab);
+		justify-content: center;
+		line-height: 1;
+		text-align: center;
+		transition: background-color .3s ease-out, color .3s ease-out, box-shadow .5s ease-out, transform .666s cubic-bezier(.175, .885, .32, 1.275);
+		width: var(--size-fab);
+
+		svg {
+			stroke: currentColor;
+		}
+
+		&:hover,
+		&:focus,
+		&:active {
+			background-color: var(--color-selected);
+			color: var(--color-fab-active);
+			outline: none;
+		}
+
+		&:active {
+			box-shadow: 0 2px .275rem rgba(0, 0, 0, .45), 0 0 .555rem rgba(0, 0, 0, .3);
+			transform: translateY(-3px);
+		}
+	}
+
+	&--wide {
+		--scale: 2;
+		padding-left: calc(var(--scale) * var(--size-base));
+		padding-right: calc(var(--scale) * var(--size-base));
+	}
+
+	&--shadow {
+		box-shadow: 0 1px 3px rgba(0, 0, 0, .33), 0 2px 5px rgba(0, 0, 0, .25);
+	}
+}

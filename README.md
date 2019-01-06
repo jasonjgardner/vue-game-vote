@@ -48,3 +48,7 @@ __MIT__
 
 Feel free to use this app's logic to create your own sorta-democratic process,
 or reuse the CSS in your own Nintendo Switch-styled UI. 
+
+### Attribution
+
+Audio provided by [The Mushroom Kingdom](https://themushroomkingdom.net/media/smb/wav).

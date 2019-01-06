@@ -1,0 +1,115 @@
+@import 'variables';
+
+@keyframes focus {
+	0%,
+	100% {
+		box-shadow: 0 0 5px rgba(0, 0, 0, .05), 0 0 0 5px $color-focus;
+	}
+
+	50% {
+		box-shadow: 0 0 5px rgba(0, 0, 0, .05), 0 0 0 5px $color-focus-alt;
+	}
+}
+
+@keyframes ripple {
+	to {
+		transform: scale(10, 10);
+		opacity: .3;
+	}
+}
+
+@keyframes jump {
+	0% {
+		transform: translateY(10px);
+	}
+
+	50% {
+		transform: translateY(-10px);
+	}
+
+	100% {
+		transform: translateY(0);
+	}
+}
+
+/// https://github.com/daneden/animate.css/blob/master/source/attention_seekers/pulse.css
+/// originally authored by Nick Pettit - https://github.com/nickpettit/glide
+
+@keyframes pulse {
+	from {
+		transform: scale3d(1, 1, 1);
+	}
+
+	50% {
+		transform: scale3d(1.05, 1.05, 1.05);
+	}
+
+	to {
+		transform: scale3d(1, 1, 1);
+	}
+}
+
+@keyframes shrink {
+	from {
+		transform: scale3d(1, 1, 1);
+	}
+
+	50% {
+		transform: rotate(-10deg) scale3d(.95, .95, .95);
+		filter: saturate(.75);
+	}
+
+	to {
+		transform: scale3d(1, 1, 1);
+	}
+}
+
+.fade-enter-active {
+	transition: opacity .3s ease-in;
+}
+
+.fade-leave-active {
+	transition: opacity .5s ease-out;
+}
+
+.fade-enter,
+.fade-leave-to {
+	opacity: 0;
+}
+
+.jump-enter-active {
+	animation: jump .2s;
+	transition: opacity .5s ease-out;
+}
+
+.jump-leave-active {
+	animation: jump .2s reverse;
+}
+
+.pulse {
+	animation: pulse .333s;
+}
+
+.shrink {
+	animation: shrink .5s ease-out;
+}
+
+.ripple {
+	overflow: visible;
+	position: relative;
+	transform: translate3d(0, 0, 0);
+
+	&::after {
+		background: transparent radial-gradient(circle, var(--color-accent) 10%, transparent 10.01%) no-repeat 50%;
+		animation: ripple 1s infinite;
+		content: '';
+		display: block;
+		height: 100%;
+		left: 0;
+		opacity: 0;
+		pointer-events: none;
+		position: absolute;
+		top: 0;
+		width: 100%;
+	}
+}

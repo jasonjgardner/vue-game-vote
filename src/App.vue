@@ -3,12 +3,14 @@
 		<div v-if="chosen" id="choice"
 			 class="d-flex flex-column flex-1"
 			 role="doc-conclusion">
-			<Selected :chosen="chosen" :games="this.$parent.games"
+			<Selected :chosen="chosen"
+					  :games="games"
+					  :votes="votes"
 					  @choose="choose"
 					  @reset="reset"
 			/>
 		</div>
-		<div v-else class="container">
+		<div v-else class="container" :class="{'vote-cast': voteCast}">
 			<AppHeader :voters="voters" :has-votes="votes.length > 0"
 					   @showModal="showModal"
 					   @buyVote="voters = Math.max(1, voters + 1)"
@@ -16,19 +18,15 @@
 					   @reset="reset"
 			/>
 
-				<main class="scrollbar" id="games">
-					<Game v-for="game in filteredGames"
-						  :key="game.id"
-						  :voters="voters"
-						  :tally="votes.filter(vote => vote.id === game.id).length"
-						  :game="game"
-						  @vote="onVote"
-					/>
-				</main>
-			<footer>
-				<abbr title="Version">v</abbr><a :href="config.GIT_REPO">{{ config.VERSION }}</a> | <a
-				href="https://jasongardner.co">By Jason</a>
-			</footer>
+			<main id="games" class="scrollbar">
+				<Game v-for="game in filteredGames"
+					  :key="game.id"
+					  :voters="voters"
+					  :tally="votes.filter(vote => vote.id === game.id).length"
+					  :game="game"
+					  @vote="onVote"
+				/>
+			</main>
 		</div>
 
 		<Modal v-if="modal === 'instructions'" aria-modal="true"
@@ -73,11 +71,11 @@
 					</blockquote>
 				</aside>
 			</template>
-			<div slot="footer">
-				<button class="btn btn--primary" type="button" @click="modal = false">
+			<template slot="footer">
+				<button class="btn btn--primary btn--wide btn--shadow h-focus" type="button" @click="modal = false">
 					OK
 				</button>
-			</div>
+			</template>
 		</Modal>
 
 		<Alert v-if="!modal && showNoVoteDialog" :role="'alert'" @dismissed="showNoVoteDialog = false">
@@ -112,6 +110,8 @@
 	 * @vue-data {Boolean|String} showModal - Shows a specific modal when set to a string ID. Set to `false` to hide modal
 	 * @vue-data {Boolean|String} dialogMessage - Displays a dialog if a string value is set. Hides the dialog if `false`
 	 * @vue-data {Number} voters - Number of votes remaining
+	 * @vue-data {Boolean} prefersLightScheme - Whether or not to enable light scheme. Defaults to `true` during daytime
+	 * @vue-data {Boolean} [voteCast=false] - Is set to `true` when a vote has been placed, then reverts back to `false`
 	 * @vue-computed {GameData[]} filteredGames - Array of game data filtered by certain parameters
 	 */
 	export default {
@@ -134,10 +134,6 @@
 				type: Number,
 				required: true,
 				validator: val => val > 0
-			},
-			config: {
-				type: Object,
-				required: true
 			}
 		},
 		data() {
@@ -150,7 +146,8 @@
 				voters: this.initialVoters,
 				prefersLightScheme: +(
 					new Date()
-				).getHours() <= 18
+				).getHours() <= 18,
+				voteCast: false
 			};
 		},
 		computed: {
@@ -167,7 +164,13 @@
 			choose() {
 				this.showNoVoteDialog = false;
 				this.modal = false;
+
+				if (this.chosen) {
+					this.votes = this.votes.filter(vote => vote.id !== this.chosen.id);
+				}
+
 				this.chosen = this.votes[Math.floor(Math.random() * this.votes.length)];
+
 				window.scrollTo(0, 0);
 			},
 			/** @description Resets votes, vote counts, and selected game */
@@ -180,10 +183,13 @@
 				this.votes = [];
 			},
 			onVote(game) {
+				this.voteCast = true;
 				let ok = this.voters > 0;
 
 				if (ok) {
-					this.votes.push(game);
+					(
+						new Audio(require('./assets/audio/stomp.mp3'))
+					).play().finally(() => this.votes.push(game));
 				}
 
 				--this.voters;
@@ -201,9 +207,13 @@
 					this.showNoVoteDialog = true;
 					this.modal = false;
 				}
+
+				setTimeout(() => this.voteCast = false, 1000);
 			},
 			showModal(which) {
-				this.modal = which;
+				(
+					new Audio(require('./assets/audio/pause.mp3'))
+				).play().finally(() => this.modal = which);
 			}
 		}
 	};

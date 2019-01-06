@@ -1,5 +1,5 @@
 <template>
-	<header id="app-header" :class="{'no-voters': voters.length < 1}" role="banner">
+	<div id="app-header" :class="{'no-voters': voters.length < 1}" role="banner">
 		<div id="icons" role="presentation"
 			 @click="$emit('showModal', 'instructions')"
 		>
@@ -7,16 +7,23 @@
 			<HelpIcon />
 		</div>
 
-		<h1 class="title">
-			Vote for a Game
-		</h1>
+		<header>
+			<h1 class="title">
+				Vote for a Game
+			</h1>
+
+			<!--<p>-->
+				<!--<abbr title="Version">v</abbr><a :href="config.GIT_REPO">{{ config.VERSION }}</a> |-->
+				<!--<a href="https://jasongardner.co">By Jason</a>-->
+			<!--</p>-->
+		</header>
 
 		<form id="voters" class="d-flex">
 			<label id="votes-remaining-label" class="sr-only" for="votes-remaining">
 				Votes Remaining:
 			</label>
 
-			<div class="voters__votes" :class="{'invalid': voters < 0 || voters > 99}">
+			<div class="voters__votes h-focus" :class="{'invalid': voters < 0 || voters > 99, 'pulse': chaChing}">
 				<input v-if="!hasVotes || voters > 0"
 					   id="votes-remaining"
 					   v-model.number="voters"
@@ -44,7 +51,7 @@
 
 			<Transition name="jump">
 				<button v-if="hasVotes"
-						class="btn btn--secondary btn--fab"
+						class="btn btn--secondary btn--fab h-focus"
 						type="reset"
 						name="reset"
 						title="Reset voting"
@@ -57,7 +64,7 @@
 				</button>
 			</Transition>
 
-			<button class="btn btn--secondary btn--fab"
+			<button class="btn btn--secondary btn--fab h-focus"
 					type="button"
 					name="buy"
 					title="Pay a coin to buy a vote" @click.prevent="buyVote"
@@ -68,7 +75,7 @@
 				</span>
 			</button>
 		</form>
-	</header>
+	</div>
 </template>
 
 <script>
@@ -107,7 +114,12 @@
 		},
 		data() {
 			return {
-				showInstructions: false
+				showInstructions: false,
+				chaChing: false,
+				config: {
+					VERSION: (process.env.VUE_APP_VERSION || '0.1.0') + (process.env.NODE_ENV === 'production' ? '' : '-beta'),
+					GIT_REPO: process.env.VUE_APP_GIT_REPO
+				}
 			}
 		},
 		methods: {
@@ -116,10 +128,13 @@
 			 * @event Header#buyVote
 			 */
 			buyVote() {
+				this.chaChing = true;
+
 				(
-					new Audio(require('../assets/coin.mp3'))
+					new Audio(require('../assets/audio/coin.mp3'))
 				).play().finally(() => {
-					this.$emit('buyVote')
+					this.$emit('buyVote');
+					setTimeout(() => this.chaChing = false, 100);
 				});
 			}
 		}
@@ -287,6 +302,11 @@
 		}
 	}
 
+	/// When parent has `.vote-cast` class, the remaining votes counter will shrink
+	.vote-cast .voters__votes {
+		animation: shrink .333s ease-out;
+	}
+
 	.no-voters .voters__votes {
 		border-radius: 50%;
 		width: var(--size-fab);
@@ -327,12 +347,6 @@
 	}
 
 	@media screen and (min-width: #{($media-screen-sm)}) {
-		header {
-			align-items: center;
-			flex-direction: row;
-			justify-content: flex-start;
-		}
-
 		.title {
 			margin: 0 auto 0 var(--size-base);
 		}
