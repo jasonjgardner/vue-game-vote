@@ -3,19 +3,21 @@
 		<div id="icons" role="presentation"
 			 @click="$emit('showModal', 'instructions')"
 		>
-			<AppIcon />
-			<HelpIcon />
+			<AppIcon/>
+			<HelpIcon/>
 		</div>
 
 		<header>
-			<h1 class="title">
+			<h1 class="title" itemprop="name">
 				Vote for a Game
 			</h1>
 
-			<!--<p>-->
-				<!--<abbr title="Version">v</abbr><a :href="config.GIT_REPO">{{ config.VERSION }}</a> |-->
-				<!--<a href="https://jasongardner.co">By Jason</a>-->
-			<!--</p>-->
+			<p>
+				<abbr title="Version">v</abbr><a :href="config.GIT_REPO">
+					<span itemprop="softwareVersion">{{ config.VERSION }}</span>
+				</a> |
+				<a href="https://jasongardner.co" rel="author" itemprop="creator">By Jason</a>
+			</p>
 		</header>
 
 		<form id="voters" class="d-flex">
@@ -42,7 +44,7 @@
 						title="Choose the game"
 						@click.prevent="$emit('choose')"
 				>
-					<CheckIcon />
+					<CheckIcon/>
 					<span class="sr-only">
 						Choose
 					</span>
@@ -57,7 +59,7 @@
 						title="Reset voting"
 						@click.prevent="$emit('reset')"
 				>
-					<ResetIcon />
+					<ResetIcon/>
 					<span class="sr-only">
 						Reset
 					</span>
@@ -69,7 +71,7 @@
 					name="buy"
 					title="Pay a coin to buy a vote" @click.prevent="buyVote"
 			>
-				<CoinIcon class="rotate--90" />
+				<CoinIcon class="rotate--90"/>
 				<span class="sr-only">
 					Buy Vote
 				</span>
@@ -82,6 +84,7 @@
 	import RotateCcw from 'vue-feather-icon/components/rotate-ccw';
 	import MinusCircle from 'vue-feather-icon/components/minus-circle';
 	import Check from 'vue-feather-icon/components/check';
+	import { Howl } from 'howler';
 	import AppIcon from '../assets/icon.svg';
 	import HelpIcon from '../assets/help.svg';
 
@@ -99,28 +102,37 @@
 			HelpIcon,
 			ResetIcon: RotateCcw,
 			CoinIcon: MinusCircle,
-			CheckIcon: Check
+			CheckIcon: Check,
 		},
 		props: {
 			voters: {
 				type: Number,
 				required: true,
-				default: 0
+				default: 0,
 			},
 			hasVotes: {
 				type: Boolean,
-				default: false
-			}
+				default: false,
+			},
 		},
 		data() {
 			return {
+				audio: undefined,
 				showInstructions: false,
 				chaChing: false,
 				config: {
 					VERSION: (process.env.VUE_APP_VERSION || '0.1.0') + (process.env.NODE_ENV === 'production' ? '' : '-beta'),
-					GIT_REPO: process.env.VUE_APP_GIT_REPO
-				}
-			}
+					GIT_REPO: process.env.VUE_APP_GIT_REPO,
+				},
+			};
+		},
+		mounted() {
+			this.audio = new Howl({
+				src: [require('../assets/audio/coin.mp3')],
+				autoplay: false,
+				loop: false,
+				volume: .5,
+			});
 		},
 		methods: {
 			/** @description Adds voters and plays confirmation audio
@@ -130,14 +142,13 @@
 			buyVote() {
 				this.chaChing = true;
 
-				(
-					new Audio(require('../assets/audio/coin.mp3'))
-				).play().finally(() => {
+				this.audio.once('end', () => {
 					this.$emit('buyVote');
 					setTimeout(() => this.chaChing = false, 100);
 				});
-			}
-		}
+				this.audio.play();
+			},
+		},
 	};
 </script>
 
@@ -193,13 +204,8 @@
 		display: inline-block;
 		font-size: 1rem;
 		font-weight: bold;
-		margin: 0 auto 0 var(--size-base);
-		max-width: 150px;
-		overflow: hidden;
-		text-align: left;
-		text-overflow: ellipsis;
+		margin: 0;
 		transition: color .5s ease-out;
-		white-space: nowrap;
 	}
 
 	#app-header {
@@ -209,15 +215,41 @@
 		box-sizing: border-box;
 		display: flex;
 		flex-wrap: nowrap;
-		justify-content: space-between;
 		left: 0;
 		margin: 0;
-		padding: var(--size-base);
-		position: fixed;
+		min-height: calc((2 * var(--size-gap)) + var(--size-app-icon));
+		padding: var(--size-gap) var(--size-base);
+		position: sticky;
 		transition: border-bottom-color .5s ease-out;
 		top: 0;
 		width: 100%;
 		z-index: $zindex-toolbar;
+
+		header {
+			align-items: flex-start;
+			color: var(--color-secondary);
+			display: flex;
+			flex-flow: column nowrap;
+			margin: 0 auto 0 var(--size-base);
+			max-width: 150px;
+			overflow: hidden;
+			text-align: left;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+
+			a {
+				color: var(--color-secondary);
+			}
+
+			abbr {
+				text-decoration: none;
+			}
+
+			p {
+				font-size: .825rem;
+				margin: 0;
+			}
+		}
 
 		&:hover,
 		&:focus-within {
@@ -283,7 +315,7 @@
 
 		input + .btn {
 			border-radius: 50%;
-			color: var(--color-btn-alt);
+			color: var(--color-btn);
 			padding-left: .25em;
 			padding-right: .45em;
 
@@ -322,24 +354,6 @@
 		> .btn {
 			margin-left: 1rem;
 		}
-
-		.jump-leave-active {
-			animation: none;
-		}
-	}
-
-	aside header {
-		align-items: center;
-		display: flex;
-
-		#{$--hn} {
-			margin-bottom: var(--size-gap);
-			margin-top: var(--size-gap);
-		}
-	}
-
-	blockquote {
-		font-size: .825rem;
 	}
 
 	.light-stroke {
@@ -347,8 +361,13 @@
 	}
 
 	@media screen and (min-width: #{($media-screen-sm)}) {
+		#app-header {
+			padding-bottom: var(--size-base);
+			padding-top: var(--size-base);
+		}
+
 		.title {
-			margin: 0 auto 0 var(--size-base);
+			margin: 0;
 		}
 	}
 

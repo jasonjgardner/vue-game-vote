@@ -151,11 +151,17 @@ $size-game-cover: 256px !default;
 /// @access public
 $size-game-cover-max: 512px !default;
 
+/// Icon width and height
+/// @type Length
+/// @group icons
+/// @access public
+$size-icon: 48px !default;
+
 /// App icon in header width and height
 /// @type Length
 /// @group icons
 /// @access public
-$size-app-icon: 48px !default;
+$size-app-icon: $size-icon !default;
 
 /// Container padding width
 /// @type Length

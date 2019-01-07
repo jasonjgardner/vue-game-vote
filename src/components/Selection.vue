@@ -1,28 +1,28 @@
 <template>
-	<Transition appear name="fade">
-		<main class="choice__results" aria-labelledby="choice-intro">
-			<p id="choice-intro" class="text--secondary mb-0" role="heading">
-				<RandomText :choices="randomTitles" :html="true"/>
-			</p>
+	<main class="choice__results" aria-labelledby="choice-intro">
+		<p id="choice-intro" class="text--secondary mb-0" role="heading">
+			<RandomText :choices="randomTitles" :html="true"/>
+		</p>
 
-			<div class="choice__details" itemscope
-				 itemtype="http://schema.org/VideoGame"
-				 aria-labelledby="choice-name">
-				<div class="choice__header">
-					<CheckCircle aria-hidden="true"/>
-					<h2 id="choice-name" class="choice__title" itemprop="name">
-						{{ chosen.name }}
-					</h2>
-				</div>
+		<div class="choice__details" itemscope
+			 itemtype="http://schema.org/VideoGame"
+			 aria-labelledby="choice-name">
+			<div class="choice__header">
+				<CheckCircle aria-hidden="true"/>
+				<h2 id="choice-name" class="choice__title" itemprop="name">
+					{{ chosen.name }}
+				</h2>
+			</div>
 
-				<figure class="choice__cover">
-					<img class="focus" itemprop="image"
-						 :src="require(`../${chosen.image}`)"
-						 :alt="chosen.name"
-						 role="presentation"
-						 aria-labelledby="choice-name"
-					>
-					<figcaption>
+			<figure class="choice__cover">
+				<img class="focus" itemprop="image"
+					 :src="require(`../${chosen.image}`)"
+					 :alt="chosen.name"
+					 role="presentation"
+					 aria-labelledby="choice-name"
+				>
+				<figcaption>
+					<div class="col">
 						<dl>
 							<div v-if="chosen.hasOwnProperty('developer') && chosen.developer.length > 0">
 								<dt>Developer</dt>
@@ -39,10 +39,20 @@
 							</dd>
 						</dl>
 
-						<div id="content-rating">
-							<FamilyFriendlyIcon v-if="chosen.familyFriendly" class="icon" title="This is a family-friendly game." />
-							<FamilyUnfriendlyIcon v-else class="icon" title="This is not a family-friendly game." />
 
+					</div>
+					<!-- /.col -->
+					<div class="col">
+						<div v-if="chosen.familyFriendly" class="d-flex nowrap justify--center">
+							<FamilyFriendlyIcon class="icon" />
+							<h5 class="ml-1">This is a family-friendly game.</h5>
+						</div>
+						<div v-else class="d-flex nowrap justify--center">
+							<FamilyUnfriendlyIcon class="icon" />
+							<h5 class="ml-1">This is not a family-friendly game.</h5>
+						</div>
+
+						<div class="content-rating">
 							<div v-if="chosen.hasOwnProperty('contentRating')" class="icon">
 								<span class="sr-only" itemprop="contentRating"
 									  :aria-label="`Rated ${chosen.contentRating} by ESRB`">
@@ -56,55 +66,55 @@
 								>
 							</div>
 						</div>
+					</div>
+					<!-- /.col -->
+				</figcaption>
+			</figure>
+		</div>
 
-					</figcaption>
-				</figure>
-			</div>
+		<table title="The results are in!">
+			<thead>
+			<tr>
+				<th>Choice</th>
+				<th>Votes</th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr v-for="game in poll" :key="game.id" :class="{'selected': game.chosen}">
+				<td>{{ game.name }}</td>
+				<td class="text--center" :aria-label="`${game.total} vote(s)`">
+					{{ game.total }}
+				</td>
+			</tr>
+			</tbody>
+			<caption>{{ votesCaption }} cast</caption>
+		</table>
 
-			<table title="The results are in!">
-				<thead>
-				<tr>
-					<th>Choice</th>
-					<th>Votes</th>
-				</tr>
-				</thead>
-				<tbody>
-				<tr v-for="game in poll" :key="game.id" :class="{'selected': game.chosen}">
-					<td>{{ game.name }}</td>
-					<td class="text--center" :aria-label="`${game.total} vote(s)`">
-						{{ game.total }}
-					</td>
-				</tr>
-				</tbody>
-				<caption>{{ votesCaption }} cast</caption>
-			</table>
-
-			<div class="choice__actions" role="form">
-				<button v-if="canPickAgain"
-						ref="repick"
-						class="btn btn--secondary text--accent"
-						type="button"
-						name="repick"
-						@click="pickAgain"
-				>
-					Pick Again
-				</button>
-				<button ref="restart" class="btn btn--primary"
-						type="reset"
-						name="restart"
-						@click.prevent="$emit('reset')"
-				>
-					Start Over
-				</button>
-			</div>
-		</main>
-	</Transition>
+		<div class="choice__actions" role="form">
+			<button v-if="canPickAgain"
+					ref="repick"
+					class="btn btn--secondary text--accent"
+					type="button"
+					name="repick"
+					@click="pickAgain"
+			>
+				Pick Again
+			</button>
+			<button ref="restart" class="btn btn--primary"
+					type="reset"
+					name="restart"
+					@click.prevent="$emit('reset')"
+			>
+				Start Over
+			</button>
+		</div>
+	</main>
 </template>
 
 <script>
 	import CheckCircle from 'vue-feather-icon/components/check-circle';
+	import { Howl } from 'howler';
 	import RandomText from './RandomString';
-
 	import FamilyFriendlyIcon from '../assets/is-family-friendly.svg';
 	import FamilyUnfriendlyIcon from '../assets/not-family-friendly.svg';
 
@@ -125,7 +135,7 @@
 			CheckCircle,
 			RandomText,
 			FamilyFriendlyIcon,
-			FamilyUnfriendlyIcon
+			FamilyUnfriendlyIcon,
 		},
 		props: {
 			chosen: {
@@ -167,11 +177,12 @@
 			votes: {
 				type: Array,
 				required: true,
-				default: () => []
-			}
+				default: () => [],
+			},
 		},
 		data() {
 			return {
+				audio: undefined,
 				picks: 0,
 			};
 		},
@@ -192,7 +203,7 @@
 
 				return results;
 			},
-			 votesCaption() {
+			votesCaption() {
 				const total = this.votes.length;
 
 				if (total !== 1) {
@@ -206,13 +217,16 @@
 					return ['It\'s unanimous!', 'We\'ve agreed on'];
 				}
 
-				return ['Let&rsquo;s play&hellip;', 'How about&hellip;'];
+				return ['Let&rsquo;s play...', 'How about...'];
 			},
 		},
 		mounted() {
-			(
-				new Audio(require('../assets/audio/stage-clear.mp3'))
-			).play();
+			this.audio = new Howl({
+				src: [require('../assets/audio/stage-clear.mp3')],
+				autoplay: true,
+				loop: false,
+				volume: .5,
+			});
 		},
 		methods: {
 			/** @description Repicks a game
@@ -222,28 +236,9 @@
 			 */
 			pickAgain() {
 				this.picks++;
-
-				(new Promise((resolve, reject) => {
-					this.$emit(this.votes.length > 0 ? 'choose' : 'reset');
-
-					if (this.picks > 3) {
-						reject();
-					}
-
-					let speed = '';
-
-					if (this.picks > 1) {
-						speed = '@1.5';
-					} else if (this.picks > 2)  {
-						speed = '@2';
-					}
-
-					return (new Audio(require(`../assets/audio/stage-clear${speed}.mp3`))).play();
-				}))
-				.finally(() => {
-					window.scrollTo(0, 0);
-				});
-			}
+				this.$emit(this.votes.length > 0 ? 'choose' : 'reset');
+				window.scrollTo(0, 0);
+			},
 		},
 	};
 </script>
@@ -251,6 +246,10 @@
 <style lang="scss" scoped>
 	@import '../css/variables';
 	@import '../css/mixins';
+
+	#choice-intro {
+		margin-left: var(--size-base);
+	}
 
 	.icon {
 		display: block;
@@ -262,21 +261,29 @@
 		min-width: calc(2 * var(--size-base));
 	}
 
-	.icon + .icon {
-		margin-left: calc(2 * var(--size-gap));
+	.content-rating {
+		align-items: center;
+		display: flex;
+		flex-flow: column wrap;
+		width: var(--size-icon);
+
+		.icon {
+			margin-top: var(--size-base);
+		}
+
+		&__title {
+
+		}
 	}
 
-	#content-rating {
-		align-items: center;
-		border-top: 1px solid var(--color-border);
-		display: flex;
-		margin-top: var(--size-base);
-		padding-top: var(--size-base);
-		width: 100%;
+	#esrb-icon {
+		max-height: var(--size-icon);
 	}
 
 	.choice__details {
 		margin: 0 auto;
+		padding-left: var(--size-base);
+		padding-right: var(--size-base);
 	}
 
 	.choice__header {
@@ -309,7 +316,7 @@
 			border-radius: $size-border-radius;
 			filter: drop-shadow(1px .5rem 1rem rgba(0, 0, 0, .66));
 			height: 100%;
-			margin: 0 calc(4 * var(--size-gap)) 0 0;
+			margin: 0 auto;
 			max-height: $size-game-cover-max;
 			max-width: $size-game-cover-max;
 			object-fit: fill;
@@ -320,12 +327,18 @@
 				margin-right: auto;
 			}
 		}
+
+		figcaption {
+			display: flex;
+			flex-direction: column;
+			margin-top: var(--size-base);
+		}
 	}
 
 	.choice__results {
 		margin: 0 auto;
 		max-width: calc(2 * var(--size-game-cover));
-		width: 90%;
+		width: 100%;
 	}
 
 	.choice__actions {
@@ -338,9 +351,9 @@
 		flex-flow: row nowrap;
 		justify-content: space-between;
 		left: 0;
-		margin: auto 0 0;
+		margin: var(--size-base) 0 0;
 		padding: 1.5rem 1rem;
-		//position: fixed;
+		position: sticky;
 		width: 100%;
 
 		.btn {
@@ -352,6 +365,7 @@
 
 			&:only-child {
 				margin-left: auto;
+				margin-right: auto;
 			}
 
 			&:not(.btn--primary) {
@@ -384,7 +398,6 @@
 		border-collapse: collapse;
 		border-spacing: 0;
 		box-shadow: 1px -1px 10px rgba(0, 0, 0, .05);
-		margin-bottom: 8rem;
 		width: 100%;
 	}
 
@@ -448,7 +461,7 @@
 	}
 
 	dt {
-		--size-term: calc(5 * var(--size-base));
+		--size-term: calc(6 * var(--size-base));
 		color: var(--color-secondary);
 		float: left;
 		font-size: .875em;
@@ -462,11 +475,35 @@
 
 	}
 
+	@media screen and (min-width: #{$media-screen-sm}) {
+		table {
+			margin-left: auto;
+			margin-right: auto;
+			width: 90%;
+		}
+
+		.choice__results {
+			max-width: 100%;
+		}
+
+		.choice__actions .btn:only-child {
+			margin-right: 0;
+		}
+	}
+
 	@media screen and (min-width: #{$media-screen-md}) {
 		.choice__cover {
 			flex-direction: row;
-			justify-content: space-around;
-			width: 90%;
+			max-width: 90%;
+
+			[itemprop='image'] {
+				margin: 0 calc(4 * var(--size-gap)) 0 0;
+			}
+
+			figcaption {
+				flex-direction: column;
+				justify-content: space-between;
+			}
 
 			img {
 				margin-right: calc(2 * var(--size-base));
@@ -475,24 +512,43 @@
 			dl {
 				font-size: 1.125rem;
 				margin-left: 0;
+				margin-right: var(--size-base);
 				width: calc(18 * var(--size-base));
 			}
 
 			dt {
 				--size-term: 100%;
 			}
+
+			dd {
+				border-bottom: 0;
+			}
 		}
 
 		.choice__actions {
 			box-shadow: none;
 			transform: translateX(var(--size-base));
+			position: fixed;
 			width: calc(100% - (2 * var(--size-base)));
+		}
+
+		.content-rating {
+			border-top: 1px solid var(--color-border);
+			flex-flow: row wrap;
+			margin-top: var(--size-gap);
+			padding-top: var(--size-gap);
+			width: 100%;
+
+			.icon + .icon {
+				margin-left: var(--size-base);
+			}
 		}
 	}
 
 	@media screen and (min-width: #{$media-screen-lg}) {
-		.choice__actions {
-			position: fixed;
+		table,
+		.choice__results {
+			width: 90%;
 		}
 	}
 </style>

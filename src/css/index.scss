@@ -37,6 +37,7 @@
 	--color-title-active: var(--color-primary);
 	--size-base: #{$size-base};
 	--size-gap: #{$size-gap};
+	--size-icon: #{$size-icon};
 	--size-app-icon: #{$size-app-icon};
 	--size-fab: #{$size-btn-fab};
 }
@@ -62,6 +63,10 @@
 	--color-title-active: var(--color-text);
 	--color-background-table-row: #eaeaea;
 	--color-background-table-row-alt: #efefef;
+}
+
+* {
+	box-sizing: border-box;
 }
 
 @import 'animations';

@@ -1,33 +1,38 @@
 <template>
-	<div id="app" :class="{'no-voters': voters < 1, 'light-scheme': prefersLightScheme }" role="application">
-		<div v-if="chosen" id="choice"
-			 class="d-flex flex-column flex-1"
-			 role="doc-conclusion">
-			<Selected :chosen="chosen"
-					  :games="games"
-					  :votes="votes"
-					  @choose="choose"
-					  @reset="reset"
-			/>
-		</div>
-		<div v-else class="container" :class="{'vote-cast': voteCast}">
-			<AppHeader :voters="voters" :has-votes="votes.length > 0"
-					   @showModal="showModal"
-					   @buyVote="voters = Math.max(1, voters + 1)"
-					   @choose="choose"
-					   @reset="reset"
-			/>
-
-			<main id="games" class="scrollbar">
-				<Game v-for="game in filteredGames"
-					  :key="game.id"
-					  :voters="voters"
-					  :tally="votes.filter(vote => vote.id === game.id).length"
-					  :game="game"
-					  @vote="onVote"
+	<div id="app"
+		 :class="{'no-voters': voters < 1, 'light-scheme': prefersLightScheme }"
+		 role="application"
+		 itemscope itemtype="http://schema.org/WebApplication">
+		<Transition name="fade">
+			<div v-if="chosen" id="choice"
+				 class="d-flex flex-column flex-1"
+				 role="doc-conclusion">
+				<Selected :chosen="chosen"
+						  :games="games"
+						  :votes="votes"
+						  @choose="choose"
+						  @reset="reset"
 				/>
-			</main>
-		</div>
+			</div>
+			<div v-else class="container" :class="{'vote-cast': voteCast}">
+				<AppHeader :voters="voters" :has-votes="votes.length > 0"
+						   @showModal="showModal"
+						   @buyVote="voters = Math.max(1, voters + 1)"
+						   @choose="choose"
+						   @reset="reset"
+				/>
+
+				<main id="games" class="scrollbar">
+					<Game v-for="game in filteredGames"
+						  :key="game.id"
+						  :voters="voters"
+						  :tally="votes.filter(vote => vote.id === game.id).length"
+						  :game="game"
+						  @vote="onVote"
+					/>
+				</main>
+			</div>
+		</Transition>
 
 		<Modal v-if="modal === 'instructions'" aria-modal="true"
 			   :aria-hidden="modal !== 'instructions'"
@@ -95,6 +100,7 @@
 
 <script>
 	import MinusCircle from 'vue-feather-icon/components/minus-circle';
+	import { Howl } from 'howler';
 	import Header from './components/Header';
 	import Game from './components/Game';
 	import RandomText from './components/RandomString';
@@ -138,6 +144,7 @@
 		},
 		data() {
 			return {
+				audio: {},
 				errors: 0,
 				votes: [],
 				chosen: null,
@@ -158,6 +165,22 @@
 		},
 		created() {
 			typekitLoader('apf6wfj');
+		},
+		mounted() {
+			this.audio = {
+				pause: new Howl({
+					src: [require('./assets/audio/pause.mp3')],
+					autoplay: false,
+					loop: false,
+					volume: .5,
+				}),
+				vote: new Howl({
+					src: [require('./assets/audio/stomp.mp3')],
+					autoplay: false,
+					loop: false,
+					volume: .5,
+				}),
+			} ;
 		},
 		methods: {
 			/** @description Selects a candidate at random */
@@ -187,9 +210,7 @@
 				let ok = this.voters > 0;
 
 				if (ok) {
-					(
-						new Audio(require('./assets/audio/stomp.mp3'))
-					).play().finally(() => this.votes.push(game));
+					this.audio.vote.once('end', () => this.votes.push(game), this.audio.vote.play());
 				}
 
 				--this.voters;
@@ -211,9 +232,7 @@
 				setTimeout(() => this.voteCast = false, 1000);
 			},
 			showModal(which) {
-				(
-					new Audio(require('./assets/audio/pause.mp3'))
-				).play().finally(() => this.modal = which);
+				this.audio.pause.once('end', () => this.modal = which, this.audio.pause.play());
 			}
 		}
 	};
@@ -245,7 +264,6 @@
 		display: flex;
 		flex-grow: 1;
 		flex-flow: row wrap;
-		margin-top: calc((2 * var(--size-base)) + var(--size-app-icon) + var(--size-gap) + 1px);
 	}
 
 	@media (min-width: #{$media-screen-md}), screen and (orientation: landscape) {

@@ -165,16 +165,17 @@
 		display: flex;
 		flex: 1 1 var(--size-game-cover, #{$size-game-cover});
 		justify-content: center;
-		user-select: none;
+		margin-bottom: var(--size-base);
 
 		figure {
 			cursor: pointer;
 			display: flex;
 			flex-flow: column nowrap;
-			margin: 0 0 $size-base;
+			margin: 0;
 			max-width: var(--size-game-cover, #{$size-game-cover});
 			padding: 0;
 			position: relative;
+			user-select: none;
 		}
 
 		/// Game title
@@ -326,6 +327,10 @@
 				filter: drop-shadow(0 3px 5px rgba(0, 0, 0, .5));
 			}
 		}
+
+		&:first-of-type {
+			margin-left: var(--offset, 0);
+		}
 	}
 
 	.no-voters .game figure {
@@ -348,7 +353,10 @@
 	}
 
 	@media screen and (min-width: #{$media-screen-sm}) {
-		.game:first-of-type,
+		.game:first-of-type {
+			--offset: var(--size-base);
+		}
+
 		.game + .game {
 			margin-left: var(--size-base);
 		}
