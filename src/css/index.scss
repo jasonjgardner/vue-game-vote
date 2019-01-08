@@ -67,7 +67,13 @@
 	--color-background-table-row-alt: #efefef;
 }
 
-* {
+:focus {
+	outline: 0;
+}
+
+*,
+*:before,
+*:after {
 	box-sizing: border-box;
 }
 
@@ -78,6 +84,18 @@
 
 .backdrop-visible {
 	overflow: hidden;
+}
+
+.list-striped {
+	dt,
+	dt ~ dd {
+		background-color: var(--color-background-table-row);
+	}
+
+
+	&:nth-child(even) {
+		background-color: var(--color-background-table-row-alt);
+	}
 }
 
 html {

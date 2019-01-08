@@ -47,14 +47,14 @@
 		align-items: center;
 		background-color: var(--color-background-fab, var(--color-background-alt));
 		border-radius: 50%;
-		box-shadow: -1px 1px .25rem rgba(0, 0, 0, .5), 0 0 .333rem rgba(0, 0, 0, .33);
+		filter: drop-shadow(0 .125rem .25rem rgba(0, 0, 0, .5));
 		color: var(--color-fab);
 		display: flex;
 		height: var(--size-fab);
 		justify-content: center;
 		line-height: 1;
 		text-align: center;
-		transition: background-color .3s ease-out, color .3s ease-out, box-shadow .5s ease-out, transform .666s cubic-bezier(.175, .885, .32, 1.275);
+		transition: background-color .3s ease-out, color .3s ease-out, filter .5s ease-out, transform .666s cubic-bezier(.175, .885, .32, 1.275);
 		width: var(--size-fab);
 
 		svg {
@@ -70,7 +70,7 @@
 		}
 
 		&:active {
-			box-shadow: 0 2px .275rem rgba(0, 0, 0, .45), 0 0 .555rem rgba(0, 0, 0, .3);
+			filter: drop-shadow(0 .25rem .275rem rgba(0, 0, 0, .33));
 			transform: translateY(-3px);
 		}
 	}

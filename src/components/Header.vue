@@ -15,16 +15,16 @@
 			<ul>
 				<li>
 					<abbr title="Version">Ver.</abbr>
-					<a :href="config.GIT_REPO"
+					<a :href="$root.$data.GIT_REPO"
 					   class="f-outline"
 					   rel="noopener"
 					   target="_blank"
 					   title="View source on GitHub">
-						<span itemprop="softwareVersion">{{ config.VERSION }}</span>
+						<span itemprop="softwareVersion">{{ $root.$data.VERSION }}</span>
 					</a>
 				</li>
 				<li>
-					<a href="https://jasongardner.co"
+					<a :href="$root.$data.AUTHOR_URL"
 					   class="f-outline"
 					   rel="author"
 					   itemprop="creator"
@@ -117,7 +117,7 @@
 			HelpIcon,
 			ResetIcon: RotateCcw,
 			CoinIcon: MinusCircle,
-			CheckIcon: Check,
+			CheckIcon: Check
 		},
 		props: {
 			voters: {
@@ -134,11 +134,7 @@
 			return {
 				audio: undefined,
 				showInstructions: false,
-				chaChing: false,
-				config: {
-					VERSION: (process.env.VUE_APP_VERSION || '0.1.0') + (process.env.NODE_ENV === 'production' ? '' : '-beta'),
-					GIT_REPO: process.env.VUE_APP_GIT_REPO,
-				},
+				chaChing: false
 			};
 		},
 		mounted() {
@@ -245,7 +241,7 @@
 			display: flex;
 			flex-flow: column nowrap;
 			margin: 0 auto 0 var(--size-base);
-			padding-bottom: 1px;
+			padding-bottom: 1px; /// Don't hide link outline
 			overflow: hidden;
 			text-align: left;
 			text-overflow: ellipsis;

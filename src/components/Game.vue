@@ -175,7 +175,6 @@
 			max-width: var(--size-game-cover, #{$size-game-cover});
 			padding: 0;
 			position: relative;
-			user-select: none;
 		}
 
 		/// Game title
@@ -210,6 +209,7 @@
 				bottom: calc(var(--height) + var(--size-gap));
 				color: var(--color-lightest);
 				content: 'Vote';
+				display: block;
 				font-size: 1rem;
 				font-weight: 300;
 				line-height: calc(2 * var(--size-base));
@@ -238,9 +238,10 @@
 
 		/// Game box art
 		&__cover {
+			border: 1px solid var(--color-lightest, white);
 			border-radius: $size-border-radius - 1;
 			box-sizing: border-box;
-			box-shadow: .01rem .125rem .25rem rgba(0, 0, 0, .45), 0 .125rem .825rem rgba(0, 0, 0, .25);
+			filter: drop-shadow(.01rem .125rem .25rem rgba(0, 0, 0, .45));
 			height: var(--size-game-cover, #{$size-game-cover});
 			max-height: calc(100vh - ((2 * var(--size-base)) + var(--size-app-icon) + 1px) - 3rem);
 			transition: filter .25s ease-out;
@@ -279,8 +280,7 @@
 
 		/// Hocus events
 		&:hover,
-		&:focus,
-		&:focus-within {
+		&:focus {
 			-webkit-tap-highlight-color: transparent;
 
 			/// Highlight title on hover

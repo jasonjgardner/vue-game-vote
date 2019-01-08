@@ -83,7 +83,12 @@
 				<section>
 					<h3>Application Information</h3>
 
-
+					<dl class="striped-list">
+						<dt>Last Updated</dt>
+						<dd>
+							<DateTime :time="info.buildDate" :format="'MM.DD.YYYY'" itemprop="dateModified" />
+						</dd>
+					</dl>
 				</section>
 			</template>
 			<template slot="footer">
@@ -112,6 +117,7 @@
 	import MinusCircleIcon from 'vue-feather-icon/components/minus-circle';
 	import InfoIcon from 'vue-feather-icon/components/info';
 	import { Howl } from 'howler';
+	import DateTime from './components/DateTime';
 	import Header from './components/Header';
 	import Game from './components/Game';
 	import RandomText from './components/RandomString';
@@ -139,6 +145,7 @@
 			AppHeader: Header,
 			Game,
 			RandomText,
+			DateTime,
 			Modal: () => import(/* webpackChunkName: "dialog" */'./components/Dialog/Modal'),
 			Alert: () => import(/* webpackChunkName: "dialog" */'./components/Dialog/Alert'),
 			Selected: () => import(/* webpackChunkName: "selection" */'./components/Selection')
@@ -166,7 +173,10 @@
 				prefersLightScheme: +(
 					new Date()
 				).getHours() <= 18,
-				voteCast: false
+				voteCast: false,
+				info: {
+					buildDate: process.env.BUILD_TIME
+				}
 			};
 		},
 		computed: {

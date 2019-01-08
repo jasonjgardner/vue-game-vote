@@ -33,6 +33,11 @@ import('./data.json').then(data => {
 	data.games.sort(sortBy('id'));
 
 	new Vue({
+		data: {
+			AUTHOR_URL: process.env.VUE_APP_AUTHOR_URL,
+			GIT_REPO: process.env.VUE_APP_GIT_REPO,
+			VERSION: process.env.VUE_APP_VERSION + (process.env.NODE_ENV === 'production' ? '' : '-beta')
+		},
 		render: h => h(App, {
 			props: {
 				initialVoters: 2,

@@ -24,6 +24,7 @@
     "sassdoc": "sassdoc src/css/*.scss -c docs/sassdoc.conf.json -d docs/sassdoc"
   },
   "dependencies": {
+    "dayjs": "^1.7.8",
     "feather-icons": "^4.9.0",
     "howler": "^2.1.1",
     "normalize.css": "^8.0.1",
