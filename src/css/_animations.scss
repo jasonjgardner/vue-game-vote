@@ -19,7 +19,7 @@
 }
 
 @keyframes jump {
-	0% {
+	from {
 		transform: translateY(10px);
 	}
 
@@ -27,8 +27,23 @@
 		transform: translateY(-10px);
 	}
 
-	100% {
+	to {
 		transform: translateY(0);
+	}
+}
+
+@keyframes dive {
+	from {
+		transform: translateY(0);
+	}
+
+	10% {
+		transform: translateY(-5px);
+	}
+
+	to {
+		opacity: 0;
+		transform: translateY(100%);
 	}
 }
 
@@ -77,13 +92,21 @@
 	opacity: 0;
 }
 
-.jump-enter-active {
-	animation: jump .2s;
-	transition: opacity .5s ease-out;
+.jump-enter,
+.jump-leave {
+	transition: opacity .25s ease-out;
 }
 
-.jump-leave-active {
-	animation: jump .2s reverse;
+.jump-enter-active {
+	animation: jump .25s;
+}
+
+.dive {
+	animation: dive .25s;
+}
+
+.jump-leave-to {
+	opacity: 0;
 }
 
 .pulse {

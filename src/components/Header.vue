@@ -12,12 +12,25 @@
 				Vote for a Game
 			</h1>
 
-			<p>
-				<abbr title="Version">v</abbr><a :href="config.GIT_REPO">
-					<span itemprop="softwareVersion">{{ config.VERSION }}</span>
-				</a> |
-				<a href="https://jasongardner.co" rel="author" itemprop="creator">By Jason</a>
-			</p>
+			<ul>
+				<li>
+					<abbr title="Version">Ver.</abbr>
+					<a :href="config.GIT_REPO"
+					   rel="noopener"
+					   target="_blank"
+					   title="View source on GitHub">
+						<span itemprop="softwareVersion">{{ config.VERSION }}</span>
+					</a>
+				</li>
+				<li>
+					<a href="https://jasongardner.co"
+					   rel="author"
+					   itemprop="creator"
+					   title="Created by Jason Gardner">
+						By Jason
+					</a>
+				</li>
+			</ul>
 		</header>
 
 		<form id="voters" class="d-flex">
@@ -52,7 +65,7 @@
 			</div>
 
 			<Transition name="jump">
-				<button v-if="hasVotes"
+				<button v-show="hasVotes"
 						class="btn btn--secondary btn--fab h-focus"
 						type="reset"
 						name="reset"
@@ -128,7 +141,7 @@
 		},
 		mounted() {
 			this.audio = new Howl({
-				src: [require('../assets/audio/coin.mp3')],
+				src: [require('../assets/audio/coin.ogg'), require('../assets/audio/coin.mp3')],
 				autoplay: false,
 				loop: false,
 				volume: .5,
@@ -142,11 +155,10 @@
 			buyVote() {
 				this.chaChing = true;
 
-				this.audio.once('end', () => {
+				this.audio.once('play', () => {
 					this.$emit('buyVote');
 					setTimeout(() => this.chaChing = false, 100);
-				});
-				this.audio.play();
+				}, this.audio.play());
 			},
 		},
 	};
@@ -231,7 +243,6 @@
 			display: flex;
 			flex-flow: column nowrap;
 			margin: 0 auto 0 var(--size-base);
-			max-width: 150px;
 			overflow: hidden;
 			text-align: left;
 			text-overflow: ellipsis;
@@ -239,6 +250,17 @@
 
 			a {
 				color: var(--color-secondary);
+				transition: color .25s ease-in-out;
+
+				&:hover,
+				&:focus {
+					color: var(--color-text)
+				}
+
+				&:active {
+					outline: 2px solid var(--color-accent);
+					text-decoration: none;
+				}
 			}
 
 			abbr {
@@ -248,6 +270,23 @@
 			p {
 				font-size: .825rem;
 				margin: 0;
+			}
+
+			ul {
+				font-size: .75rem;
+				margin: 0;
+				padding: 0;
+			}
+
+			li {
+				display: inline-block;
+				list-style-type: none;
+			}
+
+			li + li {
+				border-left: 1px solid var(--color-secondary);
+				margin-left: var(--size-gap);
+				padding-left: var(--size-gap);
 			}
 		}
 
@@ -291,7 +330,7 @@
 			}
 
 			&:focus {
-				color: $color-dark-alt;
+				color: var(--color-input);
 				outline: none;
 			}
 

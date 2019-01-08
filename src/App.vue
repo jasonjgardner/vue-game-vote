@@ -169,13 +169,13 @@
 		mounted() {
 			this.audio = {
 				pause: new Howl({
-					src: [require('./assets/audio/pause.mp3')],
+					src: [require('./assets/audio/pause.ogg'), require('./assets/audio/pause.mp3')],
 					autoplay: false,
 					loop: false,
 					volume: .5,
 				}),
 				vote: new Howl({
-					src: [require('./assets/audio/stomp.mp3')],
+					src: [require('./assets/audio/stomp.ogg'), require('./assets/audio/stomp.mp3')],
 					autoplay: false,
 					loop: false,
 					volume: .5,
@@ -210,7 +210,7 @@
 				let ok = this.voters > 0;
 
 				if (ok) {
-					this.audio.vote.once('end', () => this.votes.push(game), this.audio.vote.play());
+					this.audio.vote.once('play', () => this.votes.push(game), this.audio.vote.play());
 				}
 
 				--this.voters;
@@ -232,7 +232,7 @@
 				setTimeout(() => this.voteCast = false, 1000);
 			},
 			showModal(which) {
-				this.audio.pause.once('end', () => this.modal = which, this.audio.pause.play());
+				this.audio.pause.once('play', () => this.modal = which, this.audio.pause.play());
 			}
 		}
 	};
@@ -274,7 +274,7 @@
 
 	@media (min-width: #{$media-screen-md}) {
 		#games {
-			--size-game-cover: var(--size-game-cover-max, 500px);
+			--size-game-cover: var(--size-game-cover-max, #{min($media-screen-md, $size-game-cover-max)});
 		}
 	}
 
