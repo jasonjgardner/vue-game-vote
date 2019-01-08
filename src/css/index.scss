@@ -19,6 +19,7 @@
 	--color-primary-alt: #{mix(theme('btn-background'), theme('accent'), 25%)};
 	--color-secondary: #{theme('secondary')};
 	--color-assertive: #{theme('assertive')};
+	--color-info: #{theme('primary')};
 	--color-focus: #{mix(theme('accent'), theme('primary'))};
 	--color-selected: #{$color-selected};
 	--color-lightest: #{theme('lightest')};
@@ -50,6 +51,7 @@
 	--color-accent: #{theme('accent', 'light')};
 	--color-primary: #{theme('primary', 'light')};
 	--color-primary-alt: #{mix(theme('btn-background', 'light'), theme('accent', 'light'), 25%)};
+	--color-info: #2576bc;
 	--color-input: #{theme('light', 'light')};
 	--color-link: #{theme('link', 'light')};
 	--color-btn: #{theme('lightest', 'light')};

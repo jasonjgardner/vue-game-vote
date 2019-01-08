@@ -37,44 +37,54 @@
 		<Modal v-if="modal === 'instructions'" aria-modal="true"
 			   :aria-hidden="modal !== 'instructions'"
 			   @dismissed="modal = false">
-			<header slot="header">
-				<h3>Instructions</h3>
-			</header>
+			<template slot="header">
+				<InfoIcon class="mr-1" />
+				<h2>Information</h2>
+			</template>
 			<template slot="body">
-				<h2 class="mt-0">
-					Voting
-				</h2>
-				<p>
-					The number of remaining votes is displayed inside a circle positioned in the upper
-					right corner of the app.
-				</p>
+				<article>
+					<h3>Voting</h3>
 
-				<p>
-					<b>Tap the <span class="text--accent">colored circle</span> to adjust the allotted votes</b> via
-					keyboard input.
-					The new value must be between 1 and 99. Set the initial value to the number of voters participating.
-				</p>
+					<p>
+						The number of remaining votes is displayed inside a circle positioned in the upper
+						right corner of the app.
+					</p>
 
-				<h3>Buying Votes</h3>
-				<p>
-					The number of remaining votes can also be adjusted by pressing the <b>Coin</b> button. Pay
-					<b>one <a href="#mario-coin">Mario coin</a></b> per additional vote.
-				</p>
+					<p>
+						<b>Tap the <span class="text--accent">colored circle</span> to adjust the allotted votes</b> via
+						keyboard input.
+						The new value must be between 1 and 99. Set the initial value to the number of voters participating.
+					</p>
 
-				<aside id="mario-coin">
-					<header class="d-flex align--center">
-						<CoinIcon class="rotate--90 light-stroke mr-1 mb-0 mt-0"/>
-						<h4 class="mb-0 mt-0">Mario Coins</h4>
-					</header>
+					<h3>Buying Votes</h3>
+					<p>
+						The number of remaining votes can also be adjusted by pressing the <b>Coin</b> button. Pay
+						<b>one <a href="#mario-coin">Mario coin</a></b> per additional vote.
+					</p>
 
-					<blockquote>
-						<p>
-							Mario Coins are toy coins embossed with Mario's face. They're given as a reward for good
-							behavior and
-							taken away for bad behavior, poor sportsmanship, bitching, moaning, etc.
-						</p>
-					</blockquote>
-				</aside>
+					<aside id="mario-coin">
+						<header class="d-flex align--center">
+							<CoinIcon class="rotate--90 light-stroke mr-1 mb-0 mt-0"/>
+							<h4 class="mb-0 mt-0">Mario Coins</h4>
+						</header>
+
+						<blockquote>
+							<p>
+								Mario Coins are toy coins embossed with Mario's face. They're given as a reward for good
+								behavior and
+								taken away for bad behavior, poor sportsmanship, bitching, moaning, etc.
+							</p>
+						</blockquote>
+					</aside>
+				</article>
+
+				<hr>
+
+				<section>
+					<h3>Application Information</h3>
+
+
+				</section>
 			</template>
 			<template slot="footer">
 				<button class="btn btn--primary btn--wide btn--shadow h-focus" type="button" @click="modal = false">
@@ -99,7 +109,8 @@
 </template>
 
 <script>
-	import MinusCircle from 'vue-feather-icon/components/minus-circle';
+	import MinusCircleIcon from 'vue-feather-icon/components/minus-circle';
+	import InfoIcon from 'vue-feather-icon/components/info';
 	import { Howl } from 'howler';
 	import Header from './components/Header';
 	import Game from './components/Game';
@@ -123,7 +134,8 @@
 	export default {
 		name: 'App',
 		components: {
-			CoinIcon: MinusCircle,
+			CoinIcon: MinusCircleIcon,
+			InfoIcon,
 			AppHeader: Header,
 			Game,
 			RandomText,

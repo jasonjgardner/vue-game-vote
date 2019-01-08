@@ -16,6 +16,7 @@
 				<li>
 					<abbr title="Version">Ver.</abbr>
 					<a :href="config.GIT_REPO"
+					   class="f-outline"
 					   rel="noopener"
 					   target="_blank"
 					   title="View source on GitHub">
@@ -24,6 +25,7 @@
 				</li>
 				<li>
 					<a href="https://jasongardner.co"
+					   class="f-outline"
 					   rel="author"
 					   itemprop="creator"
 					   title="Created by Jason Gardner">
@@ -243,6 +245,7 @@
 			display: flex;
 			flex-flow: column nowrap;
 			margin: 0 auto 0 var(--size-base);
+			padding-bottom: 1px;
 			overflow: hidden;
 			text-align: left;
 			text-overflow: ellipsis;
@@ -258,7 +261,6 @@
 				}
 
 				&:active {
-					outline: 2px solid var(--color-accent);
 					text-decoration: none;
 				}
 			}
