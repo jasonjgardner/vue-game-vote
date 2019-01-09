@@ -1,5 +1,6 @@
 const pkg = require('./package.json'),
 	path = require('path'),
+	proc = require('child_process'),
 	webpack = require('webpack');
 
 const DEV = process.env.NODE_ENV !== 'production',
@@ -69,12 +70,7 @@ module.exports = {
 		});
 
 		config.plugin('define').tap(args => {
-			args[0]['process.env'] = {
-				...args[0]['process.env'],
-				...{
-					'BUILD_TIME': JSON.stringify(+(new Date()))
-				}
-			};
+			args[0]['process.env']['BUILD_TIME'] = JSON.stringify(proc.execSync('git log -1 --format=%cd --date=iso').toString().trim());
 
 			return args;
 		});
