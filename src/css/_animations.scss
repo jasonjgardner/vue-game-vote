@@ -23,15 +23,17 @@
 
 @keyframes jump {
 	from {
-		transform: translateY(10px);
+		opacity: 0;
+		transform: translate3d(0, 10px, 0);
 	}
 
 	50% {
-		transform: translateY(-10px);
+		opacity: 1;
+		transform: translate3d(0, -10px, 0);
 	}
 
 	to {
-		transform: translateY(0);
+		transform: translate3d(0, 0, 0);
 	}
 }
 
@@ -91,25 +93,18 @@
 }
 
 .fade-enter,
-.fade-leave-to {
+.fade-leave-to,
+.jump-leave-to {
 	opacity: 0;
-}
-
-.jump-enter,
-.jump-leave {
-	transition: opacity .25s ease-out;
 }
 
 .jump-enter-active {
 	animation: jump .25s;
 }
 
-.dive {
-	animation: dive .25s;
-}
-
 .jump-leave-to {
-	opacity: 0;
+	transform: translate3d(0, -100%, 0);
+	transition-duration: .125s;
 }
 
 .pulse {
@@ -126,8 +121,8 @@
 	transform: translate3d(0, 0, 0);
 
 	&::after {
-		background: transparent radial-gradient(circle, var(--color-accent) 10%, transparent 10.01%) no-repeat 50%;
-		animation: ripple 1s infinite;
+		background: transparent radial-gradient(circle, var(--color-accent) 10%, transparent 10%) no-repeat center center;
+		animation: ripple 1s;
 		content: '';
 		display: block;
 		height: 100%;
@@ -135,6 +130,7 @@
 		opacity: 0;
 		pointer-events: none;
 		position: absolute;
+		transform-origin: center center;
 		top: 0;
 		width: 100%;
 	}

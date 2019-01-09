@@ -167,6 +167,7 @@
 		justify-content: center;
 		margin-bottom: var(--size-base);
 
+
 		figure {
 			cursor: pointer;
 			display: flex;
@@ -175,6 +176,7 @@
 			max-width: var(--size-game-cover, #{$size-game-cover});
 			padding: 0;
 			position: relative;
+			transition: all .5s cubic-bezier(.175, .885, .32, 1.275);
 		}
 
 		/// Game title
@@ -225,6 +227,7 @@
 				transition-delay: 0s;
 				transform: translateX(-50%);
 				width: calc(var(--size-game-cover) - (5 * var(--size-base)));
+				vertical-align: middle;
 				z-index: $zindex-cover + 1;
 			}
 
@@ -291,12 +294,13 @@
 			/// Create tooltip bubble from description
 			.game__description {
 				background-color: var(--color-tooltip-background);
-				box-shadow: 0 .1rem .275rem rgba(0, 0, 0, .25), 0 .125rem .825rem rgba(0, 0, 0, .125);
+				filter: drop-shadow(0 .125rem .275rem rgba(0, 0, 0, .25));
 				height: var(--height);
 				top: calc(2 * var(--size-gap));
 				z-index: $zindex-cover + 1;
 
 				&::before {
+					backdrop-filter: blur(10px);
 					opacity: 1;
 					transition: opacity .333s ease-in-out;
 					transition-delay: 1.5s;
@@ -318,7 +322,7 @@
 			}
 
 			.game__tally {
-				box-shadow: 0 2px 8px rgba(0, 0, 0, .5);
+				filter: drop-shadow(0 2px 8px rgba(0, 0, 0, .5));
 			}
 
 			.game__cover {
@@ -326,6 +330,12 @@
 				animation: focus 1s infinite;
 				filter: drop-shadow(0 3px 5px rgba(0, 0, 0, .5));
 			}
+		}
+
+		&:active figure {
+			transform: scale(1.05, 1.05);
+			opacity: .8;
+			z-index: $zindex-cover + 1;
 		}
 
 		&:first-of-type {
@@ -345,6 +355,11 @@
 	.no-voters .game:active {
 		animation: wiggle .5s ease;
 		animation-iteration-count: 5;
+
+		figure {
+			opacity: 1;
+			transform: none;
+		}
 
 		.game__cover {
 			filter: saturate(.3);

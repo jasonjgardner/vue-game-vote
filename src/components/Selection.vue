@@ -21,7 +21,7 @@
 					 role="presentation"
 					 aria-labelledby="choice-name"
 				>
-				<figcaption>
+				<figcaption :aria-expanded="showDetails">
 					<div class="col">
 						<dl>
 							<div v-if="chosen.hasOwnProperty('developer') && chosen.developer.length > 0">
@@ -38,33 +38,16 @@
 								<meta itemprop="playMode" :content="chosen.playMode">
 							</dd>
 						</dl>
-
-
 					</div>
 					<!-- /.col -->
 					<div class="col">
-						<div v-if="chosen.familyFriendly" class="d-flex nowrap justify--center">
-							<FamilyFriendlyIcon class="icon" />
+						<div v-if="chosen.familyFriendly" class="d-flex nowrap">
+							<FamilyFriendlyIcon class="icon" aria-hidden="true"/>
 							<h5 class="ml-1">This is a family-friendly game.</h5>
 						</div>
-						<div v-else class="d-flex nowrap justify--center">
-							<FamilyUnfriendlyIcon class="icon" />
+						<div v-else class="d-flex nowrap">
+							<FamilyUnfriendlyIcon class="icon" aria-hidden="true"/>
 							<h5 class="ml-1">This is not a family-friendly game.</h5>
-						</div>
-
-						<div class="content-rating">
-							<div v-if="chosen.hasOwnProperty('contentRating')" class="icon">
-								<span class="sr-only" itemprop="contentRating"
-									  :aria-label="`Rated ${chosen.contentRating} by ESRB`">
-									{{ chosen.contentRating }}
-								</span>
-
-								<!-- TODO: Use srcset -->
-								<img id="esrb-icon" :src="require(`../assets/esrb/${chosen.contentRating}.png`)"
-									 :alt="`ESRB rating ${chosen.contentRating}`"
-									 :title="`Rated ${chosen.contentRating}`"
-								>
-							</div>
 						</div>
 					</div>
 					<!-- /.col -->
@@ -184,6 +167,7 @@
 			return {
 				audio: undefined,
 				picks: 0,
+				showDetails: false
 			};
 		},
 		computed: {
@@ -213,7 +197,7 @@
 				return '1 vote';
 			},
 			randomTitles() {
-				if (this.picks <= 0 && [...new Set(this.$parent.votes)].length === 1) {
+				if (this.picks <= 0 && [...new Set(this.votes)].length === 1) {
 					return ['It\'s unanimous!', 'We\'ve agreed on'];
 				}
 
@@ -222,7 +206,7 @@
 		},
 		mounted() {
 			this.audio = new Howl({
-				src: [require('../assets/audio/stage-clear.mp3')],
+				src: [require('../assets/audio/stage-clear.ogg'), require('../assets/audio/stage-clear.mp3')],
 				autoplay: true,
 				loop: false,
 				volume: .5,
@@ -261,25 +245,6 @@
 		min-width: calc(2 * var(--size-base));
 	}
 
-	.content-rating {
-		align-items: center;
-		display: flex;
-		flex-flow: column wrap;
-		width: var(--size-icon);
-
-		.icon {
-			margin-top: var(--size-base);
-		}
-
-		&__title {
-
-		}
-	}
-
-	#esrb-icon {
-		max-height: var(--size-icon);
-	}
-
 	.choice__details {
 		margin: 0 auto;
 		padding-left: var(--size-base);
@@ -307,6 +272,7 @@
 	.choice__cover {
 		display: flex;
 		flex-flow: column nowrap;
+		justify-content: center;
 		margin: 0 auto calc(2 * var(--size-base));
 		max-width: 90vw;
 		width: 100%;
@@ -332,6 +298,12 @@
 			display: flex;
 			flex-direction: column;
 			margin-top: var(--size-base);
+			overflow: hidden;
+			transition: max-width .333s ease-out;
+
+			&[aria-expanded='false'] {
+				max-width: 0;
+			}
 		}
 	}
 
@@ -535,12 +507,18 @@
 		.content-rating {
 			border-top: 1px solid var(--color-border);
 			flex-flow: row wrap;
+			font-size: .925rem;
 			margin-top: var(--size-gap);
 			padding-top: var(--size-gap);
+			text-align: center;
 			width: 100%;
 
 			.icon + .icon {
 				margin-left: var(--size-base);
+			}
+
+			p:last-of-type {
+				margin-bottom: 0;
 			}
 		}
 	}

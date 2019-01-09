@@ -1,14 +1,14 @@
-![Game Votes icon](https://jasongardner.co/game-votes/readme.png "Game Votes")
+![Game Votes icon](https://projects.jasongardner.co/game-votes/readme.png "Game Votes")
 
 # Game Votes
 
 My girlfriend's kids *always* fight over which video game we're going to play.
 I created a simple app to resolve these disputes.
 
-https://jasongardner.co/game-votes/
+https://projects.jasongardner.co/game-votes/
 
 A game is chosen at random from a list of nominated games. Mario Kart 8's online
-multiplayer track selection inspired me.
+multi-player track selection inspired me.
 
 This is my first Vue.js project! I'd love some [feedback](#feedback).
 
@@ -51,4 +51,17 @@ or reuse the CSS in your own Nintendo Switch-styled UI.
 
 ### Attribution
 
-Audio provided by [The Mushroom Kingdom](https://themushroomkingdom.net/media/smb/wav).
+#### Audio
+<img src="http://www.themushroomkingdom.net/button80x15.png" width="80" height="15" alt="The Mushroom Kingdom" />
+
+- Audio provided by [The Mushroom Kingdom](https://themushroomkingdom.net/media/smb/wav).
+Please [contact The Mushroom Kingdom](https://themushroomkingdom.net/contact.shtml) for permission to redistribute audio,
+prior to deploying any forks of this repository.
+
+#### Icons
+- Some icons come from the [Feather icons](https://feathericons.com) collection.
+- ESRB rating icons are registered trademarks of the Entertainment Software Association.
+
+##### Disclaimer
+
+This project is in no way affiliated with, nor endorsed by, Nintendo or any of the attributed sources listed above.

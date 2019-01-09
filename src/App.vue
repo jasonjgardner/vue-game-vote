@@ -1,6 +1,6 @@
 <template>
 	<div id="app"
-		 :class="{'no-voters': voters < 1, 'light-scheme': prefersLightScheme }"
+		 :class="{'light-scheme': prefersLightScheme }"
 		 role="application"
 		 itemscope itemtype="http://schema.org/WebApplication">
 		<Transition name="fade">
@@ -14,7 +14,7 @@
 						  @reset="reset"
 				/>
 			</div>
-			<div v-else class="container" :class="{'vote-cast': voteCast}">
+			<div v-else class="container" :class="{'no-voters': voters < 1, 'vote-cast': voteCast}">
 				<AppHeader :voters="voters" :has-votes="votes.length > 0"
 						   @showModal="showModal"
 						   @buyVote="voters = Math.max(1, voters + 1)"

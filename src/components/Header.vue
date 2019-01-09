@@ -35,62 +35,69 @@
 			</ul>
 		</header>
 
-		<form id="voters" class="d-flex">
-			<label id="votes-remaining-label" class="sr-only" for="votes-remaining">
-				Votes Remaining:
-			</label>
+		<form id="voters">
+			<div class="flex-item">
+				<label id="votes-remaining-label" class="sr-only" for="votes-remaining">
+					Votes Remaining:
+				</label>
 
-			<div class="voters__votes h-focus" :class="{'invalid': voters < 0 || voters > 99, 'pulse': chaChing}">
-				<input v-if="!hasVotes || voters > 0"
-					   id="votes-remaining"
-					   v-model.number="voters"
-					   :readonly="hasVotes"
-					   :title="`${voters} vote${voters === 1 ? '' : 's'} remaining`"
-					   type="number"
-					   placeholder="#"
-					   max="99" min="0"
-					   aria-labelledby="votes-remaining-label"
-				>
+				<div class="voters__votes h-focus" :class="{'invalid': voters < 0 || voters > 99, 'pulse': chaChing}">
+					<input v-if="!hasVotes || voters > 0"
+						   id="votes-remaining"
+						   v-model.number="voters"
+						   :readonly="hasVotes"
+						   :title="`${voters} vote${voters === 1 ? '' : 's'} remaining`"
+						   type="number"
+						   placeholder="#"
+						   max="99" min="0"
+						   aria-labelledby="votes-remaining-label"
+					>
 
-				<button v-if="hasVotes"
-						class="btn"
-						type="submit"
-						name="choose"
-						title="Choose the game"
-						@click.prevent="$emit('choose')"
-				>
-					<CheckIcon/>
-					<span class="sr-only">
+					<button v-if="hasVotes"
+							class="btn"
+							type="submit"
+							name="choose"
+							title="Choose the game"
+							@click.prevent="$emit('choose')"
+					>
+						<CheckIcon/>
+						<span class="sr-only">
 						Choose
 					</span>
-				</button>
+					</button>
+				</div>
 			</div>
+			<!-- /.flex-item -->
 
-			<Transition name="jump">
-				<button v-show="hasVotes"
-						class="btn btn--secondary btn--fab h-focus"
-						type="reset"
-						name="reset"
-						title="Reset voting"
-						@click.prevent="$emit('reset')"
+			<div class="flex-item">
+				<Transition name="jump">
+					<button v-if="hasVotes"
+							class="btn btn--secondary btn--fab h-focus"
+							type="reset"
+							name="reset"
+							title="Reset voting"
+							@click.prevent="$emit('reset')"
+					>
+						<ResetIcon/>
+						<span class="sr-only">Reset</span>
+					</button>
+				</Transition>
+			</div>
+			<!-- /.flex-item -->
+
+			<div class="flex-item">
+				<button class="btn btn--secondary btn--fab h-focus"
+						type="button"
+						name="buy"
+						title="Pay a coin to buy a vote" @click.prevent="buyVote"
 				>
-					<ResetIcon/>
+					<CoinIcon class="rotate--90"/>
 					<span class="sr-only">
-						Reset
-					</span>
-				</button>
-			</Transition>
-
-			<button class="btn btn--secondary btn--fab h-focus"
-					type="button"
-					name="buy"
-					title="Pay a coin to buy a vote" @click.prevent="buyVote"
-			>
-				<CoinIcon class="rotate--90"/>
-				<span class="sr-only">
 					Buy Vote
 				</span>
-			</button>
+				</button>
+			</div>
+			<!-- /.flex-item -->
 		</form>
 	</div>
 </template>
@@ -117,7 +124,7 @@
 			HelpIcon,
 			ResetIcon: RotateCcw,
 			CoinIcon: MinusCircle,
-			CheckIcon: Check
+			CheckIcon: Check,
 		},
 		props: {
 			voters: {
@@ -134,7 +141,7 @@
 			return {
 				audio: undefined,
 				showInstructions: false,
-				chaChing: false
+				chaChing: false,
 			};
 		},
 		mounted() {
@@ -381,14 +388,31 @@
 		width: var(--size-fab);
 	}
 
+	.no-voters.vote-cast .voters__votes {
+		animation-name: pulse;
+	}
+
 	#voters {
 		align-items: center;
+		display: flex;
 		flex-wrap: nowrap;
 		font-size: 1rem;
 		justify-content: flex-end;
 		text-align: right;
 
-		> .btn {
+		.flex-item {
+			flex-grow: 1;
+			flex-shrink: 1;
+			max-width: calc(var(--size-fab) + 2em);
+
+			&:empty {
+				margin-left: 0 !important;
+				max-width: 0;
+				transition: max-width .333s cubic-bezier(.175, .885, .32, 1.275), margin-left .333s;
+			}
+		}
+
+		.flex-item + .flex-item {
 			margin-left: 1rem;
 		}
 	}

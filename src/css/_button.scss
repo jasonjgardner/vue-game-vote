@@ -54,7 +54,7 @@
 		justify-content: center;
 		line-height: 1;
 		text-align: center;
-		transition: background-color .3s ease-out, color .3s ease-out, filter .5s ease-out, transform .666s cubic-bezier(.175, .885, .32, 1.275);
+		transition: background-color .3s ease-out, color .3s ease-out, filter .5s ease-out, opacity .25s, transform .666s cubic-bezier(.175, .885, .32, 1.275);
 		width: var(--size-fab);
 
 		svg {
@@ -71,7 +71,7 @@
 
 		&:active {
 			filter: drop-shadow(0 .25rem .275rem rgba(0, 0, 0, .33));
-			transform: translateY(-3px);
+			transform: translateY(-.5em);
 		}
 	}
 
