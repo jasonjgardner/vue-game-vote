@@ -1,5 +1,5 @@
 <template>
-	<Transition appear name="alert">
+	<Transition name="alert">
 		<div class="modal" role="dialog" aria-modal="true">
 			<div class="dialog" :role="role">
 				<div class="dialog__header">
@@ -52,7 +52,7 @@
 		background-color: var(--color-dialog-background);
 		border: 1px solid var(--color-secondary);
 		border-radius: $size-border-radius;
-		box-shadow: 0 1px 5px rgba(0, 0, 0, .66), 0 2px 12px rgba(0, 0, 0, .33);
+		filter: drop-shadow(0 .25rem .333rem rgba(0, 0, 0, .75));
 		color: $color-lightest;
 		display: flex;
 		flex-flow: column nowrap;
@@ -94,12 +94,13 @@
 		&__footer {
 			border-top: 1px solid var(--color-border);
 			display: flex;
+			flex-flow: row nowrap;
 			justify-content: stretch;
 			width: 100%;
 
 			.btn {
-				background-color: var(--color-btn-background);
-				color: var(--color-lightest);
+				background-color: #{theme('btn-background')};
+				color: #{theme('lightest')};
 				flex: 2 1 50%;
 
 				&:hover,

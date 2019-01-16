@@ -16,13 +16,12 @@
 			</div>
 			<div v-else class="container" :class="{'no-voters': voters < 1, 'vote-cast': voteCast}">
 				<AppHeader :voters="voters" :has-votes="votes.length > 0"
-						   @showModal="showModal"
 						   @buyVote="voters = Math.max(1, voters + 1)"
 						   @choose="choose"
 						   @reset="reset"
 				/>
 
-				<main id="games" class="scrollbar">
+				<main id="games" class="scrollbar" @wheel="scrollX">
 					<Game v-for="game in filteredGames"
 						  :key="game.id"
 						  :voters="voters"
@@ -31,96 +30,37 @@
 						  @vote="onVote"
 					/>
 				</main>
+
+				<footer>
+					<Controls/>
+				</footer>
+
+				<portal to="overlay">
+					<Alert v-if="showNoVoteDialog" role="alert" @dismissed="showNoVoteDialog = false">
+						<h4 slot="header">
+							{{ ['Hang on!', 'Wait!', 'Woops']|random }}
+						</h4>
+						<p slot="message">
+							{{ ['You\'re out of votes!', 'We\'ve run out of votes! Are you ready to decide?']|random }}
+						</p>
+						<template slot="footer">
+							<button class="btn btn--wide" type="reset" @click.prevent="reset">Reset</button>
+							<button class="btn btn--wide" type="submit" @click.prevent="choose">Elect</button>
+						</template>
+					</Alert>
+				</portal>
 			</div>
 		</Transition>
 
-		<Modal v-if="modal === 'instructions'" aria-modal="true"
-			   :aria-hidden="modal !== 'instructions'"
-			   @dismissed="modal = false">
-			<template slot="header">
-				<InfoIcon class="mr-1" />
-				<h2>Information</h2>
-			</template>
-			<template slot="body">
-				<article>
-					<h3>Voting</h3>
-
-					<p>
-						The number of remaining votes is displayed inside a circle positioned in the upper
-						right corner of the app.
-					</p>
-
-					<p>
-						<b>Tap the <span class="text--accent">colored circle</span> to adjust the allotted votes</b> via
-						keyboard input.
-						The new value must be between 1 and 99. Set the initial value to the number of voters participating.
-					</p>
-
-					<h3>Buying Votes</h3>
-					<p>
-						The number of remaining votes can also be adjusted by pressing the <b>Coin</b> button. Pay
-						<b>one <a href="#mario-coin">Mario coin</a></b> per additional vote.
-					</p>
-
-					<aside id="mario-coin">
-						<header class="d-flex align--center">
-							<CoinIcon class="rotate--90 light-stroke mr-1 mb-0 mt-0"/>
-							<h4 class="mb-0 mt-0">Mario Coins</h4>
-						</header>
-
-						<blockquote>
-							<p>
-								Mario Coins are toy coins embossed with Mario's face. They're given as a reward for good
-								behavior and
-								taken away for bad behavior, poor sportsmanship, bitching, moaning, etc.
-							</p>
-						</blockquote>
-					</aside>
-				</article>
-
-				<hr>
-
-				<section>
-					<h3>Application Information</h3>
-
-					<dl class="striped-list">
-						<dt>Last Updated</dt>
-						<dd>
-							<DateTime :time="info.buildDate" :format="'MM.DD.YYYY'" itemprop="dateModified" />
-						</dd>
-					</dl>
-				</section>
-			</template>
-			<template slot="footer">
-				<button class="btn btn--primary btn--wide btn--shadow h-focus" type="button" @click="modal = false">
-					OK
-				</button>
-			</template>
-		</Modal>
-
-		<Alert v-if="!modal && showNoVoteDialog" :role="'alert'" @dismissed="showNoVoteDialog = false">
-			<h4 slot="header">
-				<RandomText :choices="['Hang on!', 'Wait!', 'Woops']"/>
-			</h4>
-			<p slot="message">
-				<RandomText :choices="['You\'re out of votes!', 'We\'ve run out of votes! Are you ready to decide?']"/>
-			</p>
-			<template slot="footer">
-				<button class="btn" type="reset" @click.prevent="reset">Reset</button>
-				<button class="btn" type="submit" @click.prevent="choose">Elect</button>
-			</template>
-		</Alert>
+		<portal-target name="overlay"></portal-target>
 	</div>
 </template>
 
 <script>
-	import MinusCircleIcon from 'vue-feather-icon/components/minus-circle';
-	import InfoIcon from 'vue-feather-icon/components/info';
 	import { Howl } from 'howler';
-	import DateTime from './components/DateTime';
 	import Header from './components/Header';
+	import Controls from './components/Controls';
 	import Game from './components/Game';
-	import RandomText from './components/RandomString';
 	import typekitLoader from './lib/TypekitLoader';
 
 	/**
@@ -130,7 +70,6 @@
 	 * @vue-data {Number} errors - Number of votes cast after allotted votes have been used
 	 * @vue-data {GameData[]} votes - Array of game data objects for which votes have been cast
 	 * @vue-data {Object} chosen - Selected game's data
-	 * @vue-data {Boolean|String} showModal - Shows a specific modal when set to a string ID. Set to `false` to hide modal
 	 * @vue-data {Boolean|String} dialogMessage - Displays a dialog if a string value is set. Hides the dialog if `false`
 	 * @vue-data {Number} voters - Number of votes remaining
 	 * @vue-data {Boolean} prefersLightScheme - Whether or not to enable light scheme. Defaults to `true` during daytime
@@ -140,13 +79,9 @@
 	export default {
 		name: 'App',
 		components: {
-			CoinIcon: MinusCircleIcon,
-			InfoIcon,
 			AppHeader: Header,
+			Controls,
 			Game,
-			RandomText,
-			DateTime,
-			Modal: () => import(/* webpackChunkName: "dialog" */'./components/Dialog/Modal'),
 			Alert: () => import(/* webpackChunkName: "dialog" */'./components/Dialog/Alert'),
 			Selected: () => import(/* webpackChunkName: "selection" */'./components/Selection')
 		},
@@ -167,16 +102,12 @@
 				errors: 0,
 				votes: [],
 				chosen: null,
-				modal: false,
 				showNoVoteDialog: false,
 				voters: this.initialVoters,
 				prefersLightScheme: +(
 					new Date()
 				).getHours() <= 18,
-				voteCast: false,
-				info: {
-					buildDate: process.env.BUILD_TIME
-				}
+				voteCast: false
 			};
 		},
 		computed: {
@@ -190,25 +121,18 @@
 		},
 		mounted() {
 			this.audio = {
-				pause: new Howl({
-					src: [require('./assets/audio/pause.ogg'), require('./assets/audio/pause.mp3')],
-					autoplay: false,
-					loop: false,
-					volume: .5,
-				}),
 				vote: new Howl({
-					src: [require('./assets/audio/stomp.ogg'), require('./assets/audio/stomp.mp3')],
+					src: [require('./assets/audio/click.ogg'), require('./assets/audio/click.mp3')],
 					autoplay: false,
 					loop: false,
-					volume: .5,
-				}),
-			} ;
+					volume: .5
+				})
+			};
 		},
 		methods: {
 			/** @description Selects a candidate at random */
 			choose() {
 				this.showNoVoteDialog = false;
-				this.modal = false;
 
 				if (this.chosen) {
 					this.votes = this.votes.filter(vote => vote.id !== this.chosen.id);
@@ -221,7 +145,6 @@
 			/** @description Resets votes, vote counts, and selected game */
 			reset() {
 				this.showNoVoteDialog = false;
-				this.modal = false;
 				this.errors = 0;
 				this.voters = this.initialVoters;
 				this.chosen = null;
@@ -248,13 +171,12 @@
 
 				if (this.errors > 2) {
 					this.showNoVoteDialog = true;
-					this.modal = false;
 				}
 
 				setTimeout(() => this.voteCast = false, 1000);
 			},
-			showModal(which) {
-				this.audio.pause.once('play', () => this.modal = which, this.audio.pause.play());
+			scrollX(event) {
+				event.target.scrollLeft += event.deltaY;
 			}
 		}
 	};
@@ -301,8 +223,9 @@
 	}
 
 	.backdrop-visible {
-		#app > *:not(.modal) {
-			filter: blur($blur-radius) saturate(.9);
+		#app > *:not(.vue-portal-target) {
+			box-shadow: none;
+			filter: blur($blur-radius) saturate(.9) drop-shadow(0 0 0 transparent);
 			pointer-events: none;
 			user-select: none;
 		}

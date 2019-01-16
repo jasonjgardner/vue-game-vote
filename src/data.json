@@ -3,7 +3,7 @@
     {
       "id": "mario-party",
       "name": "Mario Party",
-      "image": "assets/games/mario-party.jpg",
+      "image": ["assets/games/mario-party.jpg", "assets/games/mario-party.webp"],
       "numberOfPlayers": 4,
       "playMode": "MultiPlayer",
       "familyFriendly": true,

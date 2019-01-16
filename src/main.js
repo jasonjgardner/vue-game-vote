@@ -24,8 +24,12 @@ import './css/index.scss';
 import './registerServiceWorker';
 import sortBy from './lib/sortBy';
 import Vue from 'vue';
+import PortalVue from 'portal-vue'
 
 Vue.config.productionTip = process.env.NODE_ENV === 'development';
+Vue.use(PortalVue);
+
+Vue.filter('random', choices => choices[Math.floor(Math.random() * choices.length)]);
 
 import App from './App.vue';
 

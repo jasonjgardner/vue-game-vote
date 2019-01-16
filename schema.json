@@ -33,10 +33,23 @@
         },
         "image": {
           "title": "Game cover",
-          "type": "string",
           "description": "Game cover image. Must end with a file extension",
-          "minLength": 3,
-          "pattern": ".+\\.[a-z]+$"
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 3,
+              "pattern": ".+\\.[a-z]+$"
+            },
+            {
+              "type": "array",
+              "minItems": 2,
+              "items": {
+                "type": "string",
+                "minLength": 3,
+                "pattern": ".+\\.[a-z]+$"
+              }
+            }
+          ]
         },
         "numberOfPlayers": {
           "title": "Number of players",
@@ -95,7 +108,7 @@
       "required": [
         "id",
         "name",
-        "img"
+        "image"
       ],
       "additionalProperties": true
     }

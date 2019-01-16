@@ -1,7 +1,7 @@
 <template>
 	<div id="app-header" :class="{'no-voters': voters.length < 1}" role="banner">
 		<div id="icons" role="presentation"
-			 @click="$emit('showModal', 'instructions')"
+			 @click="openInstructions"
 		>
 			<AppIcon/>
 			<HelpIcon/>
@@ -41,7 +41,8 @@
 					Votes Remaining:
 				</label>
 
-				<div class="voters__votes h-focus" :class="{'invalid': voters < 0 || voters > 99, 'pulse': chaChing}">
+				<div class="voters__votes btn--shadow--lg h-focus"
+					 :class="{'invalid': voters < 0 || voters > 99, 'pulse': chaChing}">
 					<input v-if="!hasVotes || voters > 0"
 						   id="votes-remaining"
 						   v-model.number="voters"
@@ -72,11 +73,11 @@
 			<div class="flex-item">
 				<Transition name="jump">
 					<button v-if="hasVotes"
-							class="btn btn--secondary btn--fab h-focus"
+							class="btn btn--secondary btn--fab btn--shadow h-focus"
 							type="reset"
 							name="reset"
 							title="Reset voting"
-							@click.prevent="$emit('reset')"
+							@click.prevent="reset"
 					>
 						<ResetIcon/>
 						<span class="sr-only">Reset</span>
@@ -85,8 +86,8 @@
 			</div>
 			<!-- /.flex-item -->
 
-			<div class="flex-item">
-				<button class="btn btn--secondary btn--fab h-focus"
+			<div class="flex-item mr-1">
+				<button class="btn btn--secondary btn--fab btn--shadow h-focus"
 						type="button"
 						name="buy"
 						title="Pay a coin to buy a vote" @click.prevent="buyVote"
@@ -99,6 +100,76 @@
 			</div>
 			<!-- /.flex-item -->
 		</form>
+
+		<portal to="overlay">
+			<Modal v-if="showInstructions" aria-modal="true"
+				   :aria-hidden="!showInstructions"
+				   @dismissed="showInstructions = false">
+				<template slot="header">
+					<InfoIcon class="mr-1 stroke-current-color"/>
+					<h2>Information</h2>
+				</template>
+				<template slot="body">
+					<article>
+						<h3>Voting</h3>
+
+						<p>
+							The number of remaining votes is displayed inside a circle positioned in the upper
+							right corner of the app.
+						</p>
+
+						<p>
+							<strong>Tap the <span class="text--accent">colored circle</span> to adjust the allotted
+								votes</strong> via
+							keyboard input.
+							The new value must be between 1 and 99. Set the initial value to the number of voters
+							participating.
+						</p>
+
+						<h3>Buying Votes</h3>
+						<p>
+							The number of remaining votes can also be adjusted by pressing the <b>Coin</b> button. Pay
+							<b>one <a href="#mario-coin">Mario coin</a></b> per additional vote.
+						</p>
+
+						<aside id="mario-coin">
+							<header class="d-flex align--center">
+								<CoinIcon class="rotate--90 mr-1 mb-0 mt-0 stroke-current-color"/>
+								<h4 class="mb-0 mt-0">Mario Coins</h4>
+							</header>
+
+							<blockquote>
+								<p>
+									Mario Coins are toy coins embossed with Mario's face. They're given as a reward for
+									good
+									behavior and
+									taken away for bad behavior, poor sportsmanship, bitching, moaning, etc.
+								</p>
+							</blockquote>
+						</aside>
+					</article>
+
+					<hr>
+
+					<section>
+						<h3>Application Information</h3>
+
+						<dl class="dl--horizontal dl--striped">
+							<dt>Last Updated</dt>
+							<dd>
+								<DateTime :time="buildTime" :format="'MM.DD.YYYY'" itemprop="dateModified"/>
+							</dd>
+						</dl>
+					</section>
+				</template>
+				<template slot="footer">
+					<button class="btn btn--primary btn--wide btn--shadow h-focus" type="button"
+							@click="showInstructions = false">
+						OK
+					</button>
+				</template>
+			</Modal>
+		</portal>
 	</div>
 </template>
 
@@ -106,9 +177,11 @@
 	import RotateCcw from 'vue-feather-icon/components/rotate-ccw';
 	import MinusCircle from 'vue-feather-icon/components/minus-circle';
 	import Check from 'vue-feather-icon/components/check';
+	import InfoIcon from 'vue-feather-icon/components/info';
 	import { Howl } from 'howler';
-	import AppIcon from '../assets/icon.svg';
-	import HelpIcon from '../assets/help.svg';
+	import AppIcon from '@/assets/icon.svg';
+	import HelpIcon from '@/assets/help.svg';
+	import DateTime from './DateTime';
 
 	/**
 	 * App header component
@@ -122,35 +195,53 @@
 		components: {
 			AppIcon,
 			HelpIcon,
+			InfoIcon,
+			DateTime,
 			ResetIcon: RotateCcw,
 			CoinIcon: MinusCircle,
 			CheckIcon: Check,
+			Modal: () => import(/* webpackChunkName: "dialog" */'./Dialog/Modal')
 		},
 		props: {
 			voters: {
 				type: Number,
 				required: true,
-				default: 0,
+				default: 0
 			},
 			hasVotes: {
 				type: Boolean,
-				default: false,
-			},
+				default: false
+			}
 		},
 		data() {
 			return {
 				audio: undefined,
 				showInstructions: false,
 				chaChing: false,
+				buildTime: process.env.BUILD_TIME || false
 			};
 		},
 		mounted() {
-			this.audio = new Howl({
-				src: [require('../assets/audio/coin.ogg'), require('../assets/audio/coin.mp3')],
-				autoplay: false,
-				loop: false,
-				volume: .5,
-			});
+			this.audio = {
+				buy: new Howl({
+					src: [require('@/assets/audio/coin.ogg'), require('@/assets/audio/coin.mp3')],
+					autoplay: false,
+					loop: false,
+					volume: .5
+				}),
+				reset: new Howl({
+					src: [require('@/assets/audio/load.ogg'), require('@/assets/audio/load.mp3')],
+					autoplay: false,
+					loop: false,
+					volume: .5
+				}),
+				pause: new Howl({
+					src: [require('@/assets/audio/pause.ogg'), require('@/assets/audio/pause.mp3')],
+					autoplay: false,
+					loop: false,
+					volume: .5
+				})
+			};
 		},
 		methods: {
 			/** @description Adds voters and plays confirmation audio
@@ -160,12 +251,20 @@
 			buyVote() {
 				this.chaChing = true;
 
-				this.audio.once('play', () => {
+				this.audio.buy.once('play', () => {
 					this.$emit('buyVote');
 					setTimeout(() => this.chaChing = false, 100);
-				}, this.audio.play());
+				}, this.audio.buy.play());
 			},
-		},
+			reset() {
+				this.audio.reset.once('play', () => {
+					this.$emit('reset');
+				}, this.audio.reset.play());
+			},
+			openInstructions() {
+				this.audio.pause.once('play', () => this.showInstructions = true, this.audio.pause.play());
+			}
+		}
 	};
 </script>
 
@@ -229,7 +328,6 @@
 		align-items: center;
 		background-color: var(--color-app-header);
 		border-bottom: 1px solid var(--color-border);
-		box-sizing: border-box;
 		display: flex;
 		flex-wrap: nowrap;
 		left: 0;
@@ -297,7 +395,7 @@
 
 		&:hover,
 		&:focus-within {
-			border-bottom-color: var(--color-border);
+			border-bottom-color: var(--color-border-alt, var(--color-border));
 
 			.title {
 				color: var(--color-primary);
@@ -308,7 +406,6 @@
 	.voters__votes {
 		background-color: var(--color-accent);
 		border-radius: calc(.5 * var(--size-fab));
-		box-shadow: -1px .125rem .25rem rgba(0, 0, 0, .25), 0 .1rem .275rem rgba(0, 0, 0, .25);
 		color: var(--color-fab);
 		display: flex;
 		height: var(--size-fab);

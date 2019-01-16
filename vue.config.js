@@ -15,24 +15,11 @@ module.exports = {
 	runtimeCompiler: true,
 	css: {
 		sourceMap: DEV,
-		extract: !DEV,
 		loaderOptions: {
 			sass: {
 				sourceMap: DEV,
 				indentedSyntax: false,
 				includePaths: INCLUDES
-			},
-			postcss: {
-				sourceMap: DEV,
-				plugins: {
-					autoprefixer: {},
-					'postcss-preset-env': {
-						stage: 0
-					},
-					cssnano: {
-						preset: 'default'
-					}
-				}
 			}
 		}
 	},
@@ -41,8 +28,8 @@ module.exports = {
 		themeColor: pkg.config.themeColor,
 		msTileColor: pkg.config.themeColor
 	},
-	baseUrl: pkg.config.deploymentPath,
-	outputDir: path.join(__dirname, '/dist'),
+	publicPath: pkg.config.publicPath,
+	outputDir: path.join(__dirname, 'dist'),
 	productionSourceMap: false,
 	chainWebpack: config => {
 		const svgRule = config.module.rule('svg');
@@ -70,9 +57,11 @@ module.exports = {
 		});
 
 		config.plugin('define').tap(args => {
-			args[0]['process.env']['BUILD_TIME'] = JSON.stringify(proc.execSync('git log -1 --format=%cd --date=iso').toString().trim());
+			args[0]['process.env']['BUILD_TIME'] =
+				JSON.stringify(proc.execSync('git log -1 --format=%cd --date=iso').toString().trim());
 
 			return args;
 		});
-	}
+	},
+	parallel: undefined
 };

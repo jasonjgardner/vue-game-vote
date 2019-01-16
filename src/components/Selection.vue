@@ -1,7 +1,7 @@
 <template>
 	<main class="choice__results" aria-labelledby="choice-intro">
 		<p id="choice-intro" class="text--secondary mb-0" role="heading">
-			<RandomText :choices="randomTitles" :html="true"/>
+			{{ randomTitles|random }}
 		</p>
 
 		<div class="choice__details" itemscope
@@ -76,14 +76,14 @@
 		<div class="choice__actions" role="form">
 			<button v-if="canPickAgain"
 					ref="repick"
-					class="btn btn--secondary text--accent"
+					class="btn h-focus"
 					type="button"
 					name="repick"
 					@click="pickAgain"
 			>
 				Pick Again
 			</button>
-			<button ref="restart" class="btn btn--primary"
+			<button ref="restart" class="btn btn--primary h-focus"
 					type="reset"
 					name="restart"
 					@click.prevent="$emit('reset')"
@@ -97,7 +97,6 @@
 <script>
 	import CheckCircle from 'vue-feather-icon/components/check-circle';
 	import { Howl } from 'howler';
-	import RandomText from './RandomString';
 	import FamilyFriendlyIcon from '../assets/is-family-friendly.svg';
 	import FamilyUnfriendlyIcon from '../assets/not-family-friendly.svg';
 
@@ -116,7 +115,6 @@
 		name: 'Selection',
 		components: {
 			CheckCircle,
-			RandomText,
 			FamilyFriendlyIcon,
 			FamilyUnfriendlyIcon,
 		},
@@ -206,7 +204,7 @@
 		},
 		mounted() {
 			this.audio = new Howl({
-				src: [require('../assets/audio/stage-clear.ogg'), require('../assets/audio/stage-clear.mp3')],
+				src: [require('../assets/audio/news.ogg'), require('../assets/audio/news.mp3')],
 				autoplay: true,
 				loop: false,
 				volume: .5,
@@ -321,7 +319,7 @@
 		box-sizing: border-box;
 		display: flex;
 		flex-flow: row nowrap;
-		justify-content: space-between;
+		justify-content: space-evenly;
 		left: 0;
 		margin: var(--size-base) 0 0;
 		padding: 1.5rem 1rem;
@@ -329,8 +327,8 @@
 		width: 100%;
 
 		.btn {
-			box-shadow: -1px .125rem .25rem rgba(0, 0, 0, .125), 0 0 .275rem rgba(0, 0, 0, .25);
 			display: block;
+			filter: drop-shadow(-1px .125rem .25rem rgba(0, 0, 0, .125));
 			flex: 1;
 			max-width: $size-game-cover-max;
 			padding: 1em;
@@ -340,13 +338,13 @@
 				margin-right: auto;
 			}
 
-			&:not(.btn--primary) {
-				background-color: var(--color-lightest);
+			+ .btn {
+				margin-left: var(--size-base);
 			}
-		}
 
-		.btn + .btn {
-			margin-left: var(--size-base);
+			&:first-child:not(.btn--primary) {
+				--color-btn: var(--color-text);
+			}
 		}
 	}
 

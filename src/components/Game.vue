@@ -6,11 +6,20 @@
 					itemscope itemtype="http://schema.org/VideoGame"
 					@click="select"
 			>
-				<img class="game__cover" itemprop="image"
+				<picture v-if="Array.isArray(game.image)" class="game__cover">
+					<source :srcset="require(`../${game.image[1]}`)"
+							type="image/webp">
+					<img :src="require(`../${game.image[0]}`)"
+						 :alt='`"${game.name}" cover art`'
+						 :title="game.name"
+						 itemprop="image">
+				</picture>
+				<img v-else class="game__cover"
 					 :src="require(`../${game.image}`)"
 					 :alt='`"${game.name}" cover art`'
 					 :title="game.name"
-				>
+					 itemprop="image">
+
 				<figcaption class="game__description">
 					<h3 class="game__title" itemprop="name">
 						{{ game.name }}
@@ -71,7 +80,7 @@
 					required: true
 				},
 				img: {
-					type: String,
+					type: [Array, String],
 					required: true
 				}
 			}
@@ -183,7 +192,7 @@
 		&__title {
 			color: var(--color-title);
 			display: inline-block;
-			font-size: 1rem;
+			font-size: 1.125rem;
 			font-weight: bold;
 			transition: color .425s ease-out;
 		}
@@ -206,7 +215,7 @@
 			/// Game cover tooltip
 			&::before {
 				background-color: rgba(0, 0, 0, .75);
-				border: 2px solid white;
+				border: 2px solid rgba(255, 255, 255, .88);
 				border-radius: calc(.125em + var(--size-base));
 				bottom: calc(var(--height) + var(--size-gap));
 				color: var(--color-lightest);
@@ -214,20 +223,36 @@
 				display: block;
 				font-size: 1rem;
 				font-weight: 300;
-				line-height: calc(2 * var(--size-base));
-				height: calc(2 * var(--size-base));
+				line-height: 1;
 				left: 50%;
 				max-width: 300px;
 				min-width: 200px;
 				opacity: 0;
-				padding: .125em 0;
+				padding: calc(2 * var(--size-gap)) 0;
 				position: absolute;
 				text-align: center;
 				transition: opacity .333s ease-out;
 				transition-delay: 0s;
-				transform: translateX(-50%);
+				transform: translate3d(-50%, 0, 0);
 				width: calc(var(--size-game-cover) - (5 * var(--size-base)));
+				will-change: transform, opacity;
 				vertical-align: middle;
+				z-index: $zindex-cover + 1;
+			}
+
+			/// Bubble arrow
+			&::after {
+				content: '';
+				border-width: calc(.9 * var(--size-base));
+				border-style: solid;
+				border-color: transparent transparent var(--color-tooltip-background);
+				bottom: calc(1 * var(--height));
+				height: 0;
+				left: calc(50% - (.5 * var(--size-base)));
+				opacity: 0;
+				position: absolute;
+				transition: opacity .125s ease-out;
+				width: 0;
 				z-index: $zindex-cover + 1;
 			}
 
@@ -241,15 +266,16 @@
 
 		/// Game box art
 		&__cover {
-			border: 1px solid var(--color-lightest, white);
+			border: 3px solid transparent;
 			border-radius: $size-border-radius - 1;
-			box-sizing: border-box;
 			filter: drop-shadow(.01rem .125rem .25rem rgba(0, 0, 0, .45));
 			height: var(--size-game-cover, #{$size-game-cover});
 			max-height: calc(100vh - ((2 * var(--size-base)) + var(--size-app-icon) + 1px) - 3rem);
 			transition: filter .25s ease-out;
 			max-width: var(--size-game-cover, #{$size-game-cover});
 			object-fit: contain;
+			object-position: center;
+			overflow: hidden;
 			pointer-events: none; /// Do not show <img/> title. Title is SR-only
 			z-index: $zindex-cover;
 		}
@@ -270,6 +296,7 @@
 			text-align: center;
 			transition: box-shadow 1s ease-out;
 			vertical-align: middle;
+			user-select: none;
 		}
 
 		/// Game vote count dots
@@ -279,6 +306,7 @@
 			line-height: 1;
 			text-align: right;
 			text-shadow: 0 1px 2px rgba(0, 0, 0, .33);
+			user-select: none;
 		}
 
 		/// Hocus events
@@ -299,25 +327,14 @@
 				top: calc(2 * var(--size-gap));
 				z-index: $zindex-cover + 1;
 
-				&::before {
-					backdrop-filter: blur(10px);
+				&::before,
+				&::after {
 					opacity: 1;
 					transition: opacity .333s ease-in-out;
-					transition-delay: 1.5s;
 				}
 
-				/// Bubble arrow
-				&::after {
-					content: '';
-					border-width: calc(.9 * var(--size-base));
-					border-style: solid;
-					border-color: transparent transparent var(--color-tooltip-background);
-					top: calc(-.5 * var(--height));
-					height: 0;
-					left: calc(50% - (.5 * var(--size-base)));
-					position: absolute;
-					width: 0;
-					z-index: $zindex-cover + 1;
+				&::before {
+					transition-delay: 1.5s;
 				}
 			}
 
@@ -328,7 +345,8 @@
 			.game__cover {
 				// stylelint-disable no-unknown-animations
 				animation: focus 1s infinite;
-				filter: drop-shadow(0 3px 5px rgba(0, 0, 0, .5));
+				border-color: var(--color-lightest);
+				filter: drop-shadow(0 .125em .25em rgba(0, 0, 0, .5));
 			}
 		}
 

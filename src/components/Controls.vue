@@ -1,5 +1,5 @@
 <template>
-	<footer>
+	<div class="wrapper">
 		<div class="controls">
 			<div v-for="(key, label) in controls" :key="key" class="control">
 				<button :id="`control-${label}`"
@@ -14,7 +14,7 @@
 				</label>
 			</div>
 		</div>
-	</footer>
+	</div>
 </template>
 
 <script>
@@ -40,16 +40,16 @@
 	.control {
 		align-items: center;
 		display: flex;
-		margin-left: $size-base;
+		margin-left: var(--size-base);
 
 		label {
 			font-weight: 300;
-			margin: 2 * $size-gap;
+			margin: calc(2 * var(--size-gap));
 		}
 	}
 
 	.btn--control {
-		background-color: $color-lightest;
+		background-color: var(--color-fab);
 		color: var(--color-background);
 		font-weight: bold;
 		vertical-align: middle;
@@ -57,35 +57,29 @@
 		&:hover,
 		&:focus,
 		&:active {
-			background-color: rgba(255, 255, 255, .66);
-			transform: translate(0, 0);
-
-			+ label {
-				text-decoration: underline;
-			}
+			background-color: var(--color-accent);
 		}
 	}
 
 	.controls,
-	footer {
+	.wrapper {
 		display: flex;
 		flex-flow: row nowrap;
 	}
 
-	footer {
+	.wrapper {
 		align-items: center;
 		background-color: var(--color-background);
-		border-top: 1px solid $color-lightest;
-		bottom: 0;
-		height: ($size-app-icon + ($size-base) * 2);
+		border-top: 1px solid var(--color-border);
+		height: calc(var(--size-app-icon) + var(--size-base) * 2);
 		justify-content: space-around;
-		position: fixed;
-		width: 100%;
+		margin: 0 auto;
+		padding: var(--size-gap) var(--size-base);
+		width: calc(100% - (2 * var(--size-base)));
 	}
 
 	.controls {
 		flex: 1 0 50%;
 		justify-content: flex-end;
-		padding: 0 $size-base;
 	}
 </style>
