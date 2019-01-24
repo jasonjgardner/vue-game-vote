@@ -1,27 +1,38 @@
 @import 'variables';
+@import 'mixins';
 
 .scrollbar {
 	overflow: auto;
-
-	&::-webkit-scrollbar-track {
-		background-color: var(--color-background-alt);
-		border-radius: $size-border-radius;
-		box-shadow: inset 0 0 .275rem rgba(0, 0, 0, .3);
-	}
 
 	&::-webkit-scrollbar {
 		height: var(--size-gap);
 		width: var(--size-gap);
 	}
 
+	&::-webkit-scrollbar-track {
+		background-color: var(--color-background);
+		transition: background-color .333s ease-out;
+		margin: 0 calc(var(--size-gap) +  var(--size-base));
+
+		&:hover {
+			background-color: #{darken(theme('background-alt'), 10%)};
+		}
+	}
+
 	&::-webkit-scrollbar-thumb {
 		background-color: rgba($color-dark, .333);
-		border-radius: $size-border-radius;
-		margin: 1px;
+		margin: var(--size-gap);
 		transition: background-color .5s ease-out;
 
 		&:hover {
 			background-color: rgba($color-dark, .9);
 		}
+	}
+}
+
+.light-scheme .scrollbar,
+.light-scheme.scrollbar {
+	&::-webkit-scrollbar-track:hover {
+		background-color: #{rgba(darken(theme('background-alt', 'light'), 10%), .5)};
 	}
 }

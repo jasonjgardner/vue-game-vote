@@ -1,7 +1,6 @@
 const pkg = require('./package.json'),
 	path = require('path'),
-	proc = require('child_process'),
-	webpack = require('webpack');
+	proc = require('child_process');
 
 const DEV = process.env.NODE_ENV !== 'production',
 	INCLUDES = [

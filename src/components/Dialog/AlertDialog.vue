@@ -33,7 +33,7 @@
 	 * @emits Dialog#dismiss
 	 */
 	export default {
-		name: 'Dialog',
+		name: 'AlertDialog',
 		mixins: [ModalMixin],
 		props: {
 			role: {

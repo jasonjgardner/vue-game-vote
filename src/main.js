@@ -38,6 +38,7 @@ import('./data.json').then(data => {
 
 	new Vue({
 		data: {
+			BUILD_TIME: process.env.BUILD_TIME,
 			AUTHOR_URL: process.env.VUE_APP_AUTHOR_URL,
 			GIT_REPO: process.env.VUE_APP_GIT_REPO,
 			VERSION: process.env.VUE_APP_VERSION + (process.env.NODE_ENV === 'production' ? '' : '-beta')

@@ -131,6 +131,18 @@
       "gamePlatform": "Nintendo Switch"
     },
     {
+      "id": "just-dance-2019",
+      "name": "Just Dance 2019",
+      "image": "assets/games/just-dance-2019.jpg",
+      "numberOfPlayers": 6,
+      "playMode": "MultiPlayer",
+      "familyFriendly": true,
+      "contentRating": "E",
+      "publisher": "Ubisoft",
+      "developer": "Ubisoft Paris / Ubisoft Pune / Ubisoft Shanghai",
+      "gamePlatform": "Nintendo Switch"
+    },
+    {
       "id": "rocket-league",
       "name": "Rocket League",
       "image": "assets/games/rocket-league.jpg",
@@ -140,6 +152,16 @@
       "contentRating": "E",
       "publisher": "Psyonix",
       "developer": "Psyonix",
+      "gamePlatform": "Nintendo Switch"
+    },
+    {
+      "id": "cars-3",
+      "name": "Cars 3: Driven to Win",
+      "image": "assets/games/cars-3.jpg",
+      "numberOfPlayers": 4,
+      "playMode": "MultiPlayer",
+      "familyFriendly": true,
+      "contentRating": "E10+",
       "gamePlatform": "Nintendo Switch"
     }
   ]

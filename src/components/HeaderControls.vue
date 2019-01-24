@@ -101,8 +101,8 @@
 			<!-- /.flex-item -->
 		</form>
 
-		<portal to="overlay">
-			<Modal v-if="showInstructions" aria-modal="true"
+		<portal v-if="showInstructions" to="overlay">
+			<Modal aria-modal="true"
 				   :aria-hidden="!showInstructions"
 				   @dismissed="showInstructions = false">
 				<template slot="header">
@@ -119,7 +119,7 @@
 						</p>
 
 						<p>
-							<strong>Tap the <span class="text--accent">colored circle</span> to adjust the allotted
+							<strong>Tap the <span class="text--accent">circle</span> to adjust the allotted
 								votes</strong> via
 							keyboard input.
 							The new value must be between 1 and 99. Set the initial value to the number of voters
@@ -157,7 +157,17 @@
 						<dl class="dl--horizontal dl--striped">
 							<dt>Last Updated</dt>
 							<dd>
-								<DateTime :time="buildTime" :format="'MM.DD.YYYY'" itemprop="dateModified"/>
+								<time itemprop="dateModified">{{ $root.$data.BUILD_TIME }}</time>
+							</dd>
+							<dt>Browser Support</dt>
+							<dd>
+								<ul>
+									<li><strong itemprop="browserRequirements">Chrome 70+</strong></li>
+									<li>Edge 17+</li>
+									<li>Firefox 63+</li>
+									<li>Opera 56+</li>
+									<li>Safari 12+</li>
+								</ul>
 							</dd>
 						</dl>
 					</section>
@@ -181,7 +191,6 @@
 	import { Howl } from 'howler';
 	import AppIcon from '@/assets/icon.svg';
 	import HelpIcon from '@/assets/help.svg';
-	import DateTime from './DateTime';
 
 	/**
 	 * App header component
@@ -191,12 +200,11 @@
 	 * @vue-data {boolean} [showInstructions=false] - Set to `true` to show instructions modal, or `false` to hide it
 	 */
 	export default {
-		name: 'Header',
+		name: 'HeaderControls',
 		components: {
 			AppIcon,
 			HelpIcon,
 			InfoIcon,
-			DateTime,
 			ResetIcon: RotateCcw,
 			CoinIcon: MinusCircle,
 			CheckIcon: Check,
@@ -217,8 +225,7 @@
 			return {
 				audio: undefined,
 				showInstructions: false,
-				chaChing: false,
-				buildTime: process.env.BUILD_TIME || false
+				chaChing: false
 			};
 		},
 		mounted() {
@@ -242,6 +249,13 @@
 					volume: .5
 				})
 			};
+		},
+		destroyed() {
+			for (const key of this.audio) {
+				this.audio[key].unload();
+			}
+
+			this.audio = undefined;
 		},
 		methods: {
 			/** @description Adds voters and plays confirmation audio
@@ -481,6 +495,9 @@
 	}
 
 	.no-voters .voters__votes {
+		animation: jump 1s ease-out;
+		animation-delay: 5s;
+		animation-iteration-count: 10;
 		border-radius: 50%;
 		width: var(--size-fab);
 	}

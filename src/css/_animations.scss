@@ -19,18 +19,17 @@
 }
 
 @keyframes jump {
-	from {
-		opacity: 0;
-		transform: translate3d(0, 10px, 0);
-	}
-
-	50% {
-		opacity: 1;
-		transform: translate3d(0, -10px, 0);
-	}
-
-	to {
+	0%,
+	100% {
 		transform: translate3d(0, 0, 0);
+	}
+
+	30% {
+		transform: translate3d(0, -.125em, 0);
+	}
+
+	60% {
+		transform: translate3d(0, .25em, 0) scaleY(.9);
 	}
 }
 

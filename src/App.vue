@@ -7,7 +7,7 @@
 			<div v-if="chosen" id="choice"
 				 class="d-flex flex-column flex-1"
 				 role="doc-conclusion">
-				<Selected :chosen="chosen"
+				<GameSelection :chosen="chosen"
 						  :games="games"
 						  :votes="votes"
 						  @choose="choose"
@@ -15,14 +15,14 @@
 				/>
 			</div>
 			<div v-else class="container" :class="{'no-voters': voters < 1, 'vote-cast': voteCast}">
-				<AppHeader :voters="voters" :has-votes="votes.length > 0"
+				<HeaderControls :voters="voters" :has-votes="votes.length > 0"
 						   @buyVote="voters = Math.max(1, voters + 1)"
 						   @choose="choose"
 						   @reset="reset"
 				/>
 
 				<main id="games" class="scrollbar" @wheel="scrollX">
-					<Game v-for="game in filteredGames"
+					<VideoGame v-for="game in filteredGames"
 						  :key="game.id"
 						  :voters="voters"
 						  :tally="votes.filter(vote => vote.id === game.id).length"
@@ -35,8 +35,8 @@
 					<Controls/>
 				</footer>
 
-				<portal to="overlay">
-					<Alert v-if="showNoVoteDialog" role="alert" @dismissed="showNoVoteDialog = false">
+				<portal v-if="showNoVoteDialog" to="overlay">
+					<AlertDialog role="alert" @dismissed="showNoVoteDialog = false">
 						<h4 slot="header">
 							{{ ['Hang on!', 'Wait!', 'Woops']|random }}
 						</h4>
@@ -47,7 +47,12 @@
 							<button class="btn btn--wide" type="reset" @click.prevent="reset">Reset</button>
 							<button class="btn btn--wide" type="submit" @click.prevent="choose">Elect</button>
 						</template>
-					</Alert>
+					</AlertDialog>
+				</portal>
+				<portal v-else-if="showActionSheet" to="overlay">
+					<ActionSheet @dismissed="showActionSheet = false">
+						<p>Content!</p>
+					</ActionSheet>
 				</portal>
 			</div>
 		</Transition>
@@ -58,9 +63,10 @@
 
 <script>
 	import { Howl } from 'howler';
-	import Header from './components/Header';
+	import ActionSheet from '@/components/Dialog/ActionSheet';
+	import HeaderControls from './components/HeaderControls';
 	import Controls from './components/Controls';
-	import Game from './components/Game';
+	import VideoGame from './components/VideoGame';
 	import typekitLoader from './lib/TypekitLoader';
 
 	/**
@@ -79,11 +85,12 @@
 	export default {
 		name: 'App',
 		components: {
-			AppHeader: Header,
+			ActionSheet,
+			HeaderControls,
 			Controls,
-			Game,
-			Alert: () => import(/* webpackChunkName: "dialog" */'./components/Dialog/Alert'),
-			Selected: () => import(/* webpackChunkName: "selection" */'./components/Selection')
+			VideoGame,
+			AlertDialog: () => import(/* webpackChunkName: "dialog" */'./components/Dialog/AlertDialog'),
+			GameSelection: () => import(/* webpackChunkName: "selection" */'./components/GameSelection')
 		},
 		props: {
 			games: {
@@ -103,6 +110,7 @@
 				votes: [],
 				chosen: null,
 				showNoVoteDialog: false,
+				showActionSheet: false,
 				voters: this.initialVoters,
 				prefersLightScheme: +(
 					new Date()

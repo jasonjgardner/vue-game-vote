@@ -1,6 +1,6 @@
 <template>
 	<Transition name="reveal">
-		<div class="game">
+		<div class="game" tabindex="0" @keypress="select">
 			<figure v-if="game.id"
 					:title="title"
 					itemscope itemtype="http://schema.org/VideoGame"
@@ -54,7 +54,7 @@
 	 * @vue-computed {Number} tally - Number of votes received
 	 */
 	export default {
-		name: 'Game',
+		name: 'VideoGame',
 		props: {
 			tally: {
 				type: Number,
@@ -96,11 +96,14 @@
 		},
 		methods: {
 			/** @description Casts a vote for this game
+			 * @param {(MouseEvent|KeyboardEvent)} event - Click or keypress event
 			 * @event Game#vote
 			 * @see GameData
 			 */
-			select() {
-				this.$emit('vote', this.game);
+			select(event) {
+				if (event.type === 'click' || ['a', 'Enter'].includes(event.key)) {
+					this.$emit('vote', this.game);
+				}
 			}
 		}
 	};
@@ -176,7 +179,6 @@
 		justify-content: center;
 		margin-bottom: var(--size-base);
 
-
 		figure {
 			cursor: pointer;
 			display: flex;
@@ -211,6 +213,7 @@
 			position: relative;
 			top: 0;
 			transition: background-color .25s ease-out, box-shadow .25s ease-in-out, top .25s ease-out;
+			user-select: none;
 
 			/// Game cover tooltip
 			&::before {
@@ -267,8 +270,8 @@
 		/// Game box art
 		&__cover {
 			border: 3px solid transparent;
-			border-radius: $size-border-radius - 1;
-			filter: drop-shadow(.01rem .125rem .25rem rgba(0, 0, 0, .45));
+			border-radius: 2 * $size-border-radius;
+			filter: drop-shadow(.01rem .125rem .25rem rgba(0, 0, 0, .425));
 			height: var(--size-game-cover, #{$size-game-cover});
 			max-height: calc(100vh - ((2 * var(--size-base)) + var(--size-app-icon) + 1px) - 3rem);
 			transition: filter .25s ease-out;
@@ -277,6 +280,7 @@
 			object-position: center;
 			overflow: hidden;
 			pointer-events: none; /// Do not show <img/> title. Title is SR-only
+			user-select: none;
 			z-index: $zindex-cover;
 		}
 
@@ -285,16 +289,16 @@
 			background-color: var(--color-accent);
 			border: .666em solid var(--color-accent);
 			border-radius: 50%;
-			box-shadow: 0 1px .125rem rgba(0, 0, 0, .125);
+			box-sizing: content-box;
 			color: var(--color-btn);
 			display: inline-block;
+			filter: drop-shadow(0 .125rem .125rem rgba(0, 0, 0, .25));
 			font-size: .75rem;
 			font-weight: bold;
 			height: 1em;
 			line-height: $line-height-base;
 			width: 1em;
 			text-align: center;
-			transition: box-shadow 1s ease-out;
 			vertical-align: middle;
 			user-select: none;
 		}
@@ -322,7 +326,7 @@
 			/// Create tooltip bubble from description
 			.game__description {
 				background-color: var(--color-tooltip-background);
-				filter: drop-shadow(0 .125rem .275rem rgba(0, 0, 0, .25));
+				filter: drop-shadow(0 .125rem .25rem rgba(0, 0, 0, .2));
 				height: var(--height);
 				top: calc(2 * var(--size-gap));
 				z-index: $zindex-cover + 1;
@@ -339,7 +343,7 @@
 			}
 
 			.game__tally {
-				filter: drop-shadow(0 2px 8px rgba(0, 0, 0, .5));
+				animation: jump 1s alternate infinite;
 			}
 
 			.game__cover {

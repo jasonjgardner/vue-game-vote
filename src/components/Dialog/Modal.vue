@@ -46,7 +46,6 @@
 	.modal {
 		align-items: center;
 		background-color: var(--color-modal-background);
-		backdrop-filter: blur($blur-radius);
 		color: var(--color-text);
 		display: flex;
 		flex-flow: column nowrap;
@@ -62,7 +61,7 @@
 		&__container {
 			background-color: var(--color-background-alt);
 			border-radius: $size-border-radius;
-			box-shadow: 0 3px 1rem rgba(0, 0, 0, .5);
+			filter: drop-shadow(0 .125rem 1rem rgba(0, 0, 0, .5));
 			margin: 0 var(--size-base);
 			padding: var(--size-base);
 			transition: all .3s ease;

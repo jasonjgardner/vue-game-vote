@@ -24,14 +24,14 @@
 				<figcaption :aria-expanded="showDetails">
 					<div class="col">
 						<dl>
-							<div v-if="chosen.hasOwnProperty('developer') && chosen.developer.length > 0">
+							<template v-if="chosen.hasOwnProperty('developer') && chosen.developer.length > 0">
 								<dt>Developer</dt>
 								<dd itemprop="developer">{{ chosen.developer }}</dd>
-							</div>
-							<div v-if="chosen.hasOwnProperty('publisher') && chosen.publisher.length > 0">
+							</template>
+							<template v-if="chosen.hasOwnProperty('publisher') && chosen.publisher.length > 0">
 								<dt>Publisher</dt>
 								<dd itemprop="publisher">{{ chosen.publisher }}</dd>
-							</div>
+							</template>
 							<dt>Players</dt>
 							<dd>
 								<span itemprop="numberOfPlayers">{{ chosen.numberOfPlayers > 1 ? `1 - ${chosen.numberOfPlayers}` : 1 }}</span>&nbsp;
@@ -102,8 +102,7 @@
 
 	/**
 	 * Game selection component
-	 * @module Selection
-	 * @requires RandomText
+	 * @module GameSelection
 	 * @requires CheckCircle
 	 * @vue-prop {GameData} chosen - Selected game's data
 	 * @vue-data {Number} picks - Number of times the selection has been repicked. Used to apply conditional title
@@ -112,7 +111,7 @@
 	 * @vue-computed {String} randomTitles - Returns a humorous random title
 	 */
 	export default {
-		name: 'Selection',
+		name: 'GameSelection',
 		components: {
 			CheckCircle,
 			FamilyFriendlyIcon,
@@ -201,6 +200,10 @@
 
 				return ['Let&rsquo;s play...', 'How about...'];
 			},
+		},
+		destroyed() {
+			this.audio.unload();
+			this.audio = undefined;
 		},
 		mounted() {
 			this.audio = new Howl({
@@ -418,7 +421,6 @@
 		font-size: .925rem;
 		margin-left: auto;
 		margin-right: auto;
-		width: calc(15 * var(--size-base));
 	}
 
 	dt,
