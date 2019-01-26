@@ -7,15 +7,15 @@
 					@click="select"
 			>
 				<picture v-if="Array.isArray(game.image)" class="game__cover">
-					<source :srcset="require(`../${game.image[1]}`)"
+					<source :srcset="require(`@/${game.image[1]}`)"
 							type="image/webp">
-					<img :src="require(`../${game.image[0]}`)"
+					<img :src="require(`@/${game.image[0]}`)"
 						 :alt='`"${game.name}" cover art`'
 						 :title="game.name"
 						 itemprop="image">
 				</picture>
 				<img v-else class="game__cover"
-					 :src="require(`../${game.image}`)"
+					 :src="require(`@/${game.image}`)"
 					 :alt='`"${game.name}" cover art`'
 					 :title="game.name"
 					 itemprop="image">
@@ -113,60 +113,6 @@
 	@import '../css/variables';
 
 	/*---
-	title: Wiggle
-	resume: Game
-	section: Animations
-	---
-	Shakes game cover on click when there are no votes remaining.
-	 */
-	@keyframes wiggle {
-		20% {
-			transform: translateX(5px);
-		}
-
-		40% {
-			transform: translateX(-5px);
-		}
-
-		60% {
-			transform: translateX(3px);
-		}
-
-		80% {
-			transform: translateX(-2px);
-		}
-
-		90% {
-			transform: translateX(1px);
-		}
-
-		100% {
-			transform: translateX(0);
-		}
-	}
-
-	/*---
-	title: Reveal Transition
-	resume: Game
-	section: Transitions
-	---
-	Transitions position and opacity
-	 */
-	.reveal-enter,
-	.reveal-leave {
-		opacity: 0;
-		transform: translateY(50%);
-	}
-
-	.reveal-enter-active {
-		transition: transform .333s ease, opacity .25s;
-	}
-
-	.reveal-leave-active {
-		transform: translateY(0);
-	}
-
-	/*---
 	title: Game container
 	resume: Game
 	section: Layout
@@ -179,7 +125,7 @@
 		justify-content: center;
 		margin-bottom: var(--size-base);
 
-		figure {
+		& > figure {
 			cursor: pointer;
 			display: flex;
 			flex-flow: column nowrap;

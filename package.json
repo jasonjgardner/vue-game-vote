@@ -1,7 +1,7 @@
 {
   "name": "vue-game-vote",
   "description": "Simple Vue project to settle disputes over which video game to play next.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "keywords": [
     "vue",
     "vuejs",

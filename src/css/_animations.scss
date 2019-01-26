@@ -80,28 +80,37 @@
 	}
 }
 
-.v-enter-active {
+/*---
+	title: Wiggle
+	resume: Game
+	section: Animations
+	---
+	Shakes game cover on click when there are no votes remaining.
+	 */
+@keyframes wiggle {
+	20% {
+		transform: translateX(5px);
+	}
 
-}
+	40% {
+		transform: translateX(-5px);
+	}
 
-.v-enter {
+	60% {
+		transform: translateX(3px);
+	}
 
-}
+	80% {
+		transform: translateX(-2px);
+	}
 
-.v-enter-to {
+	90% {
+		transform: translateX(1px);
+	}
 
-}
-
-.v-leave-active {
-
-}
-
-.v-leave {
-
-}
-
-.v-leave-to {
-
+	100% {
+		transform: translateX(0);
+	}
 }
 
 .fade-enter-active {
@@ -138,6 +147,27 @@
 	animation: shrink .5s ease-out;
 }
 
+/*---
+title: Reveal Transition
+resume: Game
+section: Transitions
+---
+Transitions position and opacity
+ */
+.reveal-enter,
+.reveal-leave {
+	opacity: 0;
+	transform: translateY(50%);
+}
+
+.reveal-enter-active {
+	transition: transform .333s ease, opacity .25s;
+}
+
+.reveal-leave-active {
+	transform: translateY(0);
+}
+
 .ripple {
 	overflow: visible;
 	position: relative;
@@ -157,10 +187,6 @@
 		top: 0;
 		width: 100%;
 	}
-}
-
-.h-focus {
-
 }
 
 .focus,

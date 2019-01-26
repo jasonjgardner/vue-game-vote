@@ -96,9 +96,8 @@
 
 <script>
 	import CheckCircle from 'vue-feather-icon/components/check-circle';
-	import { Howl } from 'howler';
-	import FamilyFriendlyIcon from '../assets/is-family-friendly.svg';
-	import FamilyUnfriendlyIcon from '../assets/not-family-friendly.svg';
+	import FamilyFriendlyIcon from '@/assets/is-family-friendly.svg';
+	import FamilyUnfriendlyIcon from '@/assets/not-family-friendly.svg';
 
 	/**
 	 * Game selection component
@@ -198,20 +197,8 @@
 					return ['It\'s unanimous!', 'We\'ve agreed on'];
 				}
 
-				return ['Let&rsquo;s play...', 'How about...'];
+				return ['Let\'s play...', 'How about...'];
 			},
-		},
-		destroyed() {
-			this.audio.unload();
-			this.audio = undefined;
-		},
-		mounted() {
-			this.audio = new Howl({
-				src: [require('../assets/audio/news.ogg'), require('../assets/audio/news.mp3')],
-				autoplay: true,
-				loop: false,
-				volume: .5,
-			});
 		},
 		methods: {
 			/** @description Repicks a game
@@ -441,10 +428,6 @@
 		line-height: 1.75;
 		padding-right: var(--size-base);
 		width: var(--size-term);
-	}
-
-	dd {
-
 	}
 
 	@media screen and (min-width: #{$media-screen-sm}) {

@@ -14,7 +14,8 @@
 						  @reset="reset"
 				/>
 			</div>
-			<div v-else class="container" :class="{'no-voters': voters < 1, 'vote-cast': voteCast}">
+			<div v-else class="container"
+				 :class="{'no-voters': voters < 1, 'vote-cast': voteCast}">
 				<HeaderControls :voters="voters" :has-votes="votes.length > 0"
 						   @buyVote="voters = Math.max(1, voters + 1)"
 						   @choose="choose"
@@ -31,12 +32,8 @@
 					/>
 				</main>
 
-				<footer>
-					<Controls/>
-				</footer>
-
-				<portal v-if="showNoVoteDialog" to="overlay">
-					<AlertDialog role="alert" @dismissed="showNoVoteDialog = false">
+				<portal v-if="show === 'dialog'" to="overlay">
+					<AlertDialog role="alert" @dismissed="show = false">
 						<h4 slot="header">
 							{{ ['Hang on!', 'Wait!', 'Woops']|random }}
 						</h4>
@@ -49,11 +46,10 @@
 						</template>
 					</AlertDialog>
 				</portal>
-				<portal v-else-if="showActionSheet" to="overlay">
-					<ActionSheet @dismissed="showActionSheet = false">
-						<p>Content!</p>
-					</ActionSheet>
-				</portal>
+				<!--<portal v-else-if="show === 'actionSheet'" to="overlay">-->
+					<!--<ActionSheet @dismissed="show = false">-->
+					<!--</ActionSheet>-->
+				<!--</portal>-->
 			</div>
 		</Transition>
 
@@ -62,12 +58,10 @@
 </template>
 
 <script>
-	import { Howl } from 'howler';
-	import ActionSheet from '@/components/Dialog/ActionSheet';
-	import HeaderControls from './components/HeaderControls';
-	import Controls from './components/Controls';
-	import VideoGame from './components/VideoGame';
-	import typekitLoader from './lib/TypekitLoader';
+	import HeaderControls from '@/components/HeaderControls';
+	import VideoGame from '@/components/VideoGame';
+	import typeKitLoader from '@/lib/TypekitLoader';
+	import HowlerMixin from '@/lib/HowlerMixin';
 
 	/**
 	 * Game votes app
@@ -85,13 +79,12 @@
 	export default {
 		name: 'App',
 		components: {
-			ActionSheet,
 			HeaderControls,
-			Controls,
 			VideoGame,
 			AlertDialog: () => import(/* webpackChunkName: "dialog" */'./components/Dialog/AlertDialog'),
 			GameSelection: () => import(/* webpackChunkName: "selection" */'./components/GameSelection')
 		},
+		mixins: [HowlerMixin],
 		props: {
 			games: {
 				type: Array,
@@ -105,12 +98,10 @@
 		},
 		data() {
 			return {
-				audio: {},
 				errors: 0,
 				votes: [],
 				chosen: null,
-				showNoVoteDialog: false,
-				showActionSheet: false,
+				show: false,
 				voters: this.initialVoters,
 				prefersLightScheme: +(
 					new Date()
@@ -125,22 +116,12 @@
 			}
 		},
 		created() {
-			typekitLoader('apf6wfj');
-		},
-		mounted() {
-			this.audio = {
-				vote: new Howl({
-					src: [require('./assets/audio/click.ogg'), require('./assets/audio/click.mp3')],
-					autoplay: false,
-					loop: false,
-					volume: .5
-				})
-			};
+			typeKitLoader('apf6wfj');
 		},
 		methods: {
 			/** @description Selects a candidate at random */
 			choose() {
-				this.showNoVoteDialog = false;
+				this.show = false;
 
 				if (this.chosen) {
 					this.votes = this.votes.filter(vote => vote.id !== this.chosen.id);
@@ -152,18 +133,17 @@
 			},
 			/** @description Resets votes, vote counts, and selected game */
 			reset() {
-				this.showNoVoteDialog = false;
+				this.show = false;
 				this.errors = 0;
 				this.voters = this.initialVoters;
 				this.chosen = null;
 				this.votes = [];
 			},
 			onVote(game) {
-				this.voteCast = true;
 				let ok = this.voters > 0;
 
 				if (ok) {
-					this.audio.vote.once('play', () => this.votes.push(game), this.audio.vote.play());
+					this.play('click').then(() => this.votes.push(game));
 				}
 
 				--this.voters;
@@ -178,10 +158,14 @@
 				}
 
 				if (this.errors > 2) {
-					this.showNoVoteDialog = true;
+					this.show = 'dialog';
 				}
 
-				setTimeout(() => this.voteCast = false, 1000);
+				/// Trigger transitions and animations in child components
+				window.requestAnimationFrame(() => {
+					this.voteCast = true;
+					setTimeout(() => this.voteCast = false, 100);
+				});
 			},
 			scrollX(event) {
 				event.target.scrollLeft += event.deltaY;

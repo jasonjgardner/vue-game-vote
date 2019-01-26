@@ -188,9 +188,9 @@
 	import MinusCircle from 'vue-feather-icon/components/minus-circle';
 	import Check from 'vue-feather-icon/components/check';
 	import InfoIcon from 'vue-feather-icon/components/info';
-	import { Howl } from 'howler';
 	import AppIcon from '@/assets/icon.svg';
 	import HelpIcon from '@/assets/help.svg';
+	import HowlerMixin from '@/lib/HowlerMixin';
 
 	/**
 	 * App header component
@@ -210,6 +210,7 @@
 			CheckIcon: Check,
 			Modal: () => import(/* webpackChunkName: "dialog" */'./Dialog/Modal')
 		},
+		mixins: [HowlerMixin],
 		props: {
 			voters: {
 				type: Number,
@@ -223,39 +224,9 @@
 		},
 		data() {
 			return {
-				audio: undefined,
 				showInstructions: false,
 				chaChing: false
 			};
-		},
-		mounted() {
-			this.audio = {
-				buy: new Howl({
-					src: [require('@/assets/audio/coin.ogg'), require('@/assets/audio/coin.mp3')],
-					autoplay: false,
-					loop: false,
-					volume: .5
-				}),
-				reset: new Howl({
-					src: [require('@/assets/audio/load.ogg'), require('@/assets/audio/load.mp3')],
-					autoplay: false,
-					loop: false,
-					volume: .5
-				}),
-				pause: new Howl({
-					src: [require('@/assets/audio/pause.ogg'), require('@/assets/audio/pause.mp3')],
-					autoplay: false,
-					loop: false,
-					volume: .5
-				})
-			};
-		},
-		destroyed() {
-			for (const key of this.audio) {
-				this.audio[key].unload();
-			}
-
-			this.audio = undefined;
 		},
 		methods: {
 			/** @description Adds voters and plays confirmation audio
@@ -265,18 +236,20 @@
 			buyVote() {
 				this.chaChing = true;
 
-				this.audio.buy.once('play', () => {
+				this.play('coin').finally(() => {
 					this.$emit('buyVote');
-					setTimeout(() => this.chaChing = false, 100);
-				}, this.audio.buy.play());
+					window.requestAnimationFrame(() => this.chaChing = false);
+				});
 			},
 			reset() {
-				this.audio.reset.once('play', () => {
-					this.$emit('reset');
-				}, this.audio.reset.play());
+				window.requestAnimationFrame(() => {
+					this.play('load').finally(() => this.$emit('reset'));
+				});
 			},
 			openInstructions() {
-				this.audio.pause.once('play', () => this.showInstructions = true, this.audio.pause.play());
+				window.requestAnimationFrame(() => {
+					this.play('pause').finally(() => this.showInstructions = true);
+				});
 			}
 		}
 	};
