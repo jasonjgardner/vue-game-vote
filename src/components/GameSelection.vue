@@ -74,8 +74,8 @@
 		</table>
 
 		<div class="choice__actions" role="form">
-			<button v-if="canPickAgain"
-					ref="repick"
+			<button v-show="canPickAgain"
+					:disabled="!canPickAgain"
 					class="btn h-focus"
 					type="button"
 					name="repick"
@@ -83,7 +83,7 @@
 			>
 				Pick Again
 			</button>
-			<button ref="restart" class="btn btn--primary h-focus"
+			<button class="btn btn--primary h-focus"
 					type="reset"
 					name="restart"
 					@click.prevent="$emit('reset')"
@@ -161,7 +161,6 @@
 		},
 		data() {
 			return {
-				audio: undefined,
 				picks: 0,
 				showDetails: false
 			};
@@ -216,8 +215,8 @@
 </script>
 
 <style lang="scss" scoped>
-	@import '../css/variables';
-	@import '../css/mixins';
+	@import '~@/css/_variables';
+	@import '~@/css/_mixins';
 
 	#choice-intro {
 		margin-left: var(--size-base);

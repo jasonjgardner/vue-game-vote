@@ -118,6 +118,11 @@
 		created() {
 			typeKitLoader('apf6wfj');
 		},
+		mounted() {
+			if (window.localStorage.colorScheme) {
+				this.prefersLightScheme = window.localStorage.getItem('colorScheme') === 'light';
+			}
+		},
 		methods: {
 			/** @description Selects a candidate at random */
 			choose() {
@@ -143,7 +148,7 @@
 				let ok = this.voters > 0;
 
 				if (ok) {
-					this.play('click').then(() => this.votes.push(game));
+					this.play('click').finally(() => this.votes.push(game));
 				}
 
 				--this.voters;
@@ -168,6 +173,8 @@
 				});
 			},
 			scrollX(event) {
+				/// Translate vertical scrolling into horizontal scrolling
+				//noinspection JSSuspiciousNameCombination
 				event.target.scrollLeft += event.deltaY;
 			}
 		}

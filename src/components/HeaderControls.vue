@@ -42,9 +42,8 @@
 				</label>
 
 				<div class="voters__votes btn--shadow--lg h-focus"
-					 :class="{'invalid': voters < 0 || voters > 99, 'pulse': chaChing}">
-					<input v-if="!hasVotes || voters > 0"
-						   id="votes-remaining"
+					 :class="{'invalid': voters < 0 || voters > 99, 'pulse': chaChing, 'has-votes-cast': hasVotes, 'has-votes-remaining': voters > 0}">
+					<input id="votes-remaining"
 						   v-model.number="voters"
 						   :readonly="hasVotes"
 						   :title="`${voters} vote${voters === 1 ? '' : 's'} remaining`"
@@ -54,7 +53,7 @@
 						   aria-labelledby="votes-remaining-label"
 					>
 
-					<button v-if="hasVotes"
+					<button v-show="hasVotes"
 							class="btn"
 							type="submit"
 							name="choose"
@@ -405,33 +404,6 @@
 			background-color: var(--color-assertive);
 		}
 
-		input {
-			background-color: transparent;
-			border: 0;
-			color: var(--color-input);
-			font-weight: bold;
-			text-align: right;
-			max-width: 1.5rem;
-
-			&::selection {
-				background-color: rgba(255, 255, 255, .5);
-				color: var(--color-primary);
-			}
-
-			&:focus {
-				color: var(--color-input);
-				outline: none;
-			}
-
-			&:only-child {
-				text-align: center;
-			}
-
-			&[readonly] {
-				cursor: default;
-			}
-		}
-
 		.btn {
 			background-color: transparent;
 			color: var(--color-btn);
@@ -441,18 +413,6 @@
 			padding-right: 0;
 		}
 
-		input + .btn {
-			border-radius: 50%;
-			color: var(--color-btn);
-			padding-left: .25em;
-			padding-right: .45em;
-
-			&:active {
-				animation: none;
-				background-color: rgba(0, 0, 0, .5);
-			}
-		}
-
 		&:focus,
 		&:focus-within {
 			animation: focus 2s infinite;
@@ -460,6 +420,58 @@
 			color: var(--color-btn-background);
 			outline: none;
 		}
+	}
+
+	#votes-remaining {
+		background-color: transparent;
+		border: 0;
+		color: var(--color-input);
+		display: none;
+		font-weight: bold;
+		text-align: center;
+		max-width: 1.5rem;
+
+		&::selection {
+			background-color: rgba(255, 255, 255, .5);
+			color: var(--color-primary);
+		}
+
+		&:focus {
+			color: var(--color-input);
+			outline: none;
+		}
+
+		&:only-child {
+			text-align: center;
+		}
+
+		&[readonly] {
+			cursor: default;
+		}
+	}
+
+	.has-votes-remaining #votes-remaining {
+		display: inline-block;
+		text-align: center;
+	}
+
+	.has-votes-cast #votes-remaining {
+		text-align: right;
+	}
+
+	#votes-remaining + .btn {
+		border-radius: 50%;
+		color: var(--color-btn);
+
+		&:active {
+			animation: none;
+			background-color: rgba(0, 0, 0, .5);
+		}
+	}
+
+	.has-votes-cast #votes-remaining + .btn {
+		padding-left: .25em;
+		padding-right: .45em;
 	}
 
 	/// When parent has `.vote-cast` class, the remaining votes counter will shrink
