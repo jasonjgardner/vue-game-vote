@@ -9,6 +9,8 @@
 				<picture v-if="Array.isArray(game.image)" class="game__cover">
 					<source :srcset="require(`@/${game.image[1]}`)"
 							type="image/webp">
+					<source :srcset="require(`@/${game.image[0]}`)"
+							type="image/jpeg">
 					<img :src="require(`@/${game.image[0]}`)"
 						 :alt='`"${game.name}" cover art`'
 						 :title="game.name"
@@ -110,7 +112,7 @@
 </script>
 
 <style lang="scss">
-	@import '../css/variables';
+	@import '~@/css/_variables';
 
 	/*---
 	title: Game container
@@ -214,20 +216,23 @@
 		}
 
 		/// Game box art
-		&__cover {
+		&__cover,
+		&__cover img {
 			border: 3px solid transparent;
 			border-radius: 2 * $size-border-radius;
-			filter: drop-shadow(.01rem .125rem .25rem rgba(0, 0, 0, .425));
 			height: var(--size-game-cover, #{$size-game-cover});
-			max-height: calc(100vh - ((2 * var(--size-base)) + var(--size-app-icon) + 1px) - 3rem);
 			transition: filter .25s ease-out;
+			max-height: calc(100vh - ((2 * var(--size-base)) + var(--size-app-icon) + 1px) - 3rem);
 			max-width: var(--size-game-cover, #{$size-game-cover});
 			object-fit: contain;
 			object-position: center;
-			overflow: hidden;
 			pointer-events: none; /// Do not show <img/> title. Title is SR-only
 			user-select: none;
 			z-index: $zindex-cover;
+		}
+
+		&__cover {
+			filter: drop-shadow(.01rem .125rem .25rem rgba(0, 0, 0, .425));
 		}
 
 		/// Game vote count bubble

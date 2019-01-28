@@ -54,8 +54,10 @@
 	transition: background-color .3s ease-out, color .3s ease-out, opacity .25s ease-in, transform .666s ease-out-back;
 	width: var(--size-fab);
 
-	svg {
-		stroke: currentColor;
+	svg,
+	circle,
+	path {
+		stroke: currentColor !important;
 	}
 
 	&:hover,

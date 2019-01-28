@@ -1,6 +1,8 @@
 const pkg = require('./package.json'),
 	path = require('path'),
-	proc = require('child_process');
+	proc = require('child_process'),
+	ImageminPlugin = require('imagemin-webpack-plugin').default,
+	CompressionPlugin = require('compression-webpack-plugin');
 
 const DEV = process.env.NODE_ENV !== 'production',
 	INCLUDES = [
@@ -12,8 +14,13 @@ const DEV = process.env.NODE_ENV !== 'production',
 module.exports = {
 	assetsDir: 'assets',
 	runtimeCompiler: true,
+	devServer: {
+		compress: true,
+		https: false
+	},
 	css: {
 		sourceMap: DEV,
+		extract: true,
 		loaderOptions: {
 			sass: {
 				sourceMap: DEV,
@@ -30,6 +37,20 @@ module.exports = {
 	publicPath: pkg.config.publicPath,
 	outputDir: path.join(__dirname, 'dist'),
 	productionSourceMap: false,
+	pluginOptions: {
+		critical: {
+			width: 375,
+			height: 565
+		}
+	},
+	configureWebpack: {
+		plugins: [
+			new ImageminPlugin({
+				test: /\.(jpe?g|png|gif|svg)$/i
+			}),
+			new CompressionPlugin()
+		]
+	},
 	chainWebpack: config => {
 		const svgRule = config.module.rule('svg');
 

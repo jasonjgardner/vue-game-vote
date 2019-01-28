@@ -1,6 +1,7 @@
 {
   "name": "Video Game Vote",
-  "short_name": "game-vote",
+  "short_name": "vote",
+  "version": "1.0.1",
   "icons": [
     {
       "src": "assets/img/android-chrome-192x192.png",
@@ -13,7 +14,7 @@
       "type": "image/png"
     },
     {
-      "src": "assets/img/img/splash.png",
+      "src": "assets/img/android-chrome-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
     }

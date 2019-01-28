@@ -59,10 +59,11 @@ $themes: (
 	light: (
 		background: #ededed,
 		background-alt: #f0f0f0,
+		border: #cdcdcd,
 		btn-background: #1f2227,
 		modal-background: #1f2227,
 		dialog-background: rgba(mix(#1f2227, #505050, 90%), .95),
-		fab: $color-dark,
+		fab: $color-dark-alt,
 		link: #0cc,
 		light: #fefefe,
 		lightest: white,

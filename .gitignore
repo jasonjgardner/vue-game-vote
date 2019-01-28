@@ -4,6 +4,9 @@ node_modules/
 npm-debug.log*
 .idea/
 
+.env
+!.env.example
+
 # Ignore docs output but not configuration files
 docs/
 !docs/*conf.js*

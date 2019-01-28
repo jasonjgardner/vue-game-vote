@@ -21,7 +21,7 @@
  */
 
 import './css/index.scss';
-import './registerServiceWorker';
+import './lib/registerServiceWorker';
 import sortBy from './lib/sortBy';
 import Vue from 'vue';
 import PortalVue from 'portal-vue'

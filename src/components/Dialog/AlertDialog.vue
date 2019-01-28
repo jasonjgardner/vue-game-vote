@@ -82,11 +82,11 @@
 		&__body {
 			padding: calc(.5 * var(--size-base)) var(--size-base);
 
-			p:first-child {
+			> p:first-child {
 				margin-top: 0;
 			}
 
-			p:only-child {
+			> p:only-child {
 				margin-bottom: 0;
 			}
 		}
@@ -107,6 +107,7 @@
 				&:focus,
 				&:active {
 					animation: focus 1s infinite;
+					background-color: #{lighten(theme('btn-background'), 10%)};
 					z-index: 2;
 				}
 			}

@@ -85,16 +85,27 @@
 			</div>
 			<!-- /.flex-item -->
 
-			<div class="flex-item mr-1">
+			<div class="flex-item">
 				<button class="btn btn--secondary btn--fab btn--shadow h-focus"
 						type="button"
 						name="buy"
-						title="Pay a coin to buy a vote" @click.prevent="buyVote"
+						title="Pay a coin to buy a vote" @click="buyVote"
 				>
 					<CoinIcon class="rotate--90"/>
-					<span class="sr-only">
-					Buy Vote
-				</span>
+					<span class="sr-only">Buy Vote</span>
+				</button>
+			</div>
+			<!-- /.flex-item -->
+
+			<div class="flex-item mr-1">
+				<button class="btn btn--secondary btn--fab btn--shadow h-focus"
+						type="button"
+						name="show-settings"
+						title="Settings"
+						@click="$emit('show', 'settings')"
+				>
+					<SettingsIcon/>
+					<span class="sr-only">Settings</span>
 				</button>
 			</div>
 			<!-- /.flex-item -->
@@ -187,6 +198,7 @@
 	import MinusCircle from 'vue-feather-icon/components/minus-circle';
 	import Check from 'vue-feather-icon/components/check';
 	import InfoIcon from 'vue-feather-icon/components/info';
+	import SettingsIcon from 'vue-feather-icon/components/settings';
 	import AppIcon from '@/assets/icon.svg';
 	import HelpIcon from '@/assets/help.svg';
 	import HowlerMixin from '@/lib/HowlerMixin';
@@ -204,6 +216,7 @@
 			AppIcon,
 			HelpIcon,
 			InfoIcon,
+			SettingsIcon,
 			ResetIcon: RotateCcw,
 			CoinIcon: MinusCircle,
 			CheckIcon: Check,
@@ -469,7 +482,7 @@
 		}
 	}
 
-	.has-votes-cast #votes-remaining + .btn {
+	.has-votes-cast.has-votes-remaining #votes-remaining + .btn {
 		padding-left: .25em;
 		padding-right: .45em;
 	}

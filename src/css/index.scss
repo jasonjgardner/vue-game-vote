@@ -30,7 +30,7 @@
 	--color-link-hover: #{theme('lightest')};
 	--color-link-active: #{theme('secondary')};
 	--color-input: #{$color-dark};
-	--color-btn: #{$color-dark};
+	--color-btn: #{$color-dark-alt};
 	--color-btn-alt: #{theme('lightest')};
 	--color-fab: #{theme('fab')};
 	--color-fab-active: #{$color-dark};
@@ -64,7 +64,7 @@
 	--color-background-fab: #{theme('lightest', 'light')};
 	--color-fab: #{theme('fab', 'light')};
 	--color-fab-active: var(--color-lightest);
-	--color-border: #cdcdcd;
+	--color-border: #{theme('border', 'light')};;
 	--color-text: #{theme('background', 'dark')};
 	--color-title: var(--color-primary);
 	--color-title-active: var(--color-text);
@@ -126,6 +126,33 @@
 	&:nth-child(even) {
 		background-color: var(--color-background-table-row-alt);
 	}
+}
+
+.header,
+.footer {
+	align-items: center;
+	border-bottom: 1px solid var(--color-border);
+	display: flex;
+	flex-wrap: nowrap;
+	margin: 0;
+	min-height: calc((2 * var(--size-gap)) + var(--size-app-icon));
+	padding: var(--size-gap) var(--size-base);
+	width: 100%;
+
+	#{$--hn} {
+		color: currentColor;
+	}
+}
+
+.footer {
+	border-bottom: none;
+	border-top: 1px solid var(--color-border);
+}
+
+.container {
+	padding: var(--size-gap) var(--size-base);
+	margin: 0;
+	width: 100%;
 }
 
 html {
