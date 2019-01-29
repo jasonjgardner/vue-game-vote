@@ -1,18 +1,18 @@
 <template>
-	<ActionSheet style="--height:100%">
-		<div class="header">
+	<ActionSheet style="--height:100%" @dismissed="$emit('dismissed')">
+		<div class="header ml-1 mr-1">
 			<h3>Settings</h3>
 		</div>
 
 		<div class="container mt-1">
 			<form>
-				<fieldset>
+				<fieldset @change="$emit('update', changes)">
 					<legend>Theme</legend>
 
-					<label class="option" :class="{'option--checked': theme === 'light'}">
-						<span class="swatch" style="background-color:white;"></span>
+					<label class="option" :class="{'option--checked': changes.theme === 'light'}">
+						<span class="swatch swatch--light"></span>
 
-						<input v-model="theme"
+						<input v-model="changes.theme"
 							   type="radio"
 							   value="light">
 						<span class="option__label">Light theme</span>
@@ -20,10 +20,10 @@
 						<CheckCircle/>
 					</label>
 
-					<label class="option" :class="{'option--checked': theme === 'dark'}">
-						<span class="swatch" style="background-color:black;"></span>
+					<label class="option" :class="{'option--checked': changes.theme === 'dark'}">
+						<span class="swatch swatch--dark"></span>
 
-						<input v-model="theme"
+						<input v-model="changes.theme"
 							   type="radio"
 							   value="dark">
 						<span class="option__label">Dark theme</span>
@@ -36,17 +36,21 @@
 					<legend>FX</legend>
 
 					<label class="option">
-						<input v-model="audioFx" type="checkbox">
+						<input v-model="changes.audio" type="checkbox"
+							   @change="$emit('update', changes)">
 						<span class="option__label">Sound effects</span>
-						<span :class="{'text--muted': !audioFx, 'text--accent': audioFx}">{{ audioFx ? 'On' : 'Off'}}</span>
+						<span :class="{'text--muted': !changes.audio, 'text--accent': changes.audio}">{{ changes.audio ? 'On' : 'Off'}}</span>
 					</label>
 
 					<label class="option">
-						<input v-model="visualFx" type="checkbox">
+						<input v-model="changes.fx" type="checkbox"
+							   @change="$emit('update', changes)">
 						<span class="option__label">Visual effects</span>
-						<span :class="{'text--muted': !visualFx, 'text--accent': visualFx}">{{ visualFx ? 'On' : 'Off'}}</span>
+						<span :class="{'text--muted': !changes.fx, 'text--accent': changes.fx}">{{ changes.fx ? 'On' : 'Off'}}</span>
 					</label>
 				</fieldset>
+
+				<button class="btn btn--wide btn--primary mt-2 mr-auto ml-auto" type="submit" @click.prevent="$emit('dismissed')">Apply Settings</button>
 			</form>
 		</div>
 		<!-- /.container -->
@@ -72,32 +76,15 @@
 					return {
 						theme: 'light',
 						audio: false,
-						visual: true
+						fx: false
 					};
 				}
 			}
 		},
 		data() {
 			return {
-				theme: this.settings.theme || +(
-					new Date()
-				).getHours() <= 18,
-				audioFx: this.settings.audio || false,
-				visualFx: this.settings.visual || false
+				changes: this.settings
 			};
-		},
-		watch: {
-			theme() {
-				window.localStorage.setItem('colorScheme', this.theme);
-			},
-			audioFx() {
-				window.localStorage.setItem('enableAudio', JSON.stringify(this.audioFx));
-				this.$root.$data.enableAudio = this.audioFx;
-			},
-			visualFx() {
-				window.localStorage.setItem('enableSweetFx', JSON.stringify(this.visualFx));
-				/// TODO: Create flash notification prompting reload
-			}
 		}
 	};
 </script>
@@ -107,13 +94,23 @@
 	@import '~@/css/_mixins';
 
 	.swatch {
-		border: 1px solid var(--color-border);
+		--border: #{theme('border', 'light')};
 		border-radius: $size-border-radius;
+		box-shadow: 0 0 1px 0 var(--border, white) inset, 0 0 1px 0 var(--border, white);
 		display: block;
 		height: 100%;
 		margin: 0 1rem 0 0;
 		min-height: 2rem;
 		width: 2.5rem;
+
+		&--light {
+			background-color: white;
+			border-color: #{theme('border', 'light')};
+		}
+
+		&--dark {
+			background-color: $color-dark;
+		}
 	}
 
 	.option {
@@ -155,6 +152,10 @@
 			animation: focus 1s infinite;
 			background-color: white;
 			border-radius: $size-border-radius;
+
+			.swatch {
+				border-color: #{theme('accent', 'light')};
+			}
 		}
 	}
 
@@ -173,7 +174,7 @@
 
 	fieldset:hover legend,
 	fieldset:focus-within legend {
-		border-left-color: var(--color-accent);
-		color: var(--color-accent);
+		border-left-color: #{theme('accent', 'light')};
+		color: #{theme('accent', 'light')};
 	}
 </style>

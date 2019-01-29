@@ -1,5 +1,5 @@
 <template>
-	<div id="app-header" :class="{'no-voters': voters.length < 1}" role="banner">
+	<div class="app__header" :class="{'no-voters': voters.length < 1}" role="banner">
 		<div id="icons" role="presentation"
 			 @click="openInstructions"
 		>
@@ -91,7 +91,7 @@
 						name="buy"
 						title="Pay a coin to buy a vote" @click="buyVote"
 				>
-					<CoinIcon class="rotate--90"/>
+					<CoinIcon class="rotate-90"/>
 					<span class="sr-only">Buy Vote</span>
 				</button>
 			</div>
@@ -144,7 +144,7 @@
 
 						<aside id="mario-coin">
 							<header class="d-flex align--center">
-								<CoinIcon class="rotate--90 mr-1 mb-0 mt-0 stroke-current-color"/>
+								<CoinIcon class="rotate-90 mr-1 mb-0 mt-0 stroke-current-color"/>
 								<h4 class="mb-0 mt-0">Mario Coins</h4>
 							</header>
 
@@ -222,7 +222,7 @@
 			CheckIcon: Check,
 			Modal: () => import(/* webpackChunkName: "dialog" */'./Dialog/Modal')
 		},
-		mixins: [HowlerMixin],
+		mixins: [HowlerMixin], /// FIXME: Make mixin share $_enableAudio setting
 		props: {
 			voters: {
 				type: Number,
@@ -248,19 +248,19 @@
 			buyVote() {
 				this.chaChing = true;
 
-				this.play('coin').finally(() => {
+				this.play('coin').then(() => {
 					this.$emit('buyVote');
 					window.requestAnimationFrame(() => this.chaChing = false);
 				});
 			},
 			reset() {
 				window.requestAnimationFrame(() => {
-					this.play('load').finally(() => this.$emit('reset'));
+					this.play('load').then(() => this.$emit('reset'));
 				});
 			},
 			openInstructions() {
 				window.requestAnimationFrame(() => {
-					this.play('pause').finally(() => this.showInstructions = true);
+					this.play('pause').then(() => this.showInstructions = true);
 				});
 			}
 		}
@@ -268,8 +268,8 @@
 </script>
 
 <style lang="scss" scoped>
-	@import '../css/variables';
-	@import '../css/mixins';
+	@import '~@/css/_variables';
+	@import '~@/css/_mixins';
 
 	.btn svg {
 		stroke: currentColor;
@@ -286,7 +286,6 @@
 			fill: var(--color-text);
 			height: var(--size-app-icon);
 			position: absolute;
-			transition: opacity .15s ease-in, transform .25s cubic-bezier(.68, -.55, .265, 1.55);
 			width: var(--size-app-icon);
 
 			line {
@@ -313,6 +312,10 @@
 		}
 	}
 
+	.sweet-fx #icons svg {
+		transition: fill .5s ease-out, stroke .5s ease-out, opacity .15s ease-in, transform .25s cubic-bezier(.68, -.55, .265, 1.55);
+	}
+
 	.title {
 		color: var(--color-text);
 		cursor: default;
@@ -323,9 +326,9 @@
 		transition: color .5s ease-out;
 	}
 
-	#app-header {
+	.app__header {
 		align-items: center;
-		background-color: var(--color-app-header);
+		background-color: var(--color-app__header);
 		border-bottom: 1px solid var(--color-border);
 		display: flex;
 		flex-wrap: nowrap;
@@ -488,19 +491,22 @@
 	}
 
 	/// When parent has `.vote-cast` class, the remaining votes counter will shrink
-	.vote-cast .voters__votes {
+	.sweet-fx .vote-cast .voters__votes {
 		animation: shrink .333s ease-out;
 	}
 
 	.no-voters .voters__votes {
-		animation: jump 1s ease-out;
-		animation-delay: 5s;
-		animation-iteration-count: 10;
 		border-radius: 50%;
 		width: var(--size-fab);
 	}
 
-	.no-voters.vote-cast .voters__votes {
+	.sweet-fx .no-voters .voters__votes {
+		animation: jump 1s ease-out;
+		animation-delay: 5s;
+		animation-iteration-count: 10;
+	}
+
+	.sweet-fx .no-voters.vote-cast .voters__votes {
 		animation-name: pulse;
 	}
 
@@ -534,7 +540,7 @@
 	}
 
 	@media screen and (min-width: #{($media-screen-sm)}) {
-		#app-header {
+		.app__header {
 			padding-bottom: var(--size-base);
 			padding-top: var(--size-base);
 		}
@@ -545,7 +551,7 @@
 	}
 
 	@media screen and (min-width: #{$media-screen-md}) {
-		#app-header {
+		.app__header {
 			--size-fab: 3rem;
 			transform: translateX(var(--size-base));
 			width: calc(100% - (2 * var(--size-base)));

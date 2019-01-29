@@ -67,11 +67,11 @@
 		color: var(--color-fab-active);
 		outline: none;
 	}
+}
 
-	&:active {
-		filter: drop-shadow(0 .25rem .275rem rgba(0, 0, 0, .33));
-		transform: translateY(-.5em);
-	}
+.sweet-fx .btn--fab:active {
+	filter: drop-shadow(0 .25rem .275rem rgba(0, 0, 0, .33));
+	transform: translateY(-.5em);
 }
 
 .btn--wide {
@@ -80,7 +80,7 @@
 	padding-right: calc(var(--scale) * var(--size-base));
 }
 
-.btn--shadow {
+.sweet-fx .btn--shadow {
 	filter: drop-shadow(0 .25em .25em rgba(0, 0, 0, .33));
 
 	&--lg {
@@ -90,6 +90,7 @@
 
 .no-filter,
 .backdrop-visible .btn--shadow,
+.backdrop-visible .btn--shadow--lg,
 .backdrop-visible .no-filter {
 	filter: none;
 }

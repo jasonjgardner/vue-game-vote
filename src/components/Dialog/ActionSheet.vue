@@ -36,14 +36,12 @@
 	.sheet {
 		background-color: #{theme('background', 'light')};
 		color: #{theme('background', 'dark')};
-		filter: drop-shadow(0 -.25rem .666rem rgba(0, 0, 0, .5));
 		bottom: 0;
 		height: var(--height, 50vh);
 		max-height: 60vh;
 		min-height: 45vh;
 		padding: 0;
 		position: absolute;
-		transition: bottom .5s ease-out-circ, opacity .5s ease-in-out;
 		width: 100%;
 		z-index: $zindex-modal + 1;
 
@@ -55,16 +53,24 @@
 		}
 	}
 
+	.sweet-fx .sheet {
+		filter: drop-shadow(0 -.25rem .666rem rgba(0, 0, 0, .5));
+		transition: bottom .5s ease-out-circ, opacity .5s ease-in-out;
+	}
+
 	.backdrop {
 		background-color: $color-backdrop;
 		height: 100vh;
 		left: 0;
 		position: fixed;
 		top: 0;
-		transition: opacity .5s ease-out;
 		user-select: none;
 		width: 100vw;
 		z-index: $zindex-modal - 1;
+	}
+
+	.sweet-fx .backdrop {
+		transition: opacity .5s ease-out;
 	}
 
 	.show-enter-active .sheet {

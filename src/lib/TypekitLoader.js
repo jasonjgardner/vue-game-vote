@@ -1,38 +1,50 @@
-export default function loadTypekit(kitId, scriptTimeout = 3000, async = true) {
-	const firstScriptTag = document.getElementsByTagName('script')[0],
-		  timeout        = setTimeout(() => {
-			  document.documentElement.classList.remove('wf-loading');
-			  document.documentElement.classList.add('wf-inactive');
-		  }, scriptTimeout),
-		  typekitScript  = document.createElement('script');
+/**
+ * TypeKit Loader
+ * @description Asynchronously loads TypeKit
+ * @param {string} kitId - TypeKit kit ID
+ * @param {number} [scriptTimeout=3000] - Milliseconds before adding `wf-` classes to `<html>`
+ */
+export default function loadTypeKit(kitId, scriptTimeout = 3000) {
+	return new Promise((resolve, reject) => {
+		const firstScriptTag = document.getElementsByTagName('script')[0],
+			timeout        = setTimeout(() => {
+				document.documentElement.classList.remove('wf-loading');
+				document.documentElement.classList.add('wf-inactive');
+			}, scriptTimeout),
+			typeKitScript  = document.createElement('script');
 
-	let hasLoaded = false;
+		let hasLoaded = false;
 
-	document.documentElement.classList.add('wf-loading');
+		document.documentElement.classList.add('wf-loading');
 
-	typekitScript.src    = `https://use.typekit.net/${kitId}.js`;
-	typekitScript.async  = async === true;
-	typekitScript.onload = function () {
-		const state = this.readyState;
+		typeKitScript.src    = `https://use.typekit.net/${kitId}.js`;
+		typeKitScript.async  = true;
+		typeKitScript.onload = function () {
+			const state = this.readyState;
 
-		if (hasLoaded || state && state !== 'complete' && state !== 'loaded') {
-			return;
-		}
+			if (hasLoaded || state && state !== 'complete' && state !== 'loaded') {
+				return;
+			}
 
-		hasLoaded = true;
+			hasLoaded = true;
 
-		clearTimeout(timeout);
+			clearTimeout(timeout);
 
-		try {
-			Typekit.load({
-				kitId: kitId,
-				scriptTimeout: scriptTimeout,
-				async: async,
-			});
-		} catch (e) {
-		}
-	};
+			try {
+				/* eslint-disable no-undef */
+				Typekit.load({
+					kitId: kitId,
+					scriptTimeout: scriptTimeout,
+					async: true,
+				});
+			} catch (err) {
+				reject(err);
+			}
 
-	typekitScript.onreadystatechange = typekitScript.onload;
-	firstScriptTag.parentNode.insertBefore(typekitScript, firstScriptTag);
+			resolve();
+		};
+
+		typeKitScript.onreadystatechange = typeKitScript.onload;
+		firstScriptTag.parentNode.insertBefore(typeKitScript, firstScriptTag);
+	});
 }

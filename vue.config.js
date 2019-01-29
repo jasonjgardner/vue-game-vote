@@ -41,6 +41,9 @@ module.exports = {
 		critical: {
 			width: 375,
 			height: 565
+		},
+		webpackBundleAnalyzer: {
+			openAnalyzer: DEV
 		}
 	},
 	configureWebpack: {

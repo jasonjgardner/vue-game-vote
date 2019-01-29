@@ -135,7 +135,6 @@
 			max-width: var(--size-game-cover, #{$size-game-cover});
 			padding: 0;
 			position: relative;
-			transition: all .5s cubic-bezier(.175, .885, .32, 1.275);
 		}
 
 		/// Game title
@@ -160,7 +159,7 @@
 			padding: 0 .666rem;
 			position: relative;
 			top: 0;
-			transition: background-color .25s ease-out, box-shadow .25s ease-in-out, top .25s ease-out;
+			transition: background-color .25s ease-out, top .25s ease-out;
 			user-select: none;
 
 			/// Game cover tooltip
@@ -231,10 +230,6 @@
 			z-index: $zindex-cover;
 		}
 
-		&__cover {
-			filter: drop-shadow(.01rem .125rem .25rem rgba(0, 0, 0, .425));
-		}
-
 		/// Game vote count bubble
 		&__tally {
 			background-color: var(--color-accent);
@@ -243,7 +238,6 @@
 			box-sizing: content-box;
 			color: var(--color-btn);
 			display: inline-block;
-			filter: drop-shadow(0 .125rem .125rem rgba(0, 0, 0, .25));
 			font-size: .75rem;
 			font-weight: bold;
 			height: 1em;
@@ -277,7 +271,6 @@
 			/// Create tooltip bubble from description
 			.game__description {
 				background-color: var(--color-tooltip-background);
-				filter: drop-shadow(0 .125rem .25rem rgba(0, 0, 0, .2));
 				height: var(--height);
 				top: calc(2 * var(--size-gap));
 				z-index: $zindex-cover + 1;
@@ -293,15 +286,10 @@
 				}
 			}
 
-			.game__tally {
-				animation: jump 1s alternate infinite;
-			}
-
 			.game__cover {
 				// stylelint-disable no-unknown-animations
 				animation: focus 1s infinite;
 				border-color: var(--color-lightest);
-				filter: drop-shadow(0 .125em .25em rgba(0, 0, 0, .5));
 			}
 		}
 
@@ -316,6 +304,35 @@
 		}
 	}
 
+	.sweet-fx .game {
+		> figure {
+			transition: all .5s cubic-bezier(.175, .885, .32, 1.275);
+		}
+
+		&__cover {
+			filter: drop-shadow(.01rem .125rem .25rem rgba(0, 0, 0, .425));
+		}
+
+		&__tally {
+			filter: drop-shadow(0 .125rem .125rem rgba(0, 0, 0, .25));
+		}
+	}
+
+	.sweet-fx .game:hover,
+	.sweet-fx .game:focus {
+		.game__cover {
+			filter: drop-shadow(0 .125em .25em rgba(0, 0, 0, .5));
+		}
+
+		.game__description {
+			filter: drop-shadow(0 .125rem .25rem rgba(0, 0, 0, .2));
+		}
+
+		.game__tally {
+			animation: jump 1s alternate infinite;
+		}
+	}
+
 	.no-voters .game figure {
 		cursor: not-allowed;
 
@@ -326,18 +343,29 @@
 	}
 
 	.no-voters .game:active {
-		animation: wiggle .5s ease;
-		animation-iteration-count: 5;
-
 		figure {
 			opacity: 1;
 			transform: none;
 		}
 
 		.game__cover {
-			filter: saturate(.3);
+			opacity: .9;
 			outline: 4px solid $color-dark;
 		}
+	}
+
+	.sweet-fx .no-voters .game:active {
+		animation: wiggle .5s ease;
+		animation-iteration-count: 5;
+
+		.game__cover {
+			filter: saturate(.3);
+			opacity: 1;
+		}
+	}
+
+	.sweet-fx .no-voters .game:focus .game__cover {
+		filter: brightness(.9);
 	}
 
 	@media screen and (min-width: #{$media-screen-sm}) {

@@ -1,6 +1,6 @@
 <template>
-	<div id="app"
-		 :class="{'light-scheme': prefersLightScheme, 'sweet-fx': fxEnabled }"
+	<div class="app"
+		 :class="{'light-scheme': settings.theme === 'light', 'sweet-fx': settings.fx }"
 		 role="application"
 		 itemscope itemtype="http://schema.org/WebApplication">
 		<Transition name="fade">
@@ -14,7 +14,7 @@
 							   @reset="reset"
 				/>
 			</div>
-			<div v-else class="container"
+			<div v-else class="app__container"
 				 :class="{'no-voters': voters < 1, 'vote-cast': voteCast}">
 				<HeaderControls :voters="voters" :has-votes="votes.length > 0"
 								@buyVote="voters = Math.max(1, voters + 1)"
@@ -49,11 +49,9 @@
 				</portal>
 				<portal v-else-if="shown === 'settings'" to="overlay">
 					<SettingsControls
-						:settings="{
-							theme: prefersLightScheme ? 'light' : 'dark'
-						}"
+						:settings="settings"
 						@dismissed="shown = false"
-						@change="applySettings"
+						@update="applySettings"
 					/>
 				</portal>
 			</div>
@@ -77,7 +75,6 @@
 	 * @vue-data {Object} chosen - Selected game's data
 	 * @vue-data {Boolean|String} dialogMessage - Displays a dialog if a string value is set. Hides the dialog if `false`
 	 * @vue-data {Number} voters - Number of votes remaining
-	 * @vue-data {Boolean} prefersLightScheme - Whether or not to enable light scheme. Defaults to `true` during daytime
 	 * @vue-data {Boolean} [voteCast=false] - Is set to `true` when a vote has been placed, then reverts back to `false`
 	 * @vue-computed {GameData[]} filteredGames - Array of game data filtered by certain parameters
 	 */
@@ -121,11 +118,12 @@
 				chosen: null,
 				shown: false,
 				voters: this.initialVoters,
-				prefersLightScheme: +(
-					new Date()
-				).getHours() <= 18,
-				fxEnabled: true,
-				voteCast: false
+				voteCast: false,
+				settings: {
+					theme: +(new Date()).getHours() <= 18 ? 'light' : 'dark',
+					audio: this.$_enableAudio || false,
+					fx: false
+				}
 			};
 		},
 		computed: {
@@ -149,7 +147,11 @@
 		},
 		mounted() {
 			if (window.localStorage.colorScheme) {
-				this.prefersLightScheme = window.localStorage.getItem('colorScheme') === 'light';
+				this.settings.theme = window.localStorage.getItem('colorScheme') === 'light' ? 'light' : 'dark';
+			}
+
+			if (window.localStorage.enableSweetFx) {
+				this.settings.fx = window.localStorage.getItem('enableSweetFx') === 'true';
 			}
 		},
 		methods: {
@@ -196,6 +198,7 @@
 
 				if (this.errors > 2) {
 					this.shown = 'dialog';
+					return;
 				}
 
 				/// Trigger transitions and animations in child components
@@ -205,7 +208,13 @@
 				});
 			},
 			applySettings(settings) {
-				console.log(settings);
+				window.localStorage.setItem('colorScheme', settings.theme);
+				window.localStorage.setItem('enableAudio', JSON.stringify(settings.audio));
+				window.localStorage.setItem('enableSweetFx', JSON.stringify(settings.fx));
+
+				this.settings.theme = settings.theme === 'light' ? 'light' : 'dark';
+				this.settings.fx = settings.fx;
+				this.enableAudio(settings.audio);
 			},
 			scrollX(event) {
 				/// Translate vertical scrolling into horizontal scrolling
@@ -219,7 +228,7 @@
 <style lang="scss" scoped>
 	@import './css/variables';
 
-	#app {
+	.app {
 		background-color: var(--color-background);
 		color: var(--color-text, currentColor);
 		display: flex;
@@ -227,9 +236,10 @@
 		flex-flow: column nowrap;
 		margin: 0 auto;
 		overflow: auto;
+		transition: background-color .5s ease-out;
 		width: 100%;
 
-		.container {
+		&__container {
 			display: flex;
 			flex-flow: column nowrap;
 			justify-content: center;
@@ -257,11 +267,14 @@
 	}
 
 	.backdrop-visible {
-		#app > *:not(.vue-portal-target) {
+		.app > *:not(.vue-portal-target) {
 			box-shadow: none;
-			filter: blur($blur-radius) saturate(.9) drop-shadow(0 0 0 transparent);
 			pointer-events: none;
 			user-select: none;
+		}
+
+		.app.sweet-fx > *:not(.vue-portal-target) {
+			filter: blur($blur-radius) saturate(.9) drop-shadow(0 0 0 transparent);
 		}
 
 		#games {

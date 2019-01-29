@@ -40,8 +40,8 @@
 </script>
 
 <style lang="scss">
-	@import '../../css/variables';
-	@import '../../css/mixins';
+	@import '~@/css/variables';
+	@import '~@/css/mixins';
 
 	.modal {
 		align-items: center;
@@ -54,17 +54,14 @@
 		left: 0;
 		position: fixed;
 		top: 0;
-		transition: opacity .333s ease;
 		width: 100%;
 		z-index: $zindex-modal;
 
 		&__container {
 			background-color: var(--color-background-alt);
 			border-radius: $size-border-radius;
-			filter: drop-shadow(0 .125rem 1rem rgba(0, 0, 0, .5));
 			margin: 0 var(--size-base);
 			padding: var(--size-base);
-			transition: all .3s ease;
 			max-height: 98vh;
 			max-width: 90%;
 			min-width: calc(#{$media-screen-xs} - (var(--size-base) * 2));
@@ -104,6 +101,15 @@
 			flex-flow: row nowrap;
 			justify-content: flex-end;
 			padding-top: var(--size-base);
+		}
+	}
+
+	.sweet-fx .modal {
+		transition: opacity .333s ease;
+
+		&__container {
+			filter: drop-shadow(0 .125rem 1rem rgba(0, 0, 0, .5));
+			transition: all .3s ease;
 		}
 	}
 

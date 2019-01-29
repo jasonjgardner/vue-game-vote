@@ -16,7 +16,15 @@ $sides: (
 
 /// Generate spacing helpers
 @each $side in map-keys($sides) {
-	@for $itr from 0 through 5 {
+	.m#{$side}-0 {
+		margin-#{map-get($sides, $side)}: 0;
+	}
+
+	.m#{$side}-1 {
+		margin-#{map-get($sides, $side)}: var(--size-gap, #{$size-gap});
+	}
+
+	@for $itr from 2 through 5 {
 		.m#{$side}-#{$itr} {
 			margin-#{map-get($sides, $side)}: calc(#{$itr} * var(--size-gap, #{$size-gap}));
 		}
@@ -24,6 +32,27 @@ $sides: (
 
 	.m#{$side}-auto {
 		margin-#{map-get($sides, $side)}: auto;
+	}
+}
+
+/// Generate width helpers
+@each $itr in (25, 33, 50, 66, 75, 90, 100) {
+	.w-#{$itr} {
+		width: $itr * 1%;
+	}
+
+	.h-#{$itr} {
+		height: $itr * 1%;
+	}
+
+	.mw-#{$itr} {
+		min-width: $itr * 1%;
+	}
+}
+
+@each $deg in (45, 90, 180) {
+	.rotate-#{$deg} {
+		transform: rotate(#{$deg}deg);
 	}
 }
 
@@ -45,12 +74,6 @@ $sides: (
 
 .sr-only {
 	display: none;
-}
-
-.rotate {
-	&--90 {
-		transform: rotate(90deg);
-	}
 }
 
 .d-flex {
