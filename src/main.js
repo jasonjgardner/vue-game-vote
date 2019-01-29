@@ -20,8 +20,8 @@
  * @property {Number} [numberOfPlayers=1] - Number of players
  */
 
-import './css/index.scss';
-import './lib/registerServiceWorker';
+import '@/css/index.scss';
+import '@/lib/registerServiceWorker';
 import sortBy from './lib/sortBy';
 import Vue from 'vue';
 import PortalVue from 'portal-vue'

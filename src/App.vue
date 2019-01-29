@@ -58,6 +58,13 @@
 		</Transition>
 
 		<portal-target name="overlay"></portal-target>
+
+		<ToastNotification v-if="shown === 'audioPrompt'" @dismissed="audioPrompt">
+			<div slot="image">
+				<VolumeIcon/>
+			</div>
+			<p>Tap to enable sound fx</p>
+		</ToastNotification>
 	</div>
 </template>
 
@@ -92,12 +99,22 @@
 				/* webpackChunkName: "dialog" */
 				/* webpackMode: "lazy" */
 				'@/components/Dialog/AlertDialog'
-				),
+			),
 			GameSelection: () => import(
 				/* webpackChunkName: "selection" */
 				/* webpackMode: "lazy" */
 				'@/components/GameSelection'
-				)
+			),
+			ToastNotification: () => import(
+				/* webpackChunkName: "dialog" */
+				/* webpackMode: "lazy" */
+				'@/components/ToastNotification'
+			),
+			VolumeIcon: () => import(
+				/* webpackChunkName: "icons" */
+				/* webpackMode: "lazy" */
+				'@/assets/volume.svg'
+			)
 		},
 		mixins: [HowlerMixin],
 		props: {
@@ -152,6 +169,11 @@
 
 			if (window.localStorage.enableSweetFx) {
 				this.settings.fx = window.localStorage.getItem('enableSweetFx') === 'true';
+			}
+
+			if (window.localStorage.enableAudio !== false) {
+				this.settings.enableAudio = window.localStorage.getItem('enableAudio') === 'true';
+				this.shown = 'audioPrompt';
 			}
 		},
 		methods: {
@@ -215,6 +237,11 @@
 				this.settings.theme = settings.theme === 'light' ? 'light' : 'dark';
 				this.settings.fx = settings.fx;
 				this.enableAudio(settings.audio);
+			},
+			audioPrompt() {
+				this.settings.audio = true;
+				this.enableAudio(true);
+				this.shown = false;
 			},
 			scrollX(event) {
 				/// Translate vertical scrolling into horizontal scrolling

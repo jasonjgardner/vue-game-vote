@@ -4,7 +4,6 @@
 ///
 @import 'variables';
 @import 'mixins';
-@import '~normalize.css/normalize.css';
 
 :root {
 	--color-background: #{theme('background')};

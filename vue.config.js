@@ -42,8 +42,14 @@ module.exports = {
 			width: 375,
 			height: 565
 		},
+		externals: [
+			{
+				module: 'normalize',
+				entry: 'https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css'
+			}
+		],
 		webpackBundleAnalyzer: {
-			openAnalyzer: DEV
+			openAnalyzer: true
 		}
 	},
 	configureWebpack: {
