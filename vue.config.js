@@ -48,6 +48,14 @@ module.exports = {
 				entry: 'https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css'
 			}
 		],
+		meta: {
+			projectName: pkg.config.title,
+			url: pkg.homepage,
+			description: pkg.description,
+			twitterHandle: 'JasonGardner',
+			socialImage: 'src/assets/social.jpg',
+			googleAnalytics: process.env.VUE_APP_GA_TRACKING
+		},
 		webpackBundleAnalyzer: {
 			openAnalyzer: true
 		}

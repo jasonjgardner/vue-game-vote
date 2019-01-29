@@ -155,12 +155,6 @@
 				/* webpackPrefetch: true */
 				'@/lib/TypekitLoader'
 				).then(loader => loader.default('apf6wfj'));
-
-			import(
-				/* webpackChunkName: "analytics" */
-				/* webpackMode: "lazy" */
-				'@/lib/googleAnalytics'
-				).then(loader => loader.default(process.env.VUE_APP_GA_TRACKING));
 		},
 		mounted() {
 			if (window.localStorage.colorScheme) {
@@ -171,8 +165,8 @@
 				this.settings.fx = window.localStorage.getItem('enableSweetFx') === 'true';
 			}
 
-			if (window.localStorage.enableAudio !== false) {
-				this.settings.enableAudio = window.localStorage.getItem('enableAudio') === 'true';
+			if (window.localStorage.enableAudio !== 'false') {
+				this.settings.audio = window.localStorage.getItem('enableAudio') === 'true';
 				this.shown = 'audioPrompt';
 			}
 		},
