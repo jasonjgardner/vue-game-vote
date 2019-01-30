@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css?family=Lato:400,900');
+
+:root {
+	--color-assertive: #ff762b;
+	--color-background: #2d2d2d;
+	--color-link-hover: #0cc;
+}
+
+body {
+	align-items: center;
+	background-color: var(--color-background, #222);
+	box-sizing: border-box;
+	color: white;
+	display: flex;
+	flex-flow: column nowrap;
+	font-family: Lato, 'Open Sans', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+	font-size: 18px;
+	height: 100vh;
+	justify-content: center;
+	margin: 0;
+	padding: 0;
+}
+
+h1 {
+	background-color: var(--color-assertive, darkorange);
+	border-radius: 3.333rem;
+	color: var(--color-background, );
+	padding: .333em 2em;
+	user-select: none;
+}
+
+h1 span::before {
+	content: ' \26A0';
+	position: relative;
+	left: -1em;
+}
+
+strong {
+	font-weight: normal;
+}
+
+a {
+	color: white;
+}
+
+a:hover,
+a:focus,
+a:active {
+	color: var(--color-link-hover, gainsboro);
+}

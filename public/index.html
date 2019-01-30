@@ -1,25 +1,109 @@
 <!doctype html>
-<html lang="en" dir="ltr">
-  <head>
-	  <meta charset="utf-8">
-	  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, shrink-to-fit=no">
+<html lang="en" dir="ltr" class="no-js">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, shrink-to-fit=no">
 
-	  <title><%= htmlWebpackPlugin.options.title %></title>
+	<title><%= htmlWebpackPlugin.options.title %></title>
 
-	  <meta name="description" content="A voting system to settle disputes over which game to play.">
-	  <meta name="apple-mobile-web-app-title" content="<%= htmlWebpackPlugin.options.title %>">
+	<meta name="description" content="<%= htmlWebpackPlugin.options.description %>">
+	<meta name="apple-mobile-web-app-title" content="<%= htmlWebpackPlugin.options.title %>">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-	  <link rel="apple-touch-icon" sizes="180x180" href="<%= BASE_URL %>assets/img/apple-touch-icon.png">
-	  <link rel="icon" type="image/png" sizes="32x32" href="<%= BASE_URL %>assets/img/favicon-32x32.png">
-	  <link rel="icon" type="image/png" sizes="16x16" href="<%= BASE_URL %>assets/img/favicon-16x16.png">
-	  <link rel="manifest" href="<%= BASE_URL %>manifest.json">
+	<link rel="apple-touch-icon" sizes="180x180" href="<%= BASE_URL %>assets/img/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="<%= BASE_URL %>assets/img/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="<%= BASE_URL %>assets/img/favicon-16x16.png">
+	<link rel="manifest" href="<%= BASE_URL %>manifest.json">
 
-	  <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-  </head>
-  <body>
-    <noscript>
-      <strong>Hang on! JavaScript must be enabled to use this app.</strong>
-    </noscript>
-    <div id="app"></div>
-  </body>
+	<link rel="icon" href="<%= BASE_URL %>favicon.ico">
+
+	<noscript>
+		<style>
+			@import url('https://fonts.googleapis.com/css?family=Lato:400,900');
+
+			.no-js {
+				font-size: 16px;
+			}
+
+			.no-js body {
+				align-items: center;
+				background-color: #2d2d2d;
+				box-sizing: border-box;
+				color: white;
+				display: flex;
+				flex-flow: column nowrap;
+				font-family: Lato, 'Open Sans', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+				font-size: 100%;
+				height: 100vh;
+				justify-content: center;
+				margin: 0;
+				padding: 0;
+				text-align: center;
+			}
+
+			.no-js h1 {
+				background-color: #ff762b;
+				border-radius: 3.333rem;
+				color: #2d2d2d;
+				font-size: 2rem;
+				padding: .333em 2em;
+				position: relative;
+				user-select: none;
+				white-space: nowrap;
+			}
+
+			.no-js h1 span::before {
+				content: ' \26A0';
+				position: absolute;
+				left: .75em;
+				font-size: 2rem;
+				line-height: 1;
+				top: 50%;
+				transform: translateY(-50%);
+			}
+
+			.no-js strong {
+				font-weight: normal;
+			}
+
+			.no-js a {
+				color: white;
+				text-decoration: underline;
+			}
+
+			.no-js a:hover,
+			.no-js a:focus,
+			.no-js a:active {
+				color: #0cc;
+			}
+
+			@media screen and (min-width: 480px) {
+				.no-js {
+					font-size: 18px;
+				}
+			}
+
+			@media screen and (min-width: 768px) {
+				.no-js {
+					font-size: 20px;
+				}
+			}
+
+			@media screen and (min-width: 1400px) {
+				.no-js {
+					font-size: 24px;
+				}
+			}
+		</style>
+	</noscript>
+</head>
+<body>
+<noscript>
+	<h1><span>Hang on!</span></h1>
+	<p><strong><a href="https://www.enable-javascript.com/" rel="noopener" target="_blank"
+				  title="How and why to enable JavaScript">
+		JavaScript must be enabled</a> to use this app.</strong></p>
+</noscript>
+<div id="app"></div>
+</body>
 </html>

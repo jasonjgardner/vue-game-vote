@@ -1,6 +1,18 @@
 {
   "games": [
     {
+      "id": "super-mario-bros",
+      "name": "New Super Mario Bros. U Deluxe",
+      "image": "assets/games/super-mario-bros.jpg",
+      "numberOfPlayers": 4,
+      "playMode": "MultiPlayer",
+      "familyFriendly": true,
+      "contentRating": "E",
+      "publisher": "Nintendo",
+      "developer": "Nintendo",
+      "gamePlatform": "Nintendo Switch"
+    },
+    {
       "id": "mario-party",
       "name": "Mario Party",
       "image": ["assets/games/mario-party.jpg", "assets/games/mario-party.webp"],

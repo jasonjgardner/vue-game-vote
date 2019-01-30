@@ -23,6 +23,7 @@
 	@import '~@/css/_variables';
 	@import '~@/css/_mixins';
 
+	/// Backdrop
 	.action-sheet {
 		--color-border: #{theme('border', 'light')};
 		height: 100vh;
@@ -36,7 +37,9 @@
 	.sheet {
 		background-color: #{theme('background', 'light')};
 		color: #{theme('background', 'dark')};
+		display: flex;
 		bottom: 0;
+		flex-flow: column nowrap;
 		height: var(--height, 50vh);
 		max-height: 60vh;
 		min-height: 45vh;

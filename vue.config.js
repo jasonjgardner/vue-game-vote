@@ -20,7 +20,7 @@ module.exports = {
 	},
 	css: {
 		sourceMap: DEV,
-		extract: true,
+		extract: !DEV,
 		loaderOptions: {
 			sass: {
 				sourceMap: DEV,
@@ -39,8 +39,8 @@ module.exports = {
 	productionSourceMap: false,
 	pluginOptions: {
 		critical: {
-			width: 375,
-			height: 565
+			width: 320,
+			height: 480
 		},
 		externals: [
 			{
@@ -53,7 +53,6 @@ module.exports = {
 			url: pkg.homepage,
 			description: pkg.description,
 			twitterHandle: 'JasonGardner',
-			socialImage: 'src/assets/social.jpg',
 			googleAnalytics: process.env.VUE_APP_GA_TRACKING
 		},
 		webpackBundleAnalyzer: {
@@ -96,6 +95,7 @@ module.exports = {
 		config.plugin('define').tap(args => {
 			args[0]['process.env']['BUILD_TIME'] =
 				JSON.stringify(proc.execSync('git log -1 --format=%cd --date=iso').toString().trim());
+			args[0]['process.env']['VERSION'] = JSON.stringify(pkg.version) + (DEV ? '' : '-beta');
 
 			return args;
 		});

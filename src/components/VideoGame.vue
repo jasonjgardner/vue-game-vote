@@ -153,9 +153,9 @@
 			align-items: center;
 			border-radius: $size-border-radius;
 			display: flex;
-			height: var(--height);
 			flex-flow: row nowrap;
 			justify-content: space-between;
+			min-height: var(--height);
 			padding: 0 .666rem;
 			position: relative;
 			top: 0;

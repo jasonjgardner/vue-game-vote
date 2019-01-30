@@ -150,13 +150,6 @@
 			}
 		},
 		created() {
-			import(
-				/* webpackChunkName: "typekit" */
-				/* webpackPrefetch: true */
-				'@/lib/TypekitLoader'
-				).then(loader => loader.default('apf6wfj'));
-		},
-		mounted() {
 			if (window.localStorage.colorScheme) {
 				this.settings.theme = window.localStorage.getItem('colorScheme') === 'light' ? 'light' : 'dark';
 			}
@@ -169,6 +162,16 @@
 				this.settings.audio = window.localStorage.getItem('enableAudio') === 'true';
 				this.shown = 'audioPrompt';
 			}
+		},
+		beforeMount() {
+			document.documentElement.classList.remove('no-js');
+		},
+		mounted() {
+			import(
+				/* webpackChunkName: "typekit" */
+				/* webpackPrefetch: true */
+				'@/lib/TypekitLoader'
+				).then(loader => loader.default('apf6wfj'));
 		},
 		methods: {
 			/** @description Selects a candidate at random */

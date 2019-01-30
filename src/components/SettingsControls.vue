@@ -4,8 +4,8 @@
 			<h3>Settings</h3>
 		</div>
 
-		<div class="container mt-1">
-			<form>
+		<div class="container mt-1 flex-1">
+			<form id="settings-form" class="h-100">
 				<fieldset @change="$emit('update', changes)">
 					<legend>Theme</legend>
 
@@ -50,7 +50,7 @@
 					</label>
 				</fieldset>
 
-				<button class="btn btn--wide btn--primary mt-2 mr-auto ml-auto" type="submit" @click.prevent="$emit('dismissed')">Apply Settings</button>
+				<button class="btn btn--wide btn--primary mt-auto mr-auto ml-auto" type="submit" @click.prevent="$emit('dismissed')">Apply Settings</button>
 			</form>
 		</div>
 		<!-- /.container -->
@@ -93,14 +93,17 @@
 	@import '~@/css/_variables';
 	@import '~@/css/_mixins';
 
+	.sheet {
+		display: flex;
+	}
+
 	.swatch {
 		--border: #{theme('border', 'light')};
 		border-radius: $size-border-radius;
-		box-shadow: 0 0 1px 0 var(--border, white) inset, 0 0 1px 0 var(--border, white);
+		box-shadow: 0 0 1px 0 var(--border) inset, 0 0 1px 0 var(--border);
 		display: block;
-		height: 100%;
+		height: 1.5rem;
 		margin: 0 1rem 0 0;
-		min-height: 2rem;
 		width: 2.5rem;
 
 		&--light {
@@ -109,6 +112,7 @@
 		}
 
 		&--dark {
+			--border: darken($color-dark, 15%);
 			background-color: $color-dark;
 		}
 	}
@@ -159,6 +163,11 @@
 		}
 	}
 
+	#settings-form {
+		display: flex;
+		flex-flow: column nowrap;
+	}
+
 	fieldset {
 		border: 0;
 		margin: var(--size-base) 0 0 0;
@@ -169,7 +178,7 @@
 		border-left: .125rem solid var(--color-muted);
 		font-size: .825rem;
 		font-weight: bold;
-		padding: var(--size-gap) 0 var(--size-gap) var(--size-gap);
+		padding: var(--size-gap) 0 var(--size-gap) calc(2 * var(--size-gap));
 	}
 
 	fieldset:hover legend,
