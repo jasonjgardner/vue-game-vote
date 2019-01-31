@@ -171,7 +171,7 @@
 				/* webpackChunkName: "typekit" */
 				/* webpackPrefetch: true */
 				'@/lib/TypekitLoader'
-				).then(loader => loader.default('apf6wfj'));
+			).then(loader => loader.default(process.env.VUE_APP_TYPEKIT_ID));
 		},
 		methods: {
 			/** @description Selects a candidate at random */
@@ -232,6 +232,14 @@
 				window.localStorage.setItem('enableSweetFx', JSON.stringify(settings.fx));
 
 				this.settings.theme = settings.theme === 'light' ? 'light' : 'dark';
+
+				/// Make banner match background
+				/// FIXME: The previously active theme's `--color-background` value gets used in the meta tag
+				document.head.children.namedItem('theme-color').setAttribute(
+					'content',
+					getComputedStyle(this.$el).getPropertyValue('--color-background')
+				);
+
 				this.settings.fx = settings.fx;
 				this.enableAudio(settings.audio);
 			},

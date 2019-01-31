@@ -63,7 +63,7 @@
 			margin: 0 var(--size-base);
 			padding: var(--size-base);
 			max-height: 98vh;
-			max-width: 90%;
+			max-width: 98vw;
 			min-width: calc(#{$media-screen-xs} - (var(--size-base) * 2));
 		}
 

@@ -85,9 +85,15 @@ module.exports = {
 		.loader('html-loader');
 
 		config.plugin('html').tap(args => {
-			args[0].title = pkg.config.title;
-			args[0].version = pkg.version;
-			args[0].themeColor = pkg.config.themeColor;
+			args[0] = {
+				...args[0],
+				...pkg.config,
+				...{
+					version: pkg.version,
+					title: pkg.config.title,
+					typekitId: process.env.VUE_APP_TYPEKIT_ID
+				}
+			};
 
 			return args;
 		});
