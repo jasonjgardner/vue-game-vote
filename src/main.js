@@ -51,3 +51,5 @@ import('./data.json').then(data => {
 		})
 	}).$mount('#app');
 });
+
+export const EventBus = new Vue();

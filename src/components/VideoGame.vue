@@ -6,21 +6,21 @@
 					itemscope itemtype="http://schema.org/VideoGame"
 					@click="select"
 			>
-				<picture v-if="Array.isArray(game.image)" class="game__cover">
-					<source :srcset="require(`@/${game.image[1]}`)"
-							type="image/webp">
-					<source :srcset="require(`@/${game.image[0]}`)"
-							type="image/jpeg">
-					<img :src="require(`@/${game.image[0]}`)"
-						 :alt='`"${game.name}" cover art`'
-						 :title="game.name"
-						 itemprop="image">
-				</picture>
-				<img v-else class="game__cover"
+				<img v-if="typeof game.image === 'string'" class="game__cover"
 					 :src="require(`@/${game.image}`)"
 					 :alt='`"${game.name}" cover art`'
 					 :title="game.name"
 					 itemprop="image">
+				<picture v-else class="game__cover">
+					<source v-for="(type, src) in game.image" :key="type"
+							:type="`image/${type}`"
+							:srcset="require(`@/${game.image[src]}`)">
+
+					<img :src="require(`@/${game.image.jpeg}`)"
+						 :alt='`"${game.name}" cover art`'
+						 :title="game.name"
+						 itemprop="image">
+				</picture>
 
 				<figcaption class="game__description">
 					<h3 class="game__title" itemprop="name">
@@ -82,7 +82,7 @@
 					required: true
 				},
 				img: {
-					type: [Array, String],
+					type: [Object, String],
 					required: true
 				}
 			}

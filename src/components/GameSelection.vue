@@ -14,14 +14,30 @@
 				</h2>
 			</div>
 
-			<figure class="choice__cover">
-				<img class="focus" itemprop="image"
-					 :src="require(`../${chosen.image}`)"
-					 :alt="chosen.name"
-					 role="presentation"
-					 aria-labelledby="choice-name"
-				>
-				<figcaption :aria-expanded="showDetails">
+			<div class="choice__cover" role="figure">
+				<Transition appear name="slide">
+					<img v-if="typeof chosen.image === 'string'"
+						 :src="require(`@/${chosen.image}`)"
+						 :alt='`"${chosen.name}" cover art`'
+						 :title="chosen.name"
+						 class="focus"
+						 itemprop="image">
+					<picture v-else>
+						<source v-for="(type, src) in chosen.image" :key="type"
+								:type="`image/${type}`"
+								:srcset="require(`@/${chosen.image[src]}`)">
+
+						<img :src="require(`@/${chosen.image.jpeg}`)"
+							 :alt='`"${chosen.name}" cover art`'
+							 :title="chosen.name"
+							 class="focus"
+							 itemprop="image"
+							 role="presentation"
+							 aria-labelledby="choice-name">
+					</picture>
+				</Transition>
+
+				<div class="choice__container" :aria-expanded="showDetails">
 					<div class="col">
 						<dl>
 							<template v-if="chosen.hasOwnProperty('developer') && chosen.developer.length > 0">
@@ -51,8 +67,8 @@
 						</div>
 					</div>
 					<!-- /.col -->
-				</figcaption>
-			</figure>
+				</div>
+			</div>
 		</div>
 
 		<table title="The results are in!">
@@ -114,7 +130,7 @@
 		components: {
 			CheckCircle,
 			FamilyFriendlyIcon,
-			FamilyUnfriendlyIcon,
+			FamilyUnfriendlyIcon
 		},
 		props: {
 			chosen: {
@@ -124,15 +140,15 @@
 				},
 				id: {
 					type: String,
-					required: true,
+					required: true
 				},
 				name: {
 					type: String,
-					required: true,
+					required: true
 				},
 				image: {
-					type: String,
-					required: true,
+					type: [Array, String],
+					required: true
 				},
 				developer: String,
 				publisher: String,
@@ -141,23 +157,23 @@
 				contentRating: {
 					type: String,
 					required: false,
-					validator: rating => ['RP', 'EC', 'E', 'E10+', 'T', 'M', 'AO'].indexOf(rating) > -1,
+					validator: rating => ['RP', 'EC', 'E', 'E10+', 'T', 'M', 'AO'].indexOf(rating) > -1
 				},
 				playMode: {
 					type: String,
 					required: false,
-					validator: gamePlayMode => ['CoOp', 'MultiPlayer', 'SinglePlayer'].indexOf(gamePlayMode) > -1,
+					validator: gamePlayMode => ['CoOp', 'MultiPlayer', 'SinglePlayer'].indexOf(gamePlayMode) > -1
 				},
 				numberOfPlayers: {
 					type: Number,
-					default: 1,
-				},
+					default: 1
+				}
 			},
 			votes: {
 				type: Array,
 				required: true,
-				default: () => [],
-			},
+				default: () => []
+			}
 		},
 		data() {
 			return {
@@ -176,7 +192,7 @@
 					results[vote.id] = {
 						...vote,
 						total: this.votes.filter(v => v.id === vote.id).length,
-						chosen: this.chosen.id === vote.id,
+						chosen: this.chosen.id === vote.id
 					};
 				}
 
@@ -197,7 +213,7 @@
 				}
 
 				return ['Let\'s play...', 'How about...'];
-			},
+			}
 		},
 		methods: {
 			/** @description Repicks a game
@@ -209,8 +225,8 @@
 				this.picks++;
 				this.$emit(this.votes.length > 0 ? 'choose' : 'reset');
 				window.scrollTo(0, 0);
-			},
-		},
+			}
+		}
 	};
 </script>
 
@@ -257,6 +273,7 @@
 	}
 
 	.choice__cover {
+		align-items: center;
 		display: flex;
 		flex-flow: column nowrap;
 		justify-content: center;
@@ -267,7 +284,6 @@
 		[itemprop='image'] {
 			border: 1px solid var(--color-lightest);
 			border-radius: $size-border-radius;
-			filter: drop-shadow(1px .5rem 1rem rgba(0, 0, 0, .66));
 			height: 100%;
 			margin: 0 auto;
 			max-height: $size-game-cover-max;
@@ -280,17 +296,21 @@
 				margin-right: auto;
 			}
 		}
+	}
 
-		figcaption {
-			display: flex;
-			flex-direction: column;
-			margin-top: var(--size-base);
-			overflow: hidden;
-			transition: max-width .333s ease-out;
+	.sweet-fx .choice__cover [itemprop='image'] {
+		filter: drop-shadow(1px .5rem 1rem rgba(0, 0, 0, .5));
+	}
 
-			&[aria-expanded='false'] {
-				max-width: 0;
-			}
+	.choice__container {
+		display: flex;
+		flex-direction: column;
+		margin-top: var(--size-base);
+		overflow: hidden;
+		transition: max-width .333s ease-out;
+
+		&[aria-expanded='false'] {
+			max-width: 0;
 		}
 	}
 
@@ -454,7 +474,7 @@
 				margin: 0 calc(4 * var(--size-gap)) 0 0;
 			}
 
-			figcaption {
+			.choice__container {
 				flex-direction: column;
 				justify-content: space-between;
 			}

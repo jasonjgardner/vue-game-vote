@@ -73,10 +73,10 @@
 				<Transition name="jump">
 					<button v-if="hasVotes"
 							class="btn btn--secondary btn--fab btn--shadow h-focus"
-							type="reset"
+							type="button"
 							name="reset"
 							title="Reset voting"
-							@click.prevent="reset"
+							@click="reset"
 					>
 						<ResetIcon/>
 						<span class="sr-only">Reset</span>
@@ -202,6 +202,7 @@
 	import AppIcon from '@/assets/img/icon.svg';
 	import HelpIcon from '@/assets/img/help.svg';
 	import HowlerMixin from '@/lib/HowlerMixin';
+	import { EventBus } from '@/main';
 
 	/**
 	 * App header component
@@ -248,19 +249,19 @@
 			buyVote() {
 				this.chaChing = true;
 
-				this.play('coin').then(() => {
+				EventBus.$emit('howl', 'coin', () => {
 					this.$emit('buyVote');
-					window.requestAnimationFrame(() => this.chaChing = false);
+					this.chaChing = false;
 				});
 			},
 			reset() {
 				window.requestAnimationFrame(() => {
-					this.play('load').then(() => this.$emit('reset'));
+					EventBus.$emit('howl', 'load', () => this.$emit('reset'));
 				});
 			},
 			openInstructions() {
 				window.requestAnimationFrame(() => {
-					this.play('pause').then(() => this.showInstructions = true);
+					EventBus.$emit('howl', 'pause', () => this.showInstructions = true);
 				});
 			}
 		}

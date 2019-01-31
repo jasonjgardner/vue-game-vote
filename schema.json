@@ -15,6 +15,26 @@
     }
   },
   "definitions": {
+    "image": {
+      "type": "object",
+      "properties": {
+        "webp": {
+          "title": "WebP image",
+          "type": "string",
+          "description": "WebP image path",
+          "minLength": 4,
+          "pattern": ".+\\.webp$"
+        },
+        "jpeg": {
+          "title": "JPEG image",
+          "type": "string",
+          "description": "JPEG image path",
+          "minLength": 5,
+          "pattern": ".+\\.jpe?g$"
+        }
+      },
+      "required": ["jpeg"]
+    },
     "game": {
       "title": "Video Game data",
       "type": "object",
@@ -41,13 +61,7 @@
               "pattern": ".+\\.[a-z]+$"
             },
             {
-              "type": "array",
-              "minItems": 2,
-              "items": {
-                "type": "string",
-                "minLength": 3,
-                "pattern": ".+\\.[a-z]+$"
-              }
+              "$ref": "#/definitions/image"
             }
           ]
         },

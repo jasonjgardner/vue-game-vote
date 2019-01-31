@@ -15,7 +15,10 @@
     {
       "id": "mario-party",
       "name": "Mario Party",
-      "image": ["assets/img/games/mario-party.jpg", "assets/img/games/mario-party.webp"],
+      "image": {
+        "webp": "assets/img/games/mario-party.webp",
+        "jpeg": "assets/img/games/mario-party.jpg"
+      },
       "numberOfPlayers": 4,
       "playMode": "MultiPlayer",
       "familyFriendly": true,
@@ -56,14 +59,14 @@
       "playMode": "MultiPlayer",
       "familyFriendly": true,
       "contentRating": "E",
-      "publisher":"Nintendo",
-      "developer":"Nintendo",
+      "publisher": "Nintendo",
+      "developer": "Nintendo",
       "gamePlatform": "Nintendo Switch"
     },
     {
       "id": "mario-kart",
       "name": "Mario Kart 8",
-      "image":"assets/img/games/mario-kart.jpg",
+      "image": "assets/img/games/mario-kart.jpg",
       "numberOfPlayers": 4,
       "playMode": "MultiPlayer",
       "familyFriendly": true,
@@ -88,7 +91,7 @@
       "id": "mario-odyssey",
       "name": "Super Mario Odyssey",
       "image": "assets/img/games/super-mario-odyssey.jpg",
-      "numberOfPlayers":  2,
+      "numberOfPlayers": 2,
       "playMode": "CoOp",
       "familyFriendly": true,
       "contentRating": "E",
@@ -100,7 +103,7 @@
       "id": "minecraft",
       "name": "Minecraft",
       "image": "assets/img/games/minecraft.jpg",
-      "numberOfPlayers":  2,
+      "numberOfPlayers": 2,
       "playMode": "CoOp",
       "familyFriendly": true,
       "contentRating": "E",
@@ -111,8 +114,11 @@
     {
       "id": "1-2-switch",
       "name": "1-2 Switch",
-      "image": "assets/img/games/1-2-switch.jpg",
-      "numberOfPlayers":  2,
+      "image": {
+        "webp": "assets/img/games/1-2-switch.webp",
+        "jpeg": "assets/img/games/1-2-switch.jpg"
+      },
+      "numberOfPlayers": 2,
       "playMode": "MultiPlayer",
       "familyFriendly": true,
       "contentRating": "E",

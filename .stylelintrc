@@ -63,7 +63,6 @@
     "string-quotes": "single",
     "time-min-milliseconds": 50,
     "unit-case": "lower",
-    "unit-no-unknown": false,
     "value-keyword-case": [
       "lower",
       {

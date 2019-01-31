@@ -47,7 +47,11 @@ module.exports = {
 		externals: [
 			{
 				module: 'normalize',
-				entry: 'https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css'
+				entry: 'https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css',
+				attributes: {
+					integrity: 'sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=',
+					crossorigin: 'anonymous'
+				}
 			}
 		],
 		meta: {

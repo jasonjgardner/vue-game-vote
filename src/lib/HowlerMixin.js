@@ -14,6 +14,11 @@ const mixin = {
 	},
 	methods: {
 		enableAudio(enable) {
+			if (this.$_howl !== undefined) {
+				this.$_howl.unload();
+				this.$_howl = undefined;
+			}
+
 			if (enable) {
 				this.$_howl = new Howl({
 					src: [require('@/assets/audio/sprite.ogg'), require('@/assets/audio/sprite.mp3')],
@@ -30,9 +35,6 @@ const mixin = {
 					},
 					preload: true
 				});
-			} else if (this.$_howl !== undefined) {
-				this.$_howl.unload();
-				this.$_howl = undefined;
 			}
 		},
 		play(track) {

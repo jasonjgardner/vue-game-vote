@@ -80,6 +80,7 @@
 	import HeaderControls from '@/components/HeaderControls';
 	import VideoGame from '@/components/VideoGame';
 	import HowlerMixin from '@/lib/HowlerMixin';
+	import { EventBus } from '@/main';
 
 	/**
 	 * Game votes app
@@ -182,6 +183,8 @@
 				/* webpackPrefetch: true */
 				'@/lib/TypekitLoader'
 			).then(loader => loader.default(process.env.VUE_APP_TYPEKIT_ID));
+
+			EventBus.$on('howl', (track, onPlay) => this.play(track).then(onPlay));
 
 			window.addEventListener('online', this.handleOffline);
 			window.addEventListener('offline', this.handleOffline);
