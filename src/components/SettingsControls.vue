@@ -170,6 +170,7 @@
 
 	fieldset {
 		border: 0;
+		display: flex;
 		margin: var(--size-base) 0 0 0;
 		padding: 0;
 	}

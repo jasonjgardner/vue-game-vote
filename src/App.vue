@@ -59,16 +59,24 @@
 
 		<portal-target name="overlay"></portal-target>
 
-		<ToastNotification v-if="shown === 'audioPrompt'" @dismissed="audioPrompt">
+		<ToastNotification v-if="shown === 'audioPrompt'" @dismissed="audioPrompt" @timeout="shown = false">
 			<div slot="image">
 				<VolumeIcon/>
 			</div>
 			<p>Tap to enable sound fx</p>
 		</ToastNotification>
+
+		<AlertNotification v-if="showOfflineAlert"
+						   :timeout="10000"
+						   @dismissed="showOfflineAlert = false"
+						   @timeout="showOfflineAlert = false">
+			<h3>You&rsquo;re offline</h3>
+		</AlertNotification>
 	</div>
 </template>
 
 <script>
+	import AlertNotification from '@/components/AlertNotification';
 	import HeaderControls from '@/components/HeaderControls';
 	import VideoGame from '@/components/VideoGame';
 	import HowlerMixin from '@/lib/HowlerMixin';
@@ -88,6 +96,7 @@
 	export default {
 		name: 'App',
 		components: {
+			AlertNotification,
 			HeaderControls,
 			VideoGame,
 			SettingsControls: () => import(
@@ -113,7 +122,7 @@
 			VolumeIcon: () => import(
 				/* webpackChunkName: "icons" */
 				/* webpackMode: "lazy" */
-				'@/assets/volume.svg'
+				'@/assets/img/volume.svg'
 			)
 		},
 		mixins: [HowlerMixin],
@@ -136,6 +145,7 @@
 				shown: false,
 				voters: this.initialVoters,
 				voteCast: false,
+				showOfflineAlert: !navigator.onLine,
 				settings: {
 					theme: +(new Date()).getHours() <= 18 ? 'light' : 'dark',
 					audio: this.$_enableAudio || false,
@@ -172,8 +182,18 @@
 				/* webpackPrefetch: true */
 				'@/lib/TypekitLoader'
 			).then(loader => loader.default(process.env.VUE_APP_TYPEKIT_ID));
+
+			window.addEventListener('online', this.handleOffline);
+			window.addEventListener('offline', this.handleOffline);
+		},
+		destroyed() {
+			window.removeEventListener('online', this.handleOffline);
+			window.removeEventListener('offline', this.handleOffline);
 		},
 		methods: {
+			handleOffline() {
+				this.showOfflineAlert = !navigator.onLine;
+			},
 			/** @description Selects a candidate at random */
 			choose() {
 				this.shown = false;

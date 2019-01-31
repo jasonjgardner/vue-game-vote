@@ -9,7 +9,7 @@
 </template>
 
 <script>
-	import PlusIcon from '../assets/plus-circle-inverse.svg';
+	import PlusIcon from '../assets/img/plus-circle-inverse.svg';
 
 	export default {
 		name: 'Select',

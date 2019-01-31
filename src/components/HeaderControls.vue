@@ -199,8 +199,8 @@
 	import Check from 'vue-feather-icon/components/check';
 	import InfoIcon from 'vue-feather-icon/components/info';
 	import SettingsIcon from 'vue-feather-icon/components/settings';
-	import AppIcon from '@/assets/icon.svg';
-	import HelpIcon from '@/assets/help.svg';
+	import AppIcon from '@/assets/img/icon.svg';
+	import HelpIcon from '@/assets/img/help.svg';
 	import HowlerMixin from '@/lib/HowlerMixin';
 
 	/**

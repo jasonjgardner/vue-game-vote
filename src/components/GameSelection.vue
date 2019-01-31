@@ -96,8 +96,8 @@
 
 <script>
 	import CheckCircle from 'vue-feather-icon/components/check-circle';
-	import FamilyFriendlyIcon from '@/assets/is-family-friendly.svg';
-	import FamilyUnfriendlyIcon from '@/assets/not-family-friendly.svg';
+	import FamilyFriendlyIcon from '@/assets/img/is-family-friendly.svg';
+	import FamilyUnfriendlyIcon from '@/assets/img/not-family-friendly.svg';
 
 	/**
 	 * Game selection component

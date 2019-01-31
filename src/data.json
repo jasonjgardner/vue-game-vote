@@ -3,7 +3,7 @@
     {
       "id": "super-mario-bros",
       "name": "New Super Mario Bros. U Deluxe",
-      "image": "assets/games/super-mario-bros.jpg",
+      "image": "assets/img/games/super-mario-bros.jpg",
       "numberOfPlayers": 4,
       "playMode": "MultiPlayer",
       "familyFriendly": true,
@@ -15,7 +15,7 @@
     {
       "id": "mario-party",
       "name": "Mario Party",
-      "image": ["assets/games/mario-party.jpg", "assets/games/mario-party.webp"],
+      "image": ["assets/img/games/mario-party.jpg", "assets/img/games/mario-party.webp"],
       "numberOfPlayers": 4,
       "playMode": "MultiPlayer",
       "familyFriendly": true,
@@ -27,7 +27,7 @@
     {
       "id": "super-smash-bros",
       "name": "Super Smash Bros.",
-      "image": "assets/games/super-smash-bros.jpg",
+      "image": "assets/img/games/super-smash-bros.jpg",
       "numberOfPlayers": 8,
       "playMode": "MultiPlayer",
       "familyFriendly": true,
@@ -39,7 +39,7 @@
     {
       "id": "pokemon",
       "name": "Let's Go Pikachu",
-      "image": "assets/games/pokemon.jpg",
+      "image": "assets/img/games/pokemon.jpg",
       "numberOfPlayers": 2,
       "playMode": "CoOp",
       "familyFriendly": true,
@@ -51,7 +51,7 @@
     {
       "id": "katamari-damacy",
       "name": "Katamari Damacy ",
-      "image": "assets/games/katamari.jpg",
+      "image": "assets/img/games/katamari.jpg",
       "numberOfPlayers": 2,
       "playMode": "MultiPlayer",
       "familyFriendly": true,
@@ -63,7 +63,7 @@
     {
       "id": "mario-kart",
       "name": "Mario Kart 8",
-      "image":"assets/games/mario-kart.jpg",
+      "image":"assets/img/games/mario-kart.jpg",
       "numberOfPlayers": 4,
       "playMode": "MultiPlayer",
       "familyFriendly": true,
@@ -75,7 +75,7 @@
     {
       "id": "mario-tennis",
       "name": "Mario Tennis",
-      "image": "assets/games/mario-tennis.jpg",
+      "image": "assets/img/games/mario-tennis.jpg",
       "numberOfPlayers": 4,
       "playMode": "MultiPlayer",
       "familyFriendly": true,
@@ -87,7 +87,7 @@
     {
       "id": "mario-odyssey",
       "name": "Super Mario Odyssey",
-      "image": "assets/games/super-mario-odyssey.jpg",
+      "image": "assets/img/games/super-mario-odyssey.jpg",
       "numberOfPlayers":  2,
       "playMode": "CoOp",
       "familyFriendly": true,
@@ -99,7 +99,7 @@
     {
       "id": "minecraft",
       "name": "Minecraft",
-      "image": "assets/games/minecraft.jpg",
+      "image": "assets/img/games/minecraft.jpg",
       "numberOfPlayers":  2,
       "playMode": "CoOp",
       "familyFriendly": true,
@@ -111,7 +111,7 @@
     {
       "id": "1-2-switch",
       "name": "1-2 Switch",
-      "image": "assets/games/1-2-switch.jpg",
+      "image": "assets/img/games/1-2-switch.jpg",
       "numberOfPlayers":  2,
       "playMode": "MultiPlayer",
       "familyFriendly": true,
@@ -123,7 +123,7 @@
     {
       "id": "astro-bears",
       "name": "Astro Bears",
-      "image": "assets/games/astro-bears.jpg",
+      "image": "assets/img/games/astro-bears.jpg",
       "numberOfPlayers": 4,
       "playMode": "MultiPlayer",
       "familyFriendly": true,
@@ -135,7 +135,7 @@
     {
       "id": "arms",
       "name": "Arms",
-      "image": "assets/games/arms.jpg",
+      "image": "assets/img/games/arms.jpg",
       "numberOfPlayers": 4,
       "playMode": "MultiPlayer",
       "familyFriendly": true,
@@ -145,7 +145,7 @@
     {
       "id": "just-dance-2019",
       "name": "Just Dance 2019",
-      "image": "assets/games/just-dance-2019.jpg",
+      "image": "assets/img/games/just-dance-2019.jpg",
       "numberOfPlayers": 6,
       "playMode": "MultiPlayer",
       "familyFriendly": true,
@@ -157,7 +157,7 @@
     {
       "id": "rocket-league",
       "name": "Rocket League",
-      "image": "assets/games/rocket-league.jpg",
+      "image": "assets/img/games/rocket-league.jpg",
       "numberOfPlayers": 4,
       "playMode": "MultiPlayer",
       "familyFriendly": true,
@@ -169,7 +169,7 @@
     {
       "id": "cars-3",
       "name": "Cars 3: Driven to Win",
-      "image": "assets/games/cars-3.jpg",
+      "image": "assets/img/games/cars-3.jpg",
       "numberOfPlayers": 4,
       "playMode": "MultiPlayer",
       "familyFriendly": true,

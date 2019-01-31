@@ -1,4 +1,5 @@
 dist/
+.cache/
 node_modules/
 .pocket/
 npm-debug.log*
@@ -12,6 +13,6 @@ docs/
 !docs/*conf.js*
 
 # Assets folder contains copyrighted video game cover art / graphics and audio, thus is excluded from the repo
-src/assets/games/
+src/assets/img/games/
 src/assets/audio/
 

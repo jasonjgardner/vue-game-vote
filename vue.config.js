@@ -2,7 +2,8 @@ const pkg = require('./package.json'),
 	path = require('path'),
 	proc = require('child_process'),
 	ImageminPlugin = require('imagemin-webpack-plugin').default,
-	CompressionPlugin = require('compression-webpack-plugin');
+	CompressionPlugin = require('compression-webpack-plugin'),
+	SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 
 const DEV = process.env.NODE_ENV !== 'production',
 	INCLUDES = [
@@ -13,11 +14,12 @@ const DEV = process.env.NODE_ENV !== 'production',
 
 module.exports = {
 	assetsDir: 'assets',
-	runtimeCompiler: true,
+	runtimeCompiler: DEV,
 	devServer: {
 		compress: true,
 		https: false
 	},
+	parallel: true,
 	css: {
 		sourceMap: DEV,
 		extract: !DEV,
@@ -62,9 +64,16 @@ module.exports = {
 	configureWebpack: {
 		plugins: [
 			new ImageminPlugin({
-				test: /\.(jpe?g|png|gif|svg)$/i
+				disable: !DEV,
+				test: 'src/assets/img/**',
+				cacheFolder: path.join(__dirname, '/.cache'),
+				maxConcurrency: Infinity
 			}),
-			new CompressionPlugin()
+			new CompressionPlugin({
+				cache: path.join(__dirname, '/.cache'),
+				algorithm: 'gzip'
+			}),
+			new SWPrecacheWebpackPlugin()
 		]
 	},
 	chainWebpack: config => {
@@ -105,6 +114,5 @@ module.exports = {
 
 			return args;
 		});
-	},
-	parallel: undefined
+	}
 };
