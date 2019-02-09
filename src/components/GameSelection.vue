@@ -390,7 +390,7 @@
 
 		&:hover,
 		&:focus-within {
-			background-color: var(--color-background-alt);
+			background-color: var(--color-surface);
 		}
 
 		&:nth-child(even) {

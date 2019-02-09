@@ -1,6 +1,6 @@
 <template>
 	<div class="app"
-		 :class="{'light-scheme': settings.theme === 'light', 'sweet-fx': settings.fx }"
+		 :class="{'light-scheme': settings.theme === 'light', 'sweet-fx': settings.fx, 'high-contrast': settings.highContrast }"
 		 role="application"
 		 itemscope itemtype="http://schema.org/WebApplication">
 		<Transition name="fade">
@@ -79,7 +79,7 @@
 	import AlertNotification from '@/components/AlertNotification';
 	import HeaderControls from '@/components/HeaderControls';
 	import VideoGame from '@/components/VideoGame';
-	import HowlerMixin from '@/lib/HowlerMixin';
+	import HowlerMixin from '@/mixins/HowlerMixin';
 	import { EventBus } from '@/main';
 
 	/**
@@ -150,7 +150,8 @@
 				settings: {
 					theme: +(new Date()).getHours() <= 18 ? 'light' : 'dark',
 					audio: this.$_enableAudio || false,
-					fx: false
+					fx: false,
+					highContrast: true
 				}
 			};
 		},
@@ -161,17 +162,22 @@
 			}
 		},
 		created() {
-			if (window.localStorage.colorScheme) {
-				this.settings.theme = window.localStorage.getItem('colorScheme') === 'light' ? 'light' : 'dark';
+			this.settings.fx = window.localStorage.enableSweetFx === 'true';
+			this.settings.highContrast = window.localStorage.enableHighContrast === 'true';
+			this.settings.audio = false;
+
+			if (window.localStorage.colorScheme === 'light') {
+				this.settings.theme = 'light';
 			}
 
-			if (window.localStorage.enableSweetFx) {
-				this.settings.fx = window.localStorage.getItem('enableSweetFx') === 'true';
-			}
-
-			if (window.localStorage.enableAudio !== 'false') {
-				this.settings.audio = window.localStorage.getItem('enableAudio') === 'true';
-				this.shown = 'audioPrompt';
+			if (window.localStorage.enableAudio === 'true') {
+				this.settings.audio = true;
+				setTimeout(() => {
+					if (!this.shown) {
+						/// Show audio prompt (if nothing else is showing)
+						this.shown = 'audioPrompt';
+					}
+				}, 5000);
 			}
 		},
 		beforeMount() {
@@ -257,11 +263,10 @@
 				this.settings.theme = settings.theme === 'light' ? 'light' : 'dark';
 
 				/// Make banner match background
-				/// FIXME: The previously active theme's `--color-background` value gets used in the meta tag
-				document.head.children.namedItem('theme-color').setAttribute(
+				setTimeout(() => document.head.children.namedItem('theme-color').setAttribute(
 					'content',
 					getComputedStyle(this.$el).getPropertyValue('--color-background')
-				);
+				), 100);
 
 				this.settings.fx = settings.fx;
 				this.enableAudio(settings.audio);
@@ -280,8 +285,8 @@
 	};
 </script>
 
-<style lang="scss" scoped>
-	@import './css/variables';
+<style lang="scss">
+	@import '~@/css/_variables';
 
 	.app {
 		background-color: var(--color-background);
@@ -336,6 +341,10 @@
 			margin-top: 0;
 		}
 	}
+</style>
+
+<style lang="scss" scoped>
+	@import './css/variables';
 
 	main + footer {
 		box-sizing: border-box;

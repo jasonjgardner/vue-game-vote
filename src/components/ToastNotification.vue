@@ -10,7 +10,7 @@
 </template>
 
 <script>
-	import TimeoutMixin from '@/lib/TimeoutMixin';
+	import TimeoutMixin from '@/mixins/TimeoutMixin';
 
 	export default {
 		name: 'ToastNotification',

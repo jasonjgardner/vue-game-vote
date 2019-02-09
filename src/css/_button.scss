@@ -2,8 +2,8 @@
 @import 'mixins';
 
 .btn {
-	-webkit-appearance: none;
-	background-color: var(--color-background-alt);
+	appearance: none;
+	background-color: var(--color-surface);
 	border: 0;
 	border-radius: $size-border-radius;
 	color: var(--color-btn, var(--color-text));
@@ -17,7 +17,7 @@
 	&:hover,
 	&:focus,
 	&:active {
-		background-color: var(--color-btn-background);
+		background-color: var(--color-surface);
 		color: var(--color-text);
 		outline: none;
 	}
@@ -31,7 +31,7 @@
 	&:focus,
 	&:active {
 		background-color: var(--color-primary-alt);
-		color: var(--color-btn-alt);
+		color: var(--color-on-surface);
 	}
 }
 
@@ -43,9 +43,9 @@
 
 .btn--fab {
 	align-items: center;
-	background-color: var(--color-background-fab, var(--color-background-alt));
+	background-color: var(--color-surface);
 	border-radius: 50%;
-	color: var(--color-fab);
+	color: var(--color-on-surface);
 	display: flex;
 	height: var(--size-fab);
 	justify-content: center;
@@ -81,7 +81,7 @@
 }
 
 .sweet-fx .btn--shadow {
-	filter: drop-shadow(0 .25em .25em rgba(0, 0, 0, .33));
+	filter: drop-shadow(0 .15em .15em rgba(0, 0, 0, .4));
 
 	&--lg {
 		filter: drop-shadow(0 .125rem .25rem rgba(0, 0, 0, .5));

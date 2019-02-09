@@ -12,6 +12,28 @@ const DEV = process.env.NODE_ENV !== 'production',
 		path.join(__dirname, '/node_modules')
 	];
 
+/**
+ * Array of Webpack plugins. Plugins are conditionally added in production builds
+ * @type {Object[]}
+ */
+let webpackPlugins = [
+	new ImageminPlugin({
+		disable: !DEV,
+		test: 'src/assets/img/**',
+		cacheFolder: path.join(__dirname, '/.cache'),
+		maxConcurrency: Infinity
+	})
+];
+
+/// Production-only plugins
+if (!DEV) {
+	webpackPlugins.push(new CompressionPlugin({
+		cache: path.join(__dirname, '/.cache'),
+		algorithm: 'gzip'
+	}));
+	webpackPlugins.push(new SWPrecacheWebpackPlugin());
+}
+
 module.exports = {
 	assetsDir: 'assets',
 	runtimeCompiler: DEV,
@@ -66,19 +88,8 @@ module.exports = {
 		}
 	},
 	configureWebpack: {
-		plugins: [
-			new ImageminPlugin({
-				disable: !DEV,
-				test: 'src/assets/img/**',
-				cacheFolder: path.join(__dirname, '/.cache'),
-				maxConcurrency: Infinity
-			}),
-			new CompressionPlugin({
-				cache: path.join(__dirname, '/.cache'),
-				algorithm: 'gzip'
-			}),
-			new SWPrecacheWebpackPlugin()
-		]
+		plugins: webpackPlugins,
+		devtool: 'inline-cheap-source-map'
 	},
 	chainWebpack: config => {
 		const svgRule = config.module.rule('svg');
@@ -102,7 +113,9 @@ module.exports = {
 				...args[0],
 				...pkg.config,
 				...{
-					version: pkg.version,
+					version: JSON.stringify(`${pkg.version} ${(
+						!DEV ? '' : '-beta'
+					)}`).trim(),
 					title: pkg.config.title,
 					typekitId: process.env.VUE_APP_TYPEKIT_ID
 				}
@@ -114,7 +127,10 @@ module.exports = {
 		config.plugin('define').tap(args => {
 			args[0]['process.env']['BUILD_TIME'] =
 				JSON.stringify(proc.execSync('git log -1 --format=%cd --date=iso').toString().trim());
-			args[0]['process.env']['VERSION'] = JSON.stringify(pkg.version) + (DEV ? '' : '-beta');
+			args[0]['process.env']['VERSION'] =
+				JSON.stringify(`${pkg.version} ${(
+					!DEV ? '' : '-beta'
+				)}`).trim();
 
 			return args;
 		});

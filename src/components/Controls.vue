@@ -49,7 +49,7 @@
 	}
 
 	.btn--control {
-		background-color: var(--color-fab);
+		background-color: var(--color-on-surface);
 		color: var(--color-background);
 		font-weight: bold;
 		vertical-align: middle;

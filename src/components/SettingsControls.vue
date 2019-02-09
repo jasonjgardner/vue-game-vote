@@ -1,5 +1,5 @@
 <template>
-	<ActionSheet style="--height:100%" @dismissed="$emit('dismissed')">
+	<ActionSheet class="light-scheme" style="--height:100%" @dismissed="$emit('dismissed')">
 		<div class="header ml-1 mr-1">
 			<h3>Settings</h3>
 		</div>
@@ -50,7 +50,7 @@
 					</label>
 				</fieldset>
 
-				<button class="btn btn--wide btn--primary mt-auto mr-auto ml-auto" type="submit" @click.prevent="$emit('dismissed')">Apply Settings</button>
+				<button class="btn btn--wide btn--primary w-90 mt-auto mr-auto ml-auto" type="submit" @click.prevent="$emit('dismissed')">Apply Settings</button>
 			</form>
 		</div>
 		<!-- /.container -->
@@ -91,16 +91,10 @@
 
 <style lang="scss" scoped>
 	@import '~@/css/_variables';
-	@import '~@/css/_mixins';
-
-	.sheet {
-		display: flex;
-	}
 
 	.swatch {
-		--border: #{theme('border', 'light')};
 		border-radius: $size-border-radius;
-		box-shadow: 0 0 1px 0 var(--border) inset, 0 0 1px 0 var(--border);
+		box-shadow: 0 0 1px 0 var(--color-border) inset, 0 0 1px 0 var(--color-border);
 		display: block;
 		height: 1.5rem;
 		margin: 0 1rem 0 0;
@@ -108,11 +102,11 @@
 
 		&--light {
 			background-color: white;
-			border-color: #{theme('border', 'light')};
+			border-color: var(--color-border);
 		}
 
 		&--dark {
-			--border: darken($color-dark, 15%);
+			--color-border: darken($color-dark, 15%);
 			background-color: $color-dark;
 		}
 	}
@@ -126,6 +120,7 @@
 		flex-flow: row nowrap;
 		padding: var(--size-base);
 		transition: background-color .25s ease-out;
+		width: 100%;
 
 		input {
 			display: none;
@@ -145,7 +140,7 @@
 
 		&--checked {
 			svg {
-				fill: #{theme('accent', 'light')};
+				fill: var(--color-accent);
 				visibility: visible;
 			}
 		}
@@ -158,7 +153,11 @@
 			border-radius: $size-border-radius;
 
 			.swatch {
-				border-color: #{theme('accent', 'light')};
+				border-color: var(--color-accent);
+			}
+
+			.swatch--light {
+				box-shadow: 0 0 0 2px var(--color-background);
 			}
 		}
 	}
@@ -170,7 +169,6 @@
 
 	fieldset {
 		border: 0;
-		display: flex;
 		margin: var(--size-base) 0 0 0;
 		padding: 0;
 	}
@@ -184,7 +182,7 @@
 
 	fieldset:hover legend,
 	fieldset:focus-within legend {
-		border-left-color: #{theme('accent', 'light')};
-		color: #{theme('accent', 'light')};
+		border-left-color: var(--color-accent);
+		color: var(--color-accent);
 	}
 </style>

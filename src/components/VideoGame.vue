@@ -219,11 +219,11 @@
 		&__cover img {
 			border: 3px solid transparent;
 			border-radius: 2 * $size-border-radius;
-			height: var(--size-game-cover, #{$size-game-cover});
+			//height: var(--size-game-cover, #{$size-game-cover});
 			transition: filter .25s ease-out;
 			max-height: calc(100vh - ((2 * var(--size-base)) + var(--size-app-icon) + 1px) - 3rem);
 			max-width: var(--size-game-cover, #{$size-game-cover});
-			object-fit: contain;
+			object-fit: fill;
 			object-position: center;
 			pointer-events: none; /// Do not show <img/> title. Title is SR-only
 			user-select: none;
@@ -325,11 +325,7 @@
 		}
 
 		.game__description {
-			filter: drop-shadow(0 .125rem .25rem rgba(0, 0, 0, .2));
-		}
-
-		.game__tally {
-			animation: jump 1s alternate infinite;
+			filter: drop-shadow(0 .125rem .25rem rgba(0, 0, 0, .25));
 		}
 	}
 

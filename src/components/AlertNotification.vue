@@ -12,7 +12,7 @@
 
 <script>
 	import CloseIcon from 'vue-feather-icon/components/x';
-	import TimeoutMixin from '@/lib/TimeoutMixin';
+	import TimeoutMixin from '@/mixins/TimeoutMixin';
 
 	export default {
 		name: 'AlertNotification',

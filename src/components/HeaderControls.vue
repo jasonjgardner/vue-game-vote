@@ -7,7 +7,7 @@
 			<HelpIcon/>
 		</div>
 
-		<header>
+		<header v-once>
 			<h1 class="title" itemprop="name">
 				Vote for a Game
 			</h1>
@@ -37,10 +37,6 @@
 
 		<form id="voters">
 			<div class="flex-item">
-				<label id="votes-remaining-label" class="sr-only" for="votes-remaining">
-					Votes Remaining:
-				</label>
-
 				<div class="voters__votes btn--shadow--lg h-focus"
 					 :class="{'invalid': voters < 0 || voters > 99, 'pulse': chaChing, 'has-votes-cast': hasVotes, 'has-votes-remaining': voters > 0}">
 					<input id="votes-remaining"
@@ -50,7 +46,7 @@
 						   type="number"
 						   placeholder="#"
 						   max="99" min="0"
-						   aria-labelledby="votes-remaining-label"
+						   aria-label="Votes remaining"
 					>
 
 					<button v-show="hasVotes"
@@ -58,12 +54,10 @@
 							type="submit"
 							name="choose"
 							title="Choose the game"
+							aria-label="Choose"
 							@click.prevent="$emit('choose')"
 					>
 						<CheckIcon/>
-						<span class="sr-only">
-						Choose
-					</span>
 					</button>
 				</div>
 			</div>
@@ -76,10 +70,10 @@
 							type="button"
 							name="reset"
 							title="Reset voting"
+							aria-label="Reset"
 							@click="reset"
 					>
 						<ResetIcon/>
-						<span class="sr-only">Reset</span>
 					</button>
 				</Transition>
 			</div>
@@ -89,10 +83,11 @@
 				<button class="btn btn--secondary btn--fab btn--shadow h-focus"
 						type="button"
 						name="buy"
-						title="Pay a coin to buy a vote" @click="buyVote"
+						title="Pay a coin to buy a vote"
+						aria-label="Buy a vote"
+						@click="buyVote"
 				>
 					<CoinIcon class="rotate-90"/>
-					<span class="sr-only">Buy Vote</span>
 				</button>
 			</div>
 			<!-- /.flex-item -->
@@ -101,11 +96,11 @@
 				<button class="btn btn--secondary btn--fab btn--shadow h-focus"
 						type="button"
 						name="show-settings"
-						title="Settings"
+						title="Toggle features, audio, and effects"
+						aria-label="Settings"
 						@click="$emit('show', 'settings')"
 				>
 					<SettingsIcon/>
-					<span class="sr-only">Settings</span>
 				</button>
 			</div>
 			<!-- /.flex-item -->
@@ -148,14 +143,22 @@
 								<h4 class="mb-0 mt-0">Mario Coins</h4>
 							</header>
 
-							<blockquote>
-								<p>
-									Mario Coins are toy coins embossed with Mario's face. They're given as a reward for
-									good
-									behavior and
-									taken away for bad behavior, poor sportsmanship, bitching, moaning, etc.
-								</p>
-							</blockquote>
+							<div class="d-flex">
+								<blockquote>
+									<p>
+										Mario Coins are toy coins embossed with Mario's face. They're given as a reward for
+										good
+										behavior and
+										taken away for bad behavior, poor sportsmanship, bitching, moaning, etc.
+									</p>
+								</blockquote>
+
+								<figure>
+									<img v-once :src="require('@/assets/img/mario-coin.png')" alt="Mario coin">
+									<figcaption>One Mario coin</figcaption>
+								</figure>
+							</div>
+							<!-- /.d-flex -->
 						</aside>
 					</article>
 
@@ -167,7 +170,7 @@
 						<dl class="dl--horizontal dl--striped">
 							<dt>Last Updated</dt>
 							<dd>
-								<time itemprop="dateModified">{{ $root.$data.BUILD_TIME }}</time>
+								<time v-once itemprop="dateModified">{{ $root.$data.BUILD_TIME }}</time>
 							</dd>
 							<dt>Browser Support</dt>
 							<dd>
@@ -201,7 +204,6 @@
 	import SettingsIcon from 'vue-feather-icon/components/settings';
 	import AppIcon from '@/assets/img/icon.svg';
 	import HelpIcon from '@/assets/img/help.svg';
-	import HowlerMixin from '@/lib/HowlerMixin';
 	import { EventBus } from '@/main';
 
 	/**
@@ -221,9 +223,8 @@
 			ResetIcon: RotateCcw,
 			CoinIcon: MinusCircle,
 			CheckIcon: Check,
-			Modal: () => import(/* webpackChunkName: "dialog" */'./Dialog/Modal')
+			Modal: () => import(/* webpackChunkName: "dialog" */'@/components/Dialog/Modal')
 		},
-		mixins: [HowlerMixin], /// FIXME: Make mixin share $_enableAudio setting
 		props: {
 			voters: {
 				type: Number,
@@ -255,14 +256,10 @@
 				});
 			},
 			reset() {
-				window.requestAnimationFrame(() => {
-					EventBus.$emit('howl', 'load', () => this.$emit('reset'));
-				});
+				EventBus.$emit('howl', 'load', () => this.$emit('reset'));
 			},
 			openInstructions() {
-				window.requestAnimationFrame(() => {
-					EventBus.$emit('howl', 'pause', () => this.showInstructions = true);
-				});
+				EventBus.$emit('howl', 'pause', () => this.showInstructions = true);
 			}
 		}
 	};
@@ -270,7 +267,6 @@
 
 <style lang="scss" scoped>
 	@import '~@/css/_variables';
-	@import '~@/css/_mixins';
 
 	.btn svg {
 		stroke: currentColor;
@@ -409,7 +405,7 @@
 	.voters__votes {
 		background-color: var(--color-accent);
 		border-radius: calc(.5 * var(--size-fab));
-		color: var(--color-fab);
+		color: var(--color-on-surface);
 		display: flex;
 		height: var(--size-fab);
 		justify-content: center;
@@ -434,7 +430,7 @@
 		&:focus-within {
 			animation: focus 2s infinite;
 			background-color: var(--color-focus);
-			color: var(--color-btn-background);
+			color: var(--color-surface);
 			outline: none;
 		}
 	}
@@ -538,6 +534,19 @@
 
 	.light-stroke {
 		stroke: var(--color-lightest);
+	}
+
+	#mario-coin blockquote {
+		flex: 1;
+		padding-right: var(--size-gap);
+		text-align: justify;
+	}
+
+	#mario-coin blockquote + figure {
+		background-color: var(--color-surface-secondary);
+		border-radius: 2 * $size-border-radius;
+		padding: var(--size-base);
+		text-align: center;
 	}
 
 	@media screen and (min-width: #{($media-screen-sm)}) {

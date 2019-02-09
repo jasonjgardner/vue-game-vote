@@ -75,6 +75,62 @@ $themes: (
 	)
 );
 
+$color-gray-100: #fefefe;
+$color-gray-200: #f0f0f0;
+$color-gray-300: #ededed;
+$color-gray-400: #cdcdcd;
+$color-gray-500: #ddd;
+$color-gray-600: #686868;
+$color-gray-700: #505050;
+$color-gray-800: #414141;
+$color-gray-900: #323232;
+
+$color-cool-100: #3fe9d3;
+$color-cool-200: #00d2be;
+$color-cool-300: #0cc;
+$color-cool-400: #04b9c3;
+$color-cool-500: #4dc0dd;
+$color-cool-600: #056aed;
+$color-cool-700: #356ded;
+$color-cool-800: mix($color-cool-200, $color-cool-600);
+
+$theme-dark-background: #2d2d2d;
+$theme-dark-on-background: $color-gray-100;
+$theme-dark-surface: $color-gray-700;
+$theme-dark-on-surface: white;
+$theme-dark-secondary-surface: #1f2227;
+$theme-dark-border: white;
+$theme-dark-fab-text: white;
+$theme-dark-color-lightest: white;
+$theme-dark-color-light: $color-gray-100;
+$theme-dark-color-primary: $color-cool-200;
+$theme-dark-color-secondary: $color-gray-600;
+$theme-dark-color-accent: $color-cool-200;
+$theme-dark-color-muted: $color-gray-600;
+$theme-dark-color-assertive: #ff762e;
+$theme-dark-color-active: #9c0;
+
+$theme-light-background: $color-gray-300;
+$theme-light-surface: $color-gray-100;
+$theme-light-on-surface: $color-gray-800;
+$theme-light-secondary-surface: $color-gray-200;
+$theme-light-border: $color-gray-400;
+$theme-light-fab-text: $color-dark-alt;
+$theme-light-link-text: $color-cool-300;
+$theme-light-color-lightest: white;
+$theme-light-color-light: $color-gray-100;
+$theme-light-color-primary: $color-cool-200;
+$theme-light-color-accent: $color-cool-700;
+$theme-light-color-muted: $color-gray-700;
+$theme-light-color-assertive: $theme-dark-color-assertive;
+$theme-light-color-active: $theme-dark-color-active;
+
+$color-modal-overlay: rgba($theme-dark-secondary-surface, .9);
+$color-dialog-btn-background: $theme-dark-secondary-surface;
+$color-dialog-background: rgba(mix($color-dialog-btn-background, $color-gray-700, 90%), .95);
+
+$color-focus: $color-cool-100;
+
 /// Default theme name. Must be in `$themes` map
 /// @type String
 /// @access public

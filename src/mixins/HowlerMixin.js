@@ -1,4 +1,4 @@
-import { Howl } from 'howler';
+/* global Howl */
 
 const mixin = {
 	destroyed() {

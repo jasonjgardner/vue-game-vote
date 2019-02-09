@@ -22,7 +22,7 @@
 
 import '@/css/index.scss';
 import '@/lib/registerServiceWorker';
-import sortBy from './lib/sortBy';
+import sortBy from '@/lib/sortBy';
 import Vue from 'vue';
 import PortalVue from 'portal-vue'
 

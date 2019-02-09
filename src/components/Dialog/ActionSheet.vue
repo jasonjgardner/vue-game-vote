@@ -11,7 +11,7 @@
 </template>
 
 <script>
-	import ModalMixin from './Mixin';
+	import ModalMixin from '@/mixins/DialogMixin';
 
 	export default {
 		name: 'ActionSheet',

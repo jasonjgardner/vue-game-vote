@@ -25,7 +25,7 @@
 </template>
 
 <script>
-	import ModalMixin from './Mixin';
+	import ModalMixin from '@/mixins/DialogMixin';
 
 	/**
 	 * Dialog component
@@ -58,7 +58,7 @@
 		z-index: $zindex-modal;
 
 		&__container {
-			background-color: var(--color-background-alt);
+			background-color: var(--color-surface);
 			border-radius: $size-border-radius;
 			margin: 0 var(--size-base);
 			padding: var(--size-base);
